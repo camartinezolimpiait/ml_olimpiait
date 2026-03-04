@@ -90,9 +90,14 @@
 
   <!-- Sidenav móvil -->
   {#if sidenavOpen}
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <!-- svelte-ignore a11y-no-static-element-interactions -->
-    <div class="sidenav-backdrop" on:click={closeSidenav}></div>
+    <div
+      class="sidenav-backdrop"
+      role="button"
+      tabindex="0"
+      aria-label="Cerrar menú"
+      on:click={closeSidenav}
+      on:keydown={(e) => e.key === 'Escape' && closeSidenav()}
+    ></div>
     <aside class="sidenav">
       <button type="button" class="close-btn" on:click={closeSidenav}>✕</button>
       <ul>

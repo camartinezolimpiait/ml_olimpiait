@@ -20,7 +20,7 @@ const SKIP_LOADER_URLS = ['/404'];
 
 let activeRequests = 0;
 let isRefreshing = false;
-let pendingRequests: Array<(token: string) => void> = [];
+let pendingRequests: Array<(token: string | null) => void> = [];
 
 /**
  * Añade el token JWT a los headers si la URL lo requiere.
@@ -102,13 +102,21 @@ export async function httpRequest<T>(
           return retryResponse.json() as Promise<T>;
         } catch (refreshError) {
           isRefreshing = false;
+          // Notify all pending requests of failure
+          pendingRequests.forEach((reject) => reject(null));
           pendingRequests = [];
           throw refreshError;
         }
       } else {
-        // Esperar al token renovado
-        const newToken = await new Promise<string>((resolve) => {
-          pendingRequests.push(resolve);
+        // Esperar al token renovado o fallo
+        const newToken = await new Promise<string>((resolve, reject) => {
+          pendingRequests.push((token) => {
+            if (token) {
+              resolve(token);
+            } else {
+              reject(new Error('Token refresh failed'));
+            }
+          });
         });
         headers.set('Authorization', `Bearer ${newToken}`);
         const retryResponse = await fetch(url, { ...options, headers });

@@ -21,10 +21,21 @@
 </script>
 
 {#if $dialogStore.visible}
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <div class="dialog-backdrop" on:click={handleClose}>
-    <div class="simple-dialog" on:click|stopPropagation role="dialog" aria-modal="true">
+  <div
+    class="dialog-backdrop"
+    role="button"
+    tabindex="0"
+    aria-label="Cerrar diálogo"
+    on:click={handleClose}
+    on:keydown={(e) => e.key === 'Escape' && handleClose()}
+  >
+    <div
+      class="simple-dialog"
+      on:click|stopPropagation
+      on:keydown|stopPropagation
+      role="dialog"
+      aria-modal="true"
+    >
       <img src={$dialogStore.logo} alt="Alerta" style="margin-block-end: 1.5rem;" />
       <p class="pregunta">{$dialogStore.mensaje}</p>
       <div class="flex-botones">

@@ -19,9 +19,27 @@
   let habilitarBoton: boolean = false;
   let filteredCentros: Centro[] = [];
 
-  $: filteredCentros = centros.filter((c) =>
-    c.nombre.toLowerCase().includes(nombreCentro.toLowerCase())
-  );
+  $: filteredCentros = nombreCentro
+    ? centros.filter((c) => c.nombre.toLowerCase().includes(nombreCentro.toLowerCase()))
+    : [];
+
+  onMount(async () => {
+    try {
+      // Los centros se cargan desde el API una vez que se selecciona un tipo de cliente
+      // La carga inicial muestra los centros CRC por defecto
+      await cargarCentros();
+    } catch (e) {
+      console.error('Error al cargar centros:', e);
+    }
+  });
+
+  async function cargarCentros(): Promise<void> {
+    // Placeholder: en producción se usa httpGet desde data.service
+    // import { httpGet } from '$lib/services/http.service';
+    // import { getApiMilicencia } from '$lib/services/api-milicencia.util';
+    // centros = await httpGet<Centro[]>(`${getApiMilicencia()}/servicios/CompraPin/ObtenerTodosCentros?tipo=${tipoCentro}`);
+    centros = [];
+  }
 
   function selectCentro(centro: Centro): void {
     centroSeleccionado = centro;

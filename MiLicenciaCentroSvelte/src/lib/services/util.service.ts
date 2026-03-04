@@ -11,7 +11,7 @@ import { alertStore } from '$lib/services/alert.store';
 export const tiposDeDocumentoNumericos: number[] = [
   TipoDocumento.CedulaCiudadania,
   TipoDocumento.TarjetaIdentidad,
-  4 // NIT
+  TipoDocumento.NIT
 ];
 
 /**
