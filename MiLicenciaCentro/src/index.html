@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Google Captcha-->
+    <script src="https://www.google.com/recaptcha/api.js?render=6Ldh-yUhAAAAAJ_Bc4FseTL8osPdpXxVAAUiI_p1" async defer></script>
+    <!-- End Google Captcha-->
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- Es importante descargar el JS de google para que todas las funciones de GTAG se ejecuten-->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-57BJJKQJ83"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-57BJJKQJ83");
+    </script>
+
+    <title>MiLicencia</title>
+    <base href="/" />
+    <link rel="stylesheet" href="https://use.typekit.net/iua0dbj.css" />
+    <style type="text/css">
+      /*Ocultamos el recaptcha de acuerdo con https://developers.google.com/recaptcha/docs/faq*/
+      .grecaptcha-badge {
+        visibility: hidden;
+      }
+    </style>
+    <script
+      defer
+      src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyD3rbfyWYWr3TRjHDLx2ACE8UqM8fZk-AQ&language=es&region=CO&callback=initMap"
+    ></script>
+    <script>
+      function initMap() {
+        // Initialize the map or any other Google Maps related functionality here
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="Description"
+      content="¿Necesitas pagar tus exámenes para tu proceso de expedición de licencia de conducción? En MiLicencia podrás hacerlo fácil, sencillo y seguro."
+    />
+    <meta name="keywords" content="licencia, pase, conducción, Colombia, como, sacar, pase, expedir, requisitos" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#0572d1" />
+    <!-- Start of HubSpot Embed Code -->
+    <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/5655893.js"></script>
+    <!-- End of HubSpot Embed Code -->
+  </head>
+
+  <body>
+    <app-root>Espera un momento, cargando la página...</app-root>
+    <noscript>Por favor, activa Javascript para usar esta aplicación.</noscript>
+     <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = "https://srvdigclroli.claro.com.co:8443/widget/src/app/config/cxbus.min.js";
+        script.onload = function() {
+          CXBus.loadFile('https://srvdigclroli.claro.com.co:8443/widget/src/app/config/router.min.js').done(function() {
+            if(router.validateHost()){
+              CXBus.loadFile('https://srvdigclroli.claro.com.co:8443/widget/src/app/custom/clientes/miLicencia/js/messenger.min.js').done(function() {
+                messenger.start()
+              });
+            }
+          });
+        };
+        document.body.appendChild(script);
+      });
+    </script>
+  </body>
+</html>

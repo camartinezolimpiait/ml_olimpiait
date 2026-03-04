@@ -1,0 +1,76 @@
+<header class="header">
+  <div class="wrapper">
+    <span class="subtitulo">Agenda</span>
+    <h1>Mis clases</h1>
+  </div>
+</header>
+<div class="wrapper form-custom-wrapper">
+  <div class="column-triple" *ngIf="mostrarConsulta">
+    <div class="colC colC-order">
+      <p>Consulte las citas asignadas para clase teórica y práctica en tu CEA</p>
+    </div>
+    <div class="colAB">
+      <form [formGroup]="consultaCeaForm">
+        <div class="field tipo">
+          <label for="tipoDocumento">Tipo de documento</label>
+          <select formControlName="idTipoDocumento" id="tipoDocumento">
+            <option [value]="" hidden selected>--Selecciona un tipo de documento--</option>
+            <option *ngFor="let tipo of tiposDeDocumento" value="{{ tipo.idTipoSisec }}">
+              {{ tipo.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="documento">Documento de identidad</label>
+          <input formControlName="numeroDocumento" type="text" id="documento" />
+        </div>
+      </form>
+      <p class="recaptchaMobile">
+        Este sitio está protegido por reCAPTCHA y se aplican la <a href="https://policies.google.com/privacy">política de privacidad</a> y
+        <a href="https://policies.google.com/terms">términos del servicio</a> de Google.
+      </p>
+      <button class="button-primary" (click)="validarCaptcha()">Consultar</button>
+    </div>
+  </div>
+  <ng-container *ngIf="agendasEstudianteCea && primeraAgenda && !mostrarConsulta">
+    <div class="column-triple">
+      <div class="colC" style="order: 1">
+        <div class="perfil-usuario">
+          <span
+            ><strong>{{ primeraAgenda.estudianteNombre | titlecase }}</strong></span
+          >
+          <span>{{ obtenerCodigoIdentificacion(primeraAgenda.idTipoIdentificacion) }} {{ primeraAgenda.numeroDocumento }}</span>
+          <span><a (click)="cambiarInterfaz()">Volver a consulta</a></span>
+          <hr />
+          <span
+            ><strong>{{ primeraAgenda.centroNombre }}</strong></span
+          >
+        </div>
+      </div>
+      <div class="colAB">
+        <h3>Próxima clase</h3>
+        <div class="proxima-clase">
+          <div class="vertical">
+            <span class="fecha-clase">{{ primeraAgenda.fechaProgramada | date : "fullDate" }}</span>
+            <span class="hora">{{ primeraAgenda.horaInicio }} - {{ primeraAgenda.horaFin }}</span>
+            <span class="instructor">Instructor: {{ primeraAgenda.instructorNombre | titlecase }}</span>
+          </div>
+
+          <span class="tipo-clase">Clase teórica</span>
+        </div>
+        <h4>Clases agendadas</h4>
+        <div class="clases-agendadas">
+          <ng-container *ngFor="let agenda of agendasEstudianteCea">
+            <div class="fecha-clase">
+              <span>{{ agenda.fechaProgramada | date : "fullDate" }}</span>
+            </div>
+            <div class="descripcion">
+              <span class="hora">{{ agenda.horaInicio }} - {{ agenda.horaFin }}</span>
+              <span class="detalle">{{ agenda.tipoClase }} con {{ agenda.instructorNombre | titlecase }}</span>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

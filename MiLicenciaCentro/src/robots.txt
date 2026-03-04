@@ -1,0 +1,6 @@
+User-agent: Googlebot
+
+User-agent: *
+Allow: /
+
+sitemap: https://www.milicencia.co/sitemap.xml

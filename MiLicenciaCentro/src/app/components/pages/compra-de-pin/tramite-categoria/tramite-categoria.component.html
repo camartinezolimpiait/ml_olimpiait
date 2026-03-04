@@ -1,0 +1,71 @@
+<!-- Opcion Tipo de trámite -->
+<div *ngIf="componentePrincipal">
+  <form [formGroup]="compraPinForm">
+    <h3>Cantidad de trámites</h3>
+    <p>
+      Pagando un 50% adicional, el examen médico puede ser usado para dos
+      trámites a la vez.
+    </p>
+    <p>
+      De lo contrario, escoge <strong>un solo trámite</strong> para continuar.
+    </p>
+    <fieldset class="radio">
+      <div *ngFor="let tramite of opcionTramites | enumToArr">
+        <ng-container *ngIf="tramite.index != 2; else filtroCEAtramite">
+          <input
+            id="{{ tramite.index }}"
+            formControlName="opcionTramite"
+            type="radio"
+            name="opcionTramite"
+            [value]="tramite.index"
+          />
+          <label for="{{ tramite.index }}">{{
+            descripcionOpcionTramite[tramite.index]
+          }}</label>
+        </ng-container>
+        <ng-template #filtroCEAtramite>
+          <ng-container *ngIf="pagoPin.clienteCompra == tipoCliente.CRC">
+            <input
+              id="{{ tramite.index }}"
+              formControlName="opcionTramite"
+              type="radio"
+              name="opcionTramite"
+              [value]="tramite.index"
+            />
+            <label for="{{ tramite.index }}">{{
+              descripcionOpcionTramite[tramite.index]
+            }}</label>
+          </ng-container>
+        </ng-template>
+      </div>
+    </fieldset>
+    <div class="botones_final">
+      <button type="button" class="button-secondary" (click)="volver()">
+        Atrás
+      </button>
+      <button
+        type="button"
+        class="button-primary"
+        *ngIf="compraPinForm.valid"
+        (click)="inicarSeleccion()"
+        tabindex="0"
+      >
+        Siguiente
+      </button>
+    </div>
+  </form>
+</div>
+<div *ngIf="!componentePrincipal">
+  <app-tipo-tramite
+    [pagoPin]="pagoPin"
+    (pagoPinEvent)="onTipoTramite($event)"
+    (pagoPinVolverEvent)="onVolverPrincipal($event)"
+    *ngIf="componenteTramite"
+  ></app-tipo-tramite>
+  <app-seleccion-categorias
+    [pagoPin]="pagoPin"
+    (pagoPinEvent)="onSeleccionCategoria($event)"
+    (pagoPinVolverEvent)="onVolverTramite($event)"
+    *ngIf="componenteCategoria"
+  ></app-seleccion-categorias>
+</div>

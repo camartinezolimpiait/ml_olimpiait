@@ -1,0 +1,6 @@
+p {
+    margin-block-end: 0.5rem;
+    @media screen and (max-width: 640px) {
+        font-size: 1em;
+    }
+}

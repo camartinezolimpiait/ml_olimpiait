@@ -1,0 +1,43 @@
+.error-formulario {
+  color: var(--rojo-500);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .icono-svg {
+    display: inline;
+    width: 24px;
+    height: 24px;
+    margin-right: 0.3rem;
+  }
+}
+
+.resumen-errores {
+  @include size-break;
+
+  padding: 1rem;
+  border: 4px solid var(--rojo-500);
+  margin-block-end: $Interlineado;
+  border-radius: 0.42em;
+  box-sizing: border-box;
+
+  ul {
+    color: var(--rojo-500);
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      margin: 0;
+      padding: 0;
+
+      a {
+        color: var(--rojo-500);
+        font-weight: 700;
+      }
+    }
+  }
+}

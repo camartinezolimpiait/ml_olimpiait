@@ -1,0 +1,85 @@
+body {
+  margin: 0rem;
+}
+
+main {
+  padding: $Interlineado 0;
+}
+
+.grafico {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-block-end: $Interlineado;
+}
+
+.form-custom-wrapper {
+  padding: $Interlineado 0;
+
+  h2,
+  h3,
+  h4,
+  h5 {
+    margin-top: 0;
+  }
+  
+  .colC-order {
+    order: 1;
+  }
+}
+
+.wrapper {
+  margin: 0 auto;
+  width: 90%;
+  max-width: 65rem;
+}
+
+.padding-interlineado {
+  padding: $Interlineado;
+  max-width: 70rem;
+}
+
+.flex-campos {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -1rem;
+
+  mat-form-field,
+  button,
+  .button-primary,
+  .button-secondary {
+    flex: auto;
+    margin-right: 1rem;
+    width: auto;
+  }
+}
+
+.flex-botones {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -1rem;
+  margin-block-end: $Interlineado;
+
+  .button-primary,
+  .button-secondary {
+    flex: none;
+    margin-right: 0.5rem;
+  }
+}
+
+.flex-botones-derecha {
+  display: flex;
+  flex-wrap: wrap;
+  margin-block-end: $Interlineado;
+  justify-content: flex-end;
+
+  .button-primary,
+  .button-secondary {
+    flex: none;
+    margin-left: 0.5rem;
+  }
+}
+
+.no-margin {
+  margin-block-end: 0;
+}

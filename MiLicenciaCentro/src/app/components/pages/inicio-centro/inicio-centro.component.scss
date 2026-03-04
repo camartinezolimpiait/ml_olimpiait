@@ -1,0 +1,94 @@
+@import "../../../../assets/css/variables";
+@import "../../../../assets/css/components/containers/buscador.scss";
+
+.centros_header {
+  background: none;
+}
+
+.centros_main {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+
+  position: relative;
+  background-image: url(../../../../assets/img/fondo-home.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center top;
+  background-color: var(--azul-700);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.busca-contenedor {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  background: white;
+  box-shadow: var(--elevacion-3);
+  max-width: 64ch;
+  width: 100%;
+  padding: 2rem;
+  border-radius: 0.5rem;
+
+  input,
+  select {
+    background-color: var(--gris-100);
+    border-color: var(--gris-200);
+  }
+
+  .busca-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex-wrap: wrap;
+    @media screen and (max-width: 639px) {
+      button,
+      .busca-flex-tipo,
+      .busca-flex-nombre {
+        margin: 0 0 0.5rem 0;
+      }
+    }
+    @media screen and (min-width: 640px) {
+      flex-direction: row;
+      flex-wrap: nowrap;
+
+      .busca-flex-tipo {
+        width: 8ch;
+        flex: 0 0 8ch;
+        margin: 0;
+        margin-right: 0.5rem;
+      }
+
+      .busca-flex-nombre {
+        flex: 1 1 auto;
+        margin: 0;
+        margin-right: 0.5rem;
+      }
+
+      .button-primary {
+        margin: 0;
+      }
+    }
+  }
+}
+
+.logos {
+  position: absolute;
+  bottom: 1rem;
+  width: 100%;
+}
+
+.olimpia,
+.logo-super {
+  height: 42px;
+  width: auto;
+}
+
+.olimpia {
+  margin-right: 1rem;
+}

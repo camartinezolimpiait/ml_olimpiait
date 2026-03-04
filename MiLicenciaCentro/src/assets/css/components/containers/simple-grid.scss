@@ -1,0 +1,53 @@
+div,
+section {
+  &[color="amarillo-palido"] {
+    background: #fde1b3;
+  }
+  &[color="gris"] {
+    background: var(--gris-100);
+  }
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  padding: 10px;
+  img {
+    width: 100%;
+  }
+}
+
+.double-column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+}
+
+.center-content-col {
+  justify-content: center;
+}
+
+.tyc-form {
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (min-width: 600px) {
+  .column {
+    flex: 1;
+  }
+  .double-column {
+    flex: 2;
+  }
+
+  .reverse-row {
+    flex-direction: row-reverse;
+  }
+}

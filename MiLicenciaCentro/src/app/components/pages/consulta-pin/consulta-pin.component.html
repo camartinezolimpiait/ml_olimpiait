@@ -1,0 +1,162 @@
+<header class="header">
+  <div class="wrapper">
+    <span class="subtitulo">Compra de PIN</span>
+
+    <h1>Consulta Estado de PIN</h1>
+  </div>
+</header>
+<div class="wrapper form-custom-wrapper">
+  <div class="column-triple">
+    <div class="colC colC-order">
+      <h3>¿Qué puedo hacer aquí?</h3>
+      <p>
+        Puede consultar los dígitos y estado actual de un PIN comprado a través de esta plataforma, buscándolo a partir de los datos del aspirante y el {{tiposervicio}} para el que fue comprado.
+      </p>
+    </div>
+    <div class="colAB">
+      <h3>Ingrese los datos de compra</h3>
+      <form
+        (ngSubmit)="onSubmit()"
+        [formGroup]="queryPins"
+        class="select-fi select-fi-nm"
+      >
+        <div>
+          <div class="field tipo" *ngIf="centros">
+            <label for="centros">Centro donde compraste el pin</label>
+            <app-field-error [controlForm]="queryPins.get('centros')!">
+              Selecciona centro donde compraste el PIN
+            </app-field-error>
+            <input
+              type="text"
+              name="nombreCentro"
+              [formControl]="nombreCentro"
+              placeholder="Nombre del centro"
+              [matAutocomplete]="auto"
+              class="busca-flex-nombre"
+            />
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              class="busca-flex-nombre"
+              [displayWith]="displayFn"
+            >
+              <mat-option
+                *ngFor="let centro of filteredOptions | async"
+                [value]="centro"
+                (onSelectionChange)="centroSeleccionado(centro)"
+              >
+                {{ centro.nombre }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+          <div class="field tipo" *ngIf="tiposDeDocumento">
+            <label for="tipoDocumento">Tipo de documento</label>
+            <app-field-error [controlForm]="queryPins.get('typeDocument')!">
+              Selecciona tipo de documento
+            </app-field-error>
+            <select formControlName="typeDocument" id="tipoDocumento">
+              <option [value]="" hidden selected>
+                --Selecciona un tipo de documento--
+              </option>
+              <option
+                *ngFor="let tipo of tiposDeDocumento"
+                value="{{ tipo.idTipoSisec }}"
+              >
+                {{ tipo.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="documentoActual">Número de identificación</label>
+            <app-field-error [controlForm]="queryPins.get('idDocument')!">
+              El número de documento no cumple con las condiciones
+            </app-field-error>
+            <input
+              formControlName="idDocument"
+              type="text"
+              id="documentoActual"
+              maxlength="24"
+            />
+          </div>
+          <div class="field">
+            <label for="fechaCompra">Fecha de creación</label>
+            <app-field-error [controlForm]="queryPins.get('boughtDate')!">
+              Selecciona fecha de creación
+            </app-field-error>
+            <div class="buscador-home">
+              <input
+                formControlName="boughtDate"
+                type="text"
+                id="fechaCompra"
+                autocomplete="off"
+                [matDatepicker]="myDatepicker"
+                placeholder="dd/mm/yyyy"
+                [min]="minDate"
+                [max]="maxDate"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="myDatepicker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #myDatepicker></mat-datepicker>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="recaptchaMobile">
+            Este sitio está protegido por reCAPTCHA y se aplican la
+            <a href="https://policies.google.com/privacy"
+              >política de privacidad</a
+            >
+            y
+            <a href="https://policies.google.com/terms"
+              >términos del servicio</a
+            >
+            de Google.
+          </p>
+          <button
+            [disabled]="queryPins.invalid || codigoRuntCentro === ''"
+            class="button-primary"
+          >
+            Continuar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <figure class="fig-table">
+    <table
+      *ngIf="success"
+      cdk-table
+      [dataSource]="dataSource"
+      class="tabla"
+    >
+      <ng-container cdkColumnDef="pin">
+        <th cdk-header-cell *cdkHeaderCellDef>PIN</th>
+        <td data-title="PIN" cdk-cell *cdkCellDef="let element">
+          <strong>{{ element.pinRecuperado }}</strong>
+        </td>
+      </ng-container>
+      <ng-container cdkColumnDef="state">
+        <th cdk-header-cell *cdkHeaderCellDef>Estado</th>
+        <td data-title="Estado" cdk-cell *cdkCellDef="let element">
+          {{ element.estado }}
+        </td>
+      </ng-container>
+      <ng-container cdkColumnDef="update">
+        <th cdk-header-cell *cdkHeaderCellDef></th>
+        <td data-title="botonActualizar" cdk-cell *cdkCellDef="let element">
+          <button
+            class="button-secundary"
+            *ngIf="updateShow(element)"
+            (click)="updateSecurePay(element.cus, element.pinRecuperado)"
+            [disabled]="buttonDisabled"
+          >
+            Actualizar
+          </button>
+        </td>
+      </ng-container>
+      <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
+      <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </figure>
+</div>

@@ -1,0 +1,38 @@
+<div [formGroup]="compraPinForm">
+  <fieldset class='cuotas'>
+    <legend>
+      <h3>Compra a cuotas</h3>
+    </legend>
+    <p class="justificado">
+      Puedes diferir el pago hasta 6 cuotas sin intereses y pagarlas mientras realizas el curso. No hay fechas de
+      corte, pero todas deben ser pagadas antes de emitir el certificado al final del curso.
+    </p>
+    <p>Por favor, selecciona la cantidad de cuotas.</p>
+    <div *ngFor="let costoCuota of pagoPin.costoCuotas">
+      <input id="{{costoCuota.numeroCuotas}}" formControlName="cuotas" type="radio" name="cuotas"
+        [value]="costoCuota.numeroCuotas">
+      <label for="{{costoCuota.numeroCuotas}}">
+        <ng-container *ngIf="costoCuota.numeroCuotas <= 1; else tempCuota">
+          <span class="texto">
+            Pago único de
+            <strong>{{costoCuota.valorTotal | currency: 'COP':'symbol-narrow':'1.0-0'}}</strong>
+          </span>
+        </ng-container>
+        <ng-template #tempCuota>
+          <span class="texto">
+            Un pago inicial de
+            <strong>{{costoCuota.primeraCuota | currency: 'COP':'symbol-narrow':'1.0-0'}}</strong> y
+            {{costoCuota.numeroCuotas-1}} cuotas de
+            <strong>{{costoCuota.valorCuota | currency: 'COP':'symbol-narrow':'1.0-0'}}</strong>
+          </span>
+        </ng-template>
+      </label>
+    </div>
+    <div class="botones_final">
+      <button type="button" class="button-secondary" (click)="onVolver()">Atrás</button>
+      <button type="button" class="button-primary" *ngIf="validacionManual"
+        (click)="onContinuar()" tabindex="0">Siguiente</button>
+    </div>
+  </fieldset>
+
+</div>

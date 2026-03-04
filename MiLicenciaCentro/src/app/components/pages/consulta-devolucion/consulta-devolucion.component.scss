@@ -1,0 +1,52 @@
+.fig-table {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.tabla {
+  font-family: proxima-nova-condensed,sans-serif;
+  font-variant-numeric: lining-nums;
+
+  th:nth-child(3) {
+    white-space: nowrap
+  }
+  th:nth-child(5) {
+    white-space: nowrap
+  }
+}
+
+.ActualizarDevolucion {
+  width: 100%;
+  height: 40px;
+  padding: 0 1rem;
+  text-align: left;
+  border-radius: 20px;
+  border: none;
+  transition: all 70ms ease-out;
+  font-weight: 500;
+  line-height: 100%;
+  cursor: pointer;
+  color: var(--azul-700);
+  text-decoration: underline;
+}
+
+/* Centrar horizontalmente el botón */
+.text-center {
+  text-align: center;
+}
+
+/* Estilos para el botón con el ícono de lápiz */
+.logo-button {
+  background-color: transparent; /* Fondo transparente para el botón */
+  border: none; /* Sin borde */
+  cursor: pointer; /* Cambia el cursor al pasar el mouse */
+  font-size: 24px; /* Tamaño del ícono */
+  color: #333; /* Color del ícono */
+  margin: 0 auto; /* Centrar horizontalmente */
+  display: block; /* Hace que el botón ocupe todo el ancho disponible */
+}
+
+/* Cambiar el color del ícono al pasar el mouse */
+.logo-button:hover {
+  color: #007bff; /* Cambiar a un color azul al pasar el mouse */
+}

@@ -1,0 +1,27 @@
+.simple-dialog {
+  display: grid;
+  place-items: center;
+  min-width: 10em;
+}
+
+.flex-botones {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0;
+
+  button {
+    min-width: 5ch;
+  }
+
+  button:not(:last-child) {
+    margin: 0 8px 0 0;
+  }
+
+  button:last-child {
+    margin: 0;
+  }
+}
+
+.pregunta {
+  text-align: center;
+}

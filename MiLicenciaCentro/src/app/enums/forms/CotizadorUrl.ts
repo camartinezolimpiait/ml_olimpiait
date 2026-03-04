@@ -1,0 +1,10 @@
+export enum CotizadorUrl{
+    TRAMITE = 1,
+    MAPACENTRO,
+    AGENDAMIENTO,
+    DATOSPERSONALES,
+    MEDIOSPAGO,
+    CUOTAS,
+    CONFIRMACION,
+    FACTURAELECTRONICA
+}

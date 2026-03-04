@@ -1,0 +1,84 @@
+<mat-dialog-content>
+  <div>
+    <div>
+      <h3 class="text-center">Actualización Datos Devolución</h3>
+    </div>
+    <p><strong>Pin:</strong>  {{data.ConsultaDevolucion.pin}} <br>
+    <form [formGroup]="actualizacionDevolucionForm">
+      <div class="field tipo" *ngIf="bancos">
+        <label for="bancos">Banco</label>
+        <app-field-error [controlForm]="actualizacionDevolucionForm.get('banco')!">
+          Selecciona banco
+        </app-field-error>
+        <select formControlName="banco" id="bancos">
+          <option [value]="" hidden selected>
+            --Selecciona un banco--
+          </option>
+          <option *ngFor="let banco of bancos" [value]="banco.id">
+            {{ banco.nombre }}
+          </option>
+        </select>
+      </div>
+      <div class="field tipo">
+        <label for="tipoDeCuenta">Tipo de cuenta</label>
+        <app-field-error [controlForm]="
+          actualizacionDevolucionForm.get('tipoDeCuenta')!
+          ">
+          Selecciona tu tipo de cuenta
+        </app-field-error>
+        <select formControlName="tipoDeCuenta" id="tipoDeCuenta">
+          <option [value]="" hidden selected>
+            --Selecciona un tipo de cuenta--
+          </option>
+          <option *ngFor="let tipoCuenta of tipoCuentaDevolucion | enumToArr" [value]="tipoCuenta.index">
+            {{ tipoCuenta.name }}
+          </option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="numeroDeCuenta">Número de cuenta</label>
+        <app-field-error [controlForm]="
+          actualizacionDevolucionForm.get('numeroDeCuenta')!
+          ">
+          Indique el número de cuenta
+        </app-field-error>
+        <input formControlName="numeroDeCuenta" type="text" id="numeroDeCuenta" maxlength="20" />
+      </div>
+      <div class="field tipo" *ngIf="tiposDeDocumento">
+        <label for="tipoDocTitular">Tipo de documento</label>
+        <app-field-error [controlForm]="
+          actualizacionDevolucionForm.get('tipoDocTitular')!
+          ">
+          Selecciona el tipo de documento
+        </app-field-error>
+        <select formControlName="tipoDocTitular" id="tipoDocTitular">
+          <option [value]="" hidden selected>
+            --Selecciona un tipo de documento--
+          </option>
+          <option *ngFor="let tipo of tiposDeDocumento" value="{{ tipo.idTipoSisec }}">
+            {{ tipo.nombre }}
+          </option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="documentoTitular">Documento del titular</label>
+        <app-field-error [controlForm]="
+          actualizacionDevolucionForm.get('numDocTitular')!
+          ">
+          El número de documento no cumple con las condiciones
+        </app-field-error>
+        <input formControlName="numDocTitular" type="text" id="documentoTitular" maxlength="{{longitudDocumento}}"
+          style="text-transform: uppercase;" />
+      </div>
+    </form>
+    <p class="error-formulario">{{data.mensaje}}</p>
+  </div>
+  <div class="flex-botones-derecha no-margin">
+    <a class="button-secondary" (click)="openLink($event)">
+      Volver
+    </a>
+    <a class="button-primary" (click)="confirmarUsoDeDatos($event)" *ngIf="actualizacionDevolucionForm.valid">
+      Continuar
+    </a>
+  </div>
+</mat-dialog-content>

@@ -1,0 +1,230 @@
+/* For use in src/lib/core/theming/_palette.scss */
+$md-paleta-primario: (50: #e0eefa,
+  100: #b3d4f2,
+  200: #80b8ea,
+  300: #4d9ce1,
+  400: #2686da,
+  500: #0071d4,
+  600: #0069cf,
+  700: #005ec9,
+  800: #0054c3,
+  900: #0042b9,
+  A100: #e2eaff,
+  A200: #afc6ff,
+  A400: #7ca1ff,
+  A700: #638fff,
+  contrast: (50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+$md-paleta-acento: (50: #f9f0e4,
+  100: #f0dabc,
+  200: #e7c28f,
+  300: #ddaa62,
+  400: #d59740,
+  500: #ce851e,
+  600: #c97d1a,
+  700: #c27216,
+  800: #bc6812,
+  900: #b0550a,
+  A100: #ffeadc,
+  A200: #ffcca9,
+  A400: #ffae76,
+  A700: #ff9e5d,
+  contrast: (50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+$md-error: (50: #f9e3e5,
+  100: #f1b9bd,
+  200: #e88b92,
+  300: #de5d66,
+  400: #d73a45,
+  500: #d01724,
+  600: #cb1420,
+  700: #c4111b,
+  800: #be0d16,
+  900: #b3070d,
+  A100: #ffdede,
+  A200: #ffabac,
+  A400: #ff787a,
+  A700: #ff5e61,
+  contrast: (50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+@mixin size-break {
+  max-width: 25rem;
+
+  @media screen and (min-width: 1000px) {
+    max-width: 75%;
+  }
+}
+
+// Primary color
+$azul-principal: map-get($map: $md-paleta-primario,
+  $key: 900,
+);
+$azul-secundario: map-get($map: $md-paleta-primario,
+  $key: 500,
+);
+$back-button-color: map-get($map: $md-paleta-primario,
+  $key: 700,
+);
+$blue-i: map-get($map: $md-paleta-primario,
+  $key: 800,
+);
+$azul-logo: map-get($map: $md-paleta-primario,
+  $key: 400,
+);
+$text-g: #434343;
+
+// Secondary color
+$amarillo-principal: map-get($map: $md-paleta-acento,
+  $key: 700,
+);
+$amarillo-texto: map-get($map: $md-paleta-acento,
+  $key: texto,
+);
+$amarillo-suave: map-get($map: $md-paleta-acento,
+  $key: 100,
+);
+$transparent: #00000000;
+$error-color: map-get($map: $md-error,
+  $key: 800,
+);
+$map-info: #5d5e5e;
+
+//Color de fondo
+$background-section: white;
+
+//VARIABLES REALMENTE IMPORTANTES
+:root {
+  //Tipografia
+  --scale-0: 1.125rem;
+  --scale-1: 1.333rem;
+  --scale-2: 1.777rem;
+  --scale-3: 2.369rem;
+  --scale-4: 3.157rem;
+  --scale-5: 4.209rem;
+  --scale-6: 5.61rem;
+
+  // Sombras
+  --elevacion-1: 0 1px 3px hsla(0, 0%, 0%, 0.12),
+    0 1px 2px hsla(0, 0%, 0%, 0.24);
+  --elevacion-2: 0 3px 6px hsla(0, 0%, 0%, 0.15),
+    0 2px 4px hsla(0, 0%, 0%, 0.12);
+  --elevacion-3: 0 10px 20px hsla(0, 0%, 0%, 0.15),
+    0 3px 6px hsla(0, 0%, 0%, 0.1);
+  --elevacion-4: 0 15px 25px hsla(0, 0%, 0%, 0.15),
+    0 5px 10px hsla(0, 0%, 0%, 0.05);
+  --elevacion-5: 0 20px 40px hsla(0, 0%, 0%, 0.05);
+
+  // Colores
+  --azul-900: hsl(220, 85%, 10%);
+  --azul-800: hsl(216, 85%, 19%);
+  --azul-700: hsl(213, 85%, 27%);
+  --azul-600: hsl(208, 95%, 35%);
+  --azul-500: hsl(208, 95%, 42%);
+  --azul-400: hsl(208, 100%, 50%);
+  --azul-300: hsl(208, 100%, 65%);
+  --azul-200: hsl(208, 100%, 80%);
+  --azul-100: hsl(208, 100%, 92%);
+
+  --amarillo-900: hsl(20, 100%, 10%);
+  --amarillo-800: hsl(27, 89%, 20%);
+  --amarillo-700: hsl(34, 89%, 30%);
+  --amarillo-600: hsl(38, 89%, 40%);
+  --amarillo-500: hsl(38, 89%, 53%);
+  --amarillo-400: hsl(38, 89%, 60%);
+  --amarillo-300: hsl(38, 100%, 70%);
+  --amarillo-200: hsl(36, 100%, 80%);
+  --amarillo-100: hsl(34, 100%, 95%);
+
+  --naranja-900: hsl(20, 100%, 10%);
+  --naranja-800: hsl(22, 89%, 20%);
+  --naranja-700: hsl(24, 89%, 30%);
+  --naranja-600: hsl(26, 89%, 40%);
+  --naranja-500: hsl(26, 89%, 53%);
+  --naranja-400: hsl(26, 89%, 60%);
+  --naranja-300: hsl(26, 100%, 72%);
+  --naranja-200: hsl(28, 100%, 81%);
+  --naranja-100: hsl(30, 100%, 90%);
+  
+  --gris-900: hsl(41, 15%, 28%);
+  --gris-800: hsl(40, 13%, 33%);
+  --gris-700: hsl(40, 12%, 43%);
+  --gris-600: hsl(40, 11%, 50%);
+  --gris-500: hsl(38, 10%, 58%);
+  --gris-400: hsl(38, 11%, 66%);
+  --gris-300: hsl(38, 12%, 76%);
+  --gris-200: hsl(38, 13%, 88%);
+  --gris-100: hsl(38, 15%, 95%);
+  --gris-50: hsl(38, 15%, 98%);
+
+  --rojo-900: hsl(0, 100%, 10%);
+  --rojo-800: hsl(0, 100%, 20%);
+  --rojo-700: hsl(2, 97%, 30%);
+  --rojo-600: hsl(5, 89%, 40%);
+  --rojo-500: hsl(5, 89%, 53%);
+  --rojo-400: hsl(5, 89%, 63%);
+  --rojo-300: hsl(5, 93%, 73%);
+  --rojo-200: hsl(5, 100%, 84%);
+  --rojo-100: hsl(5, 100%, 92%);
+
+  --verde-900: hsl(153, 100%, 10%);
+  --verde-800: hsl(153, 91%, 16%);
+  --verde-700: hsl(153, 70%, 23%);
+  --verde-600: hsl(153, 70%, 30%);
+  --verde-500: hsl(153, 70%, 39%);
+  --verde-400: hsl(153, 70%, 50%);
+  --verde-300: hsl(153, 70%, 69%);
+  --verde-200: hsl(153, 82%, 82%);
+  --verde-100: hsl(153, 100%, 93%);
+}
+
+//Interlineado base
+$Interlineado: 1.333rem;
+
+//mapa
+$breakpoint-mapa: 1000px;
+$fill-screen: calc(100vh - 10.5rem - 2px);

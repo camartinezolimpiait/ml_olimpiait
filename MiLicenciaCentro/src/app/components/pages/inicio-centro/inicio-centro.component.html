@@ -1,0 +1,31 @@
+<main class="centros_main">
+    <div class="busca-contenedor field">
+        <label for="tipoCentro">Selecciona tu Centro</label>
+        <div class="busca-flex ">
+            <select class="busca-flex-tipo" name="tipoCentro" [formControl]="tipoCentro" id="tipoCentro">
+                <option *ngFor="let cliente of (tipoCliente | enumToArr)" [value]="cliente.index">
+                    {{ descripcionTipoClienteCentro[cliente.index] }}
+                </option>
+            </select>
+            <input type="text" id="nombreCentro" name="nombreCentro" [formControl]="nombreCentro"
+                placeholder="Nombre del centro" [matAutocomplete]="auto" class="busca-flex-nombre" />
+            <mat-autocomplete #auto="matAutocomplete" class="busca-flex-nombre" [displayWith]="displayFn">
+                <mat-option *ngFor="let centro of filteredOptions | async" [value]="centro"
+                    (onSelectionChange)='selectEvent(centro)'>
+                    {{ centro.nombre }}
+                </mat-option>
+            </mat-autocomplete>
+            <button type="button" [disabled]="!habilitarBoton" class="button-primary" (click)="selectEvent(null)">
+                Seleccionar
+            </button>
+        </div>
+    </div>
+    <div class="logos">
+        <div class="wrapper">
+            <img [src]="'/assets/img/svg/servicio-olimpia.svg' | imageSrc" alt="Un servicio de Olimpia IT"
+                class="olimpia" />
+        </div>
+    </div>
+</main>
+<router-outlet></router-outlet>
+<app-popup-simple id="popup-info-whatsapp"></app-popup-simple>

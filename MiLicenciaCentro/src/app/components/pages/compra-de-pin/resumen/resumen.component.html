@@ -1,0 +1,219 @@
+<div class="resumen-compra" [ngClass]="mostrarResumenMovil == true ? 'desplegado' : ''">
+  <div *ngIf="esConfirmacion" class="boton-mostrar"
+    [ngClass]="mostrarResumenMovil == true ? 'boton-mostrar-borde' : ''">
+    <h4>
+      <span (click)="mostrarResumen()" class="clickeable">
+        {{mostrarResumenMovil ? 'Ocultar' : 'Ver'}} resumen
+      </span>
+    </h4>
+    <h4>
+      <span class="valor">{{pagoPin.valorDiscriminadoCotizacion?.valorTotal | currency: 'COP':'symbol-narrow':'1.0-0' }}
+      </span>
+    </h4>
+  </div>
+  <div *ngIf="mostrarResumenMovil || (!esConfirmacion || (isHandset$ | async))" class="resumen-contenido">
+    <ng-container *ngIf="
+      datosPersonales
+      && pagoPin.categoria != ''">
+      <div class="item-resumen">
+        <div class="item-title">
+          <p><strong>Datos de contacto</strong> </p>
+          <a (click)="cambiarAVista(pasosFormulario.DatosPersonales)" class="clickeable"
+            *ngIf="!esModificacion">modificar
+          </a>
+        </div>
+        <div class="item-content">
+          <p>{{pagoPin.usuario.nombre | titlecase}}
+            {{pagoPin.usuario.apellido | titlecase}}</p>
+            <ng-container *ngIf="pagoPin.usuario.tipoDocumento == ppt; else defaultTemplate">
+              <p >{{'PPT'}} {{pagoPin.usuario.numDocumento}}</p>
+              <p>{{pagoPin.usuario.correo}}</p>
+              <p>{{pagoPin.usuario.celular}}</p>
+            </ng-container>
+            <ng-template #defaultTemplate>
+              <p *ngIf="(pagoPin.usuario.tipoDocumento ?? '').toString().trim() !== ''">{{pagoPin.usuario.tipoDocumentoDescpcion}} {{pagoPin.usuario.numDocumento}}</p>
+              <p>{{pagoPin.usuario.correo}}</p>
+              <p>{{pagoPin.usuario.celular}}</p>
+            </ng-template>
+            
+        </div>
+        <hr>
+      </div>
+    </ng-container>
+ <ng-container *ngIf="pagoPin.checkFacturaElectronicaResumen && enableConfirmFE">
+      <div class="item-resumen">
+        <div class="item-title">
+          <p><strong>Datos factura electrónica</strong> </p>
+          <a (click)="cambiarAVista(enableConfirmFE ? pasosFormulario.FacturaElectronica : null)" class="clickeable"
+            *ngIf="!esModificacion">modificar</a>
+        </div>
+        <div class="item-content" >
+          <p>{{getTipoPersona(pagoPin.compradorFE.tipoPersona)}}</p>
+          <p>{{pagoPin.compradorFE.correo}}</p>
+        <div *ngIf="pagoPin.compradorFE.tipoPersona ===  tipoPersonaFE.Natural">
+            <p>{{pagoPin.compradorFE.nombre | titlecase}}
+              {{pagoPin.compradorFE.apellido | titlecase}}</p>
+            <p>
+              <ng-container *ngIf="pagoPin.compradorFE.tipoDocumento == ppt; else defaultPpt">
+                PPT {{pagoPin.compradorFE.numDocumento}} 
+              </ng-container> 
+              <ng-template #defaultPpt>
+                {{ getNombreDocumento(pagoPin.compradorFE.tipoDocumento) }} {{pagoPin.compradorFE.numDocumento}}
+              </ng-template> 
+            </p>
+        </div>
+          <div *ngIf="pagoPin.compradorFE.tipoPersona == tipoPersonaFE.Juridica">            
+              <p>{{pagoPin.compradorFE.nit}}</p>
+              <p>{{pagoPin.compradorFE.razonSocial}}</p>
+              <p>{{pagoPin.compradorFE.nombreComercial}}</p>
+        </div>
+          
+        </div>
+       
+        <hr>
+      </div>
+    </ng-container>
+
+    <div class="item-resumen">
+      <div class="item-title">
+        <p><strong>Datos básicos</strong> </p>
+        <a (click)="cambiarAVista(pasosFormulario.DatosBasicos)" class="clickeable"
+          *ngIf="!esModificacion">modificar</a>
+      </div>
+      <div class="item-content">
+        <p>{{ sexos[pagoPin.usuario.genero!] }} de {{
+          pagoPin.edadAspirante
+          }} años</p>
+      </div>
+    </div>    
+    <ng-container *ngIf="pagoPin.tipoTramite && pagoPin.clienteCompra == tipoCliente.CRC">
+      <div class="item-resumen">
+        <hr>
+        <div class="item-title">
+          <p><strong>Trámite principal</strong> </p>
+          <a *ngIf="pagoPin.edadAspirante >= 18 && !esModificacion" (click)="cambiarAVista(pasosFormulario.Tramite)"
+            class="clickeable">modificar</a>
+        </div>
+        <div class="item-content">
+          <p>{{descripcionTramite[pagoPin.tipoTramite]}}</p>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="pagoPin.categoria != ''">
+      <div class="item-resumen">
+        <hr>
+        <div class="item-title">
+          <p><strong>Categoría principal</strong> </p>
+          <a (click)="cambiarAVista(pasosFormulario.Categoria)" class="clickeable" *ngIf="!esModificacion">modificar</a>
+        </div>
+        <div class="item-content">
+          <p>{{pagoPin.categoria1}}</p>
+        </div>
+      </div>
+      <ng-container *ngIf="pagoPin.tipoTramite2 && pagoPin.clienteCompra == tipoCliente.CRC">
+        <div class="item-resumen">
+          <hr>
+          <div class="item-title">
+            <p><strong>Trámite secundario</strong> </p>
+            <a *ngIf="pagoPin.edadAspirante >= 18 && !esModificacion"
+              (click)="cambiarAVista(pasosFormulario.TramiteDos)" class="clickeable">modificar</a>
+          </div>
+          <div class="item-content">
+            <p>{{descripcionTramite[pagoPin.tipoTramite2]}}</p>
+          </div>
+        </div>
+      </ng-container>
+      <div class="item-resumen" *ngIf="pagoPin.pasoCotizacion === pasosCompraPin.SeleccionCentro && pagoPin.categoria2 != ''">
+        <hr>
+        <div class="item-title">
+          <p><strong>Categoría secundaria</strong> </p>
+          <a (click)="cambiarAVista(pasosFormulario.CategoriaDos)" class="clickeable"
+            *ngIf="!esModificacion">modificar</a>
+        </div>
+        <div class="item-content">
+          <p>{{pagoPin.categoria2}}</p>
+        </div>
+      </div>
+      <ng-container *ngIf="pagoPin.centroSeleccionado != null">
+        <div class="item-resumen">
+          <hr>
+          <div class="item-title">
+            <p><strong>Centro de
+                {{pagoPin.clienteCompra == tipoCliente.CRC ? 'reconocimiento' : 'enseñanza'}}</strong>
+            </p>
+            <a (click)="cambiarAVista(pasosFormulario.Mapa)" class="clickeable" *ngIf="!esModificacion">modificar</a>
+          </div>
+          <div class="item-content">
+            <p>{{pagoPin.centroSeleccionado.nombre | titlecase}}</p>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="tipoRecaudo != null && datosPersonales">
+        <div class="item-resumen">
+          <hr>
+          <div class="item-title">
+            <p><strong>Medio de pago</strong>
+            </p>
+            <a (click)="cambiarAVista(pasosFormulario.Pagos)" class="clickeable" *ngIf="!esModificacion">modificar</a>
+          </div>
+          <div class="item-content">
+            <p>{{mediopago}}</p>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="pagoPin.valorDiscriminadoCotizacion && !esConfirmacion">
+        <div class="total-resumen">
+          <hr>
+          <div *ngIf="mostrarTodoCotizacion" class="tabla-resumen">
+            <table>
+              <tbody>
+                <tr>
+                  <td>SICOV</td>
+                  <td class="num-tabla">
+                    {{pagoPin.valorDiscriminadoCotizacion.sicov | currency: 'COP':'symbol-narrow':'1.0-0' }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Banco</td>
+                  <td class="num-tabla">
+                    {{pagoPin.valorDiscriminadoCotizacion.banco | currency: 'COP':'symbol-narrow':'1.0-0' }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>ANSV</td>
+                  <td class="num-tabla">
+                    {{pagoPin.valorDiscriminadoCotizacion.ansv | currency: 'COP':'symbol-narrow':'1.0-0' }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>{{pagoPin.clienteCompra == tipoCliente.CRC? 'CRC': 'CEA'}}</td>
+                  <td class="num-tabla">
+                    {{pagoPin.valorDiscriminadoCotizacion.crc | currency: 'COP':'symbol-narrow':'1.0-0' }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="valor-total">
+            <p>
+              <ng-container *ngIf="pagoPin.clienteCompra == tipoCliente.CRC; else valorCEA">
+                <strong>Total a pagar: <span class="numerico">{{pagoPin.valorDiscriminadoCotizacion.valorTotal |
+                    currency: 'COP':'symbol-narrow':'1.0-0' }}</span>
+                </strong>
+              </ng-container>
+              <ng-template #valorCEA>
+                <strong>Total a pagar:
+                  <span class="numerico">{{(pagoPin.cuotas ? pagoPin.costoCuotas[pagoPin.cuotas-1].primeraCuota :
+                    pagoPin.costoCuotas[0].primeraCuota) | currency: 'COP':'symbol-narrow':'1.0-0' }}
+                  </span>
+                </strong>
+              </ng-template>
+            </p>
+            <a (click)="mostrarTodoValores()" class="clickeable">{{mostrarTodoCotizacion ? 'ocultar': 'mostrar'}}
+              detalle</a>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

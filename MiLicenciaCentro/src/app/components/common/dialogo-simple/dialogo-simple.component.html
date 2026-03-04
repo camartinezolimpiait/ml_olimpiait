@@ -1,0 +1,9 @@
+<div class="simple-dialog">
+  <img src="{{ data[1] }}" alt="Alerta" style="margin-block-end: 1.5rem;" />
+  <p class="pregunta">{{ data[0] }}</p>
+  <div class="flex-botones">
+    <button type="button" class="button-secondary" *ngIf="!confirm" (click)="onClick()">Cerrar</button>
+    <button type="button" class="button-secondary" *ngIf="confirm" (click)="onClick()">No</button>
+    <button type="button" class="button-primary" *ngIf="confirm" (click)="onClickOk()" id="{{idBoton}}" gtmButton="Boton">Sí</button>
+  </div>
+</div>

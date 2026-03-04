@@ -1,0 +1,83 @@
+<!-- 1. Datos Básicos: Sexo y Edad -->
+<form [formGroup]="compraPinForm">
+  <div>
+    <h3>Sexo y fecha de nacimiento</h3>
+    <p>
+      El costo del examen se calcula a partir de tu edad y sexo, como aparecen en tu documento de identidad.
+    </p>
+    <fieldset class="radio">
+      <legend>
+        <h4>Sexo</h4>
+      </legend>
+      <div *ngFor="let sexo of sexos | enumToArr">
+        <input
+          id="{{ sexo.name }}"
+          formControlName="sexo"
+          type="radio"
+          name="sexo"
+          [value]="sexo.index"
+        />
+        <label for="{{ sexo.name }}">{{ sexo.name }}</label>
+      </div>
+    </fieldset>
+    <fieldset class="fecha" formGroupName="fecha">
+      <legend>
+        <h4>Fecha de nacimiento</h4>
+      </legend>
+      <div class="flex-horizontal">
+        <div>
+          <label for="day">Día</label>
+          <input
+            formControlName="dia"
+            maxlength="2"
+            type="text"
+            pattern="[0-9]*"
+            inputmode="numeric"
+            inputmode="numeric"
+            name="day"
+            id="day"
+            [readonly]="readonly"
+          />
+        </div>
+        <div>
+          <label for="month">Mes</label>
+          <input
+            formControlName="mes"
+            maxlength="2"
+            type="text"
+            pattern="[0-9]*"
+            inputmode="numeric"
+            name="month"
+            id="month"
+            [readonly]="readonly"
+          />
+        </div>
+        <div>
+          <label for="year">Año</label>
+          <input
+            formControlName="anio"
+            maxlength="4"
+            type="text"
+            pattern="[0-9]*"
+            inputmode="numeric"
+            name="year"
+            id="year"
+            [readonly]="readonly"
+          />
+        </div>
+      </div>
+    </fieldset>
+    <p *ngIf="!validacionManual || pagoPin.edadAspirante < 16">
+      Debes tener más de 16 años para realizar el proceso.
+    </p>
+    <button
+      type="button"
+      class="button-primary"
+      *ngIf="validacionManual && pagoPin.edadAspirante >= 16"
+      (click)="continuarConTramite()"
+      tabindex="0"
+    >
+      Siguiente
+    </button>
+  </div>
+</form>

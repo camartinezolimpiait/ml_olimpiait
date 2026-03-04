@@ -1,0 +1,105 @@
+@import "../../../../../assets/css/_variables.scss";
+
+.centro-actual {
+  padding: 1rem;
+  width: auto;
+}
+
+
+.mapa-mayus {
+  text-transform: uppercase;
+  font-variant-caps: small-caps;
+  color: var(--azul-900);
+  line-height: 1;
+  font-size: 0.9rem;
+  font-variant-numeric: lining-nums;
+}
+.small-text {
+  font-size: 0.75em;
+  font-weight: 500;
+  color: var(--gris-700);
+}
+.encabezado-mapa {
+  box-sizing: border-box;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  background-color: var(--gris-100);
+
+  @media screen and (min-width: $breakpoint-mapa) {
+    height: 6rem;
+  }
+}
+
+.header-widget {
+  padding: 1rem 0;
+}
+
+.controles-mapa {
+  display: flex;
+  flex-direction: row;
+
+  button,
+  input,
+  select {
+    margin-bottom: 0;
+    margin-top: 10px;
+  }
+  .buscador {
+    margin-block-start: $Interlineado;
+    background-color: var(--gris-100);
+    border: 1px solid var(--gris-300);
+    border-radius: 0.42em;
+    padding: 1rem;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  @media screen and (min-width: 640px) {
+    flex-direction: row;
+    align-items: flex-end;
+    flex-wrap: nowrap;
+
+    .field {
+      margin: 0;
+      width: auto;
+    }
+
+    .direccion {
+      flex: auto;
+      margin-right: 8px;
+      width: auto;
+    }
+
+    .tipo {
+      flex: 0 1 13rem;
+      margin-right: 8px;
+    }
+
+    .categoria-cea {
+      flex: 0 1 82px;
+      margin-right: 8px;
+    }
+
+    .radio {
+      flex: 0 1 88px;
+      margin-right: 16px;
+    }
+    .item-lista-seleccionado {
+      flex: auto;
+      margin-right: 8px;
+      max-width: 100%
+    }
+
+  }
+
+  .botones {
+    flex: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+
+    button:nth-child(1) {
+      margin-right: 8px;
+    }
+  }
+}

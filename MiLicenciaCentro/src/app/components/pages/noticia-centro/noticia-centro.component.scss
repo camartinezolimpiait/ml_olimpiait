@@ -1,0 +1,114 @@
+@import "../../../../assets/css/_variables.scss";
+
+:host {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+
+.centros-nav {
+  height: 4.5rem;
+  background-color: var(--azul-500);
+}
+
+.banner_articulo{
+  margin-top: -1.333rem;
+}
+.cuerpo_articulo {
+  h1 {
+    font-size: var(--scale-4);
+    font-weight: 800;
+    text-align: left;
+    margin-bottom: 0.75rem;
+  }
+
+  .articulo-fecha {
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+}
+
+
+footer {
+  background-image: url(../../../../assets/img/mapa-negro.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center bottom;
+  background-color: black;
+  color: white;
+  padding: 1rem 0 1.5rem 0;
+  font-size: 1rem;
+
+  a {
+    text-decoration: underline;
+    color: white;
+
+    &:link  {
+      color: white;
+    }
+
+    &:visited {
+      color: var(--gris-100);
+    }
+
+    &:hover,
+    &:focus {
+      color: var(--amarillo-500);
+    }
+
+    &:active {
+      color: var(--amarillo-300);
+    }
+  }
+  strong {
+    color: var(--gris-300);
+  }
+
+  ul {
+    list-style: none;
+    padding-inline-start: 0;
+    margin: 0;
+  }
+
+  .contenedor-telefono {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+  }
+
+  .prefijo {
+    font-weight: 600;
+    font-size: var(--scale-2);
+    padding-right: 1ch;
+  }
+  .telefono {
+    font-weight: 700;
+    font-size: var(--scale-3);
+  }
+
+  .logotipo {
+    margin-top: auto;
+  }
+
+  li {
+    margin-block-start: calc($Interlineado / 4);
+    margin-block-end: calc($Interlineado / 4);
+  }
+  li:first-child {
+    margin-block-start: 0;
+  }
+  @media screen and (min-width: 640px) {
+    .links-footer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  .logo-super {
+    flex: none;
+    margin-left: auto;
+    margin-top: $Interlineado;
+    align-self: flex-end;
+  }
+}

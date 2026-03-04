@@ -1,0 +1,108 @@
+<header class="header">
+  <div class="wrapper">
+    <span class="subtitulo">Compra de examen de conducción</span>
+    <h1>Pago de cuotas</h1>
+  </div>
+</header>
+<div class="wrapper form-custom-wrapper">
+  <div class="column-triple">
+    <div class="colC colC-order">
+      <p>
+        Consulte las cuotas que tiene pendientes por pagar para la compra de su
+        examen de conducción
+      </p>
+    </div>
+    <div class="colAB">
+      <h3 class="text-center">Consulta de pines</h3>
+      <form [formGroup]="consultaCeaForm">
+        <div class="field tipo">
+          <label for="tipoDocumento">Tipo de documento</label>
+          <app-field-error
+            [controlForm]="consultaCeaForm.get('idTipoDocumento')!"
+          >
+            Selecciona tipo de documento
+          </app-field-error>
+          <select formControlName="idTipoDocumento" id="tipoDocumento">
+            <option [value]="" hidden selected>
+              --Selecciona un tipo de documento--
+            </option>
+            <option
+              *ngFor="let tipo of tiposDeDocumento"
+              value="{{ tipo.idTipoSisec }}"
+            >
+              {{ tipo.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="documento">Documento de identidad</label>
+          <app-field-error
+            [controlForm]="consultaCeaForm.get('numeroDocumento')!"
+          >
+            El número de documento no cumple con las condiciones
+          </app-field-error>
+          <input formControlName="numeroDocumento" type="text" id="documento" maxlength="10" style="text-transform: uppercase;"/>
+        </div>
+        <!-- Hay un campo opcional de correo -->
+        <button class="button-primary" (click)="iniciarConsulta()">Consultar</button>
+      </form>
+    </div>
+  </div>
+
+  <ng-container *ngIf="pinesRecuperados">
+    <ng-container *ngFor="let pin of pinesRecuperados">
+      <hr />
+      <p>
+        Categoria comprada: <strong>{{ pin.categoria }}</strong>
+      </p>
+      <p>
+        Pin principal para enrolamiento: <strong>{{ pin.pin }}</strong>
+      </p>
+      <table class="tabla-admin">
+        <thead>
+          <tr>
+            <th>Referencia de pago</th>
+            <th>Costo de la cuota</th>
+            <th>Fecha del pago</th>
+            <th>Estado del pago</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cuota of pin.cuotas">
+            <td data-title="Referencia de pago">
+              {{ cuota.numeroPin }}
+            </td>
+            <td data-title="Costo de la cuota">
+              {{ cuota.valorPin | currency: "COP":"symbol-narrow":"1.0-0" }}
+            </td>
+            <td data-title="Fecha del pago">
+              {{
+                cuota.fechaPago == null
+                  ? "-----"
+                  : (cuota.fechaPago | date: "medium")
+              }}
+            </td>
+            <td data-title="Estado del pago">
+              <ng-container
+                *ngIf="
+                  trackCuota(pin, cuota) == 0 && pin.cuotas[0].estado != 3;
+                  else noPago
+                "
+              >
+                <button
+                  class="button-secondary"
+                  (click)="pagarCuota(cuota, pin.pin,pin.idCentro)"
+                >
+                  Pagar esta cuota
+                </button>
+              </ng-container>
+              <ng-template #noPago>
+                {{ estadoPagos[+trackCuota(pin, cuota)] }}
+              </ng-template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+  </ng-container>
+</div>

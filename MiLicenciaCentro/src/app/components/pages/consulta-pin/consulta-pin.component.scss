@@ -1,0 +1,14 @@
+@import "../../../../assets/css/_variables.scss";
+
+.column-triple {
+    margin-block-end: $Interlineado;
+}
+
+.buscador-home {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex-wrap: nowrap;
+    margin-block-end: $Interlineado;
+    justify-content: flex-start;
+}

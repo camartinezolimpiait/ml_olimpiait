@@ -1,0 +1,22 @@
+.update-alert {
+    padding: 10px 0;
+    background: var(--verde-500);
+    color: white;
+  
+    p {
+      margin: 0;
+      font-size: 1rem;
+    }
+  }
+  
+  #check {
+    color: var(--verde-100);
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+  
+    &:hover {
+      color: var(--amarillo-200);
+    }
+  }
+  

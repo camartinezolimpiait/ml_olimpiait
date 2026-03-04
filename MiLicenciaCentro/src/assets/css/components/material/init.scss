@@ -1,0 +1,19 @@
+
+@import "~@angular/material/theming";
+$custom-typography: mat-typography-config(
+    $font-family: " proxima-nova, sans-serif",
+);
+
+@include mat-core();
+
+/* Olimpia palette import by variable*/
+$candy-app-primary: mat-palette($md-paleta-primario);
+$candy-app-accent: mat-palette($md-paleta-acento, 500, 500, 700);
+$candy-app-warn: mat-palette($md-error);
+
+/* Sobreescritura de paleta por defecto*/
+$candy-app-theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-app-warn);
+
+/* Asignación de colores y fuentes escogidos para el portal*/
+@include angular-material-theme($candy-app-theme);
+@include angular-material-typography($custom-typography);

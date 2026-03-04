@@ -1,0 +1,72 @@
+.button-primary,
+.button-secondary,
+.button-highlight {
+  box-sizing: border-box;
+  font-size: var(--scale-0);
+  -webkit-appearance: none;
+  height: 40px;
+  padding: 0px 10px;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 400 !important;
+  border-radius: 4px;
+  transition: ease-out 300ms all;
+  box-shadow: var(--elevacion-1);
+  margin-bottom: 6px;
+  display: inline-block;
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.button-secondary:disabled {
+  background-color: var(--gris-100);
+}
+
+.button-primary,
+.button-primary:visited {
+  background-color: var(--azul-600);
+  border: 1px solid var(--azul-600);
+  color: white !important;
+}
+
+.button-secondary,
+.button-secondary:visited {
+  background: transparent;
+  border: 1px solid var(--azul-600);
+  color: var(--azul-600) !important;
+  box-shadow: none;
+}
+
+.button-primary:hover:not(:disabled),
+.button-primary:active,
+.button-secondary:hover:not(:disabled),
+.button-secondary:active {
+  background-color: var(--azul-400);
+  border-color: var(--azul-400);
+  color: white !important;
+}
+
+.button-highlight,
+.button-highlight:visited {
+  background-color: var(--amarillo-500);
+  border: 1px solid var(--amarillo-500);
+  color: var(--amarillo-900) !important;
+}
+
+.button-highlight:hover:not(:disabled),
+.button-highlight:active {
+  background-color: var(--amarillo-300);
+  border-color: var(--amarillo-300);
+}
+
+a.button-primary,
+a.button-secondary,
+a.button-highlight {
+  line-height: 40px;
+  text-decoration: none;
+  cursor: default;
+}

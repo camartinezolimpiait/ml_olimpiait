@@ -1,0 +1,52 @@
+<div *ngIf="view">
+  <h3>
+    Busca y selecciona el 
+    {{ pagoPin.clienteCompra == tipoCliente.CRC ? "CRC" : "CEA" }}
+  </h3>
+  <p class="mensaje-mapa">
+    Escribe una dirección para obtener una lista de los
+    {{  pagoPin.clienteCompra == tipoCliente.CRC ? "CRC" : "CEA" }} más cercanos a
+    ella. Escoge un centro
+    {{
+      pagoPin.clienteCompra == tipoCliente.CRC ? "médico" : "de conducción"
+    }}
+    seleccionándolo de la lista {{!pagoPin.urlCentro ? "o desde su marcador en el mapa." :"."}}
+  </p>
+  <div class="centro-actual" *ngIf="pagoPin.centroSeleccionado != null">
+    <strong>Centro de reconocimiento actual:</strong>
+    {{ pagoPin.centroSeleccionado.nombre }} -
+    {{ pagoPin.centroSeleccionado.direccion }}
+  </div>
+
+  <app-busqueda-centro
+    (centroSeleccionadoMapa)="obtenerIdCentroSeleccionadoLista($event)"
+    [categoriaDesdeForm]="recuperarIdCategoriaDesdeCodigo(pagoPin.categoria1)"
+    [clienteCompra]="pagoPin.clienteCompra"
+    [tramite]="pagoPin.tipoTramite"
+    [mostrarFooter]="false"
+  ></app-busqueda-centro>
+
+  <div class="botones_final">
+    <button type="button" class="button-secondary" (click)="volver()">
+      Atrás
+    </button>
+    <button
+      type="button"
+      class="button-primary"
+      *ngIf="pagoPin.tieneConvenios && pagoPin.centroSeleccionado && !pagoPin.urlCentro"
+      (click)="avanzar()"
+      tabindex="0"
+    >
+      Siguiente
+    </button>
+    <button
+      type="button"
+      class="button-primary"
+      *ngIf="pagoPin.tieneConvenios && pagoPin.centroSeleccionado && pagoPin.urlCentro"
+      (click)="avanzarCentro(); pagoPin.usuario.tipoDocumentoDescpcion=''"
+      tabindex="0"
+    >
+      Siguiente
+    </button>
+  </div>
+</div>

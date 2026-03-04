@@ -1,0 +1,47 @@
+<nav class="centros-nav"></nav>
+
+<main class="wrapper">
+  <ng-template [ngIf]="(posts | async)">
+    <section class="content-graph" *ngFor="let node of (posts | async)?.nodes">
+      <img src="{{node.featuredImage.node.sourceUrl}}" class="banner_articulo" alt="{{node.featuredImage.node.altText}}"
+        *ngIf="node.featuredImage">
+      <div class="cuerpo_articulo">
+        <h1>{{node.title}}</h1>
+        <p class="articulo-fecha"> {{node.date | date: 'fullDate'}}</p>
+        <div class="articulo-html"  [innerHTML]="sanitize(node.content)"></div>
+        <button class="button-secondary" (click)="volver()">Volver a la página principal</button>
+      </div>
+    </section>
+  </ng-template>
+
+</main>
+<footer>
+  <div class="wrapper">
+    <div class="links-footer">
+      <ul>
+        <li><strong>Canales de atención por e-mail</strong></li>
+        <li><a href="mailto:soporte@olimpiait.com">Soporte Olimpia</a></li>
+        <li *ngIf="tipoServicio == tipoCliente.CEA">
+          <a href="mailto:servicioalclienteceas@olimpiait.com
+          ">Servicio al cliente CEA</a>
+        </li>
+        <li>
+          <a href="mailto:servicioalclientesisec@olimpiait.com">Servicio al cliente SISEC
+          </a>
+        </li>
+        <li>
+          <a href="mailto:cotizacionsisec@olimpiait.com
+          ">Cotizaciones SISEC
+          </a>
+        </li>
+      </ul>
+      <div class="contenedor-telefono">
+        <strong>Línea de atención única</strong>
+        <a href="tel:+576017441000" style="text-decoration: none"><span class="prefijo">+57 (601)</span><span
+            class="telefono">744-1000</span></a>
+        <a class="logotipo" href="https://www.olimpiait.com/" target="_blank" rel="noopener noreferrer"><img
+            src="/assets/img/svg/olimpia-footer.svg" alt="Olimpia IT" /></a>
+      </div>
+    </div>
+  </div>
+</footer>

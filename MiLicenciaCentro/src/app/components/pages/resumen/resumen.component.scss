@@ -1,0 +1,106 @@
+@import "../../../../assets/css/_variables.scss";
+
+.marco-login {
+  margin: 0 auto;
+  max-width: 33ch;
+  background-color: var(--gris-100);
+  border: 1px solid var(--gris-300);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 1.5rem;
+
+  form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    >* {
+      width: 100%;
+    }
+  }
+
+  button {
+    margin: 0;
+    width: auto !important;
+    flex: none;
+  }
+}
+
+.tipo-login {
+  margin: 0 0 1rem 0;
+  padding: 1rem 0 0 0;
+  border: none;
+  box-sizing: border-box;
+
+  transition: box-shadow 300ms ease-out;
+
+  legend {
+    font-weight: 600;
+    padding: 0;
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      margin-block-end: 0;
+    }
+  }
+
+  input[type="radio"] {
+    opacity: 0;
+    position: absolute;
+  }
+
+  input[type="radio"]:checked+label {
+    box-shadow: 0 0 0px 2px var(--amarillo-300);
+    background-color: var(--amarillo-100);
+    border: var(--amarillo-100) solid 1px;
+  }
+
+  label {
+    border: var(--gris-200) solid 1px;
+    border-radius: 6px;
+    padding: 10px;
+    background-color: var(--gris-100);
+    margin: 0 0 8px 0;
+    display: block;
+    color: var(--gris-900);
+    display: flex;
+
+    .texto {
+      font-size: var(--scale-1);
+      color: black;
+      line-height: 1.5;
+    }
+
+    .feather {
+      margin-right: 8px;
+      color: var(--gris-700);
+    }
+  }
+
+  label:hover {
+    box-shadow: 0 0 4px 2px hsla(208, 100%, 50%, 0.32);
+  }
+}
+
+.marco-registro {
+  margin: 0 auto;
+  max-width: 33ch;
+  border: 1px solid var(--gris-200);
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  color: var(--gris-900);
+}
+
+.resumen {
+  background: var(--gris-100);
+  color: var(--gris-900);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  max-width: 60ch;
+}

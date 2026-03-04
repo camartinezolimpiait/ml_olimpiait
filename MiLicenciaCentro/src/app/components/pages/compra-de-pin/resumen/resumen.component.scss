@@ -1,0 +1,111 @@
+@import "../../../../../assets/css/_variables.scss";
+
+.resumen-compra .desplegado {
+  border-bottom: 1px solid var(--gris-300);
+}
+
+.resumen-compra {
+  background-color: var(--gris-100);
+  border: 1px solid var(--gris-300);
+  border-radius: 0.42em;
+
+  @media screen and (max-width: 640px) {
+    margin-block-end: $Interlineado;
+  }
+
+  h4 {
+    font-weight: 400;
+    margin-block-end: 0rem;
+  }
+
+  hr {
+    border: 0;
+    height: 1px;
+    background: var(--gris-300);
+    margin-block-start: calc($Interlineado / 2);
+    margin-block-end: calc($Interlineado / 2);
+  }
+
+  .numerico {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .clickeable {
+    color: var(--azul-600);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .boton-mostrar {
+    @media screen and (min-width: 640px) {
+      display: none;
+    }
+
+    display: flex;
+    justify-content: space-between;
+    padding: $Interlineado calc($Interlineado / 2);
+
+    h4 {
+      font-weight: 400;
+      margin-block-end: 0rem;
+    }
+
+    .valor {
+      font-variant-numeric: tabular-nums;
+      font-weight: 600;
+    }
+  }
+
+  .boton-mostrar-borde {
+    border-bottom: 1px solid var(--gris-300);
+  }
+
+  .resumen-contenido {
+    display: block;
+    padding-top: calc($Interlineado / 2);
+    padding-bottom: calc($Interlineado / 2);
+
+    .item-resumen {
+      padding: 0 calc($Interlineado / 2);
+
+      .item-title {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      p {
+        margin-block-end: 0;
+      }
+    }
+
+    .total-resumen {
+      padding: 0 0.75rem;
+
+      .tabla-resumen {
+        table {
+          border-collapse: collapse;
+          margin: 0;
+          width: 100%;
+          margin-block-end: calc($Interlineado / 2);
+        }
+
+        td {
+          padding-right: 0;
+        }
+
+        .num-tabla {
+          font-variant-numeric: tabular-nums;
+          text-align: right;
+        }
+      }
+
+      .valor-total {
+        text-align: right;
+
+        p {
+          margin-block-end: 0;
+        }
+      }
+    }
+  }
+}

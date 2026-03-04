@@ -1,0 +1,75 @@
+<header class="header">
+  <div class="wrapper">
+    <span class="subtitulo">Compra de PIN</span>
+    <h1>
+      Respuesta proceso de pago {{negocio=='PSE'?'PSE':''}}
+    </h1>
+  </div>
+</header>
+<div class="wrapper form-custom-wrapper">
+  <div *ngIf="_activo == 3">
+    <h3 class="nombre">{{_datosResumen.esPinRecaudado ? 'PIN generado' : '¡Lo sentimos!'}} :
+      {{_datosResumen.respuestaPIN}}</h3>
+    <table class="tabla-responsive">
+      <tr>
+        <td class="nombre">Comercio</td>
+        <td class="valor">{{_datosResumen.comercioNombre}}</td>
+      </tr>
+      <tr>
+        <td class="nombre">Nit</td>
+        <td class="valor">{{formatoMiles(_datosResumen.comercioNit)}}</td>
+      </tr>
+      <tr>
+        <td class="nombre">Valor pago</td>
+        <td class="valor">{{formatoPesos(_datosResumen.valorPago)}}</td>
+      </tr>
+      <tr>
+        <td class="nombre">Fecha pago</td>
+        <td class="valor">{{_datosResumen.fechaPago}}</td>
+      </tr>
+      <tr>
+        <td class="nombre">Estado</td>
+        <td><strong>{{_datosResumen.nombreEstado}}</strong></td>
+      </tr>
+      <tr>
+        <td class="nombre">Medio de pago</td>
+        <td class="valor">{{_datosResumen.medioPago}}</td>
+      </tr>
+      <tr>
+        <td class="nombre">Número de referencia</td>
+        <td class="valor">{{_datosResumen.referenciaMedio.includes("-")? _datosResumen.referenciaMedio : formatoMiles(_datosResumen.referenciaMedio)}}</td>
+      </tr>
+      <tr>
+        <td class="nombre">Identificador cotización</td>
+        <td class="valor">{{_datosResumen.referenciaComercio}}</td>
+      </tr>
+      <tr>
+        <td class="nombre">Descripción</td>
+        <td class="valor">{{_datosResumen.descripcion}}</td>
+      </tr>
+      <tr>
+        <td class="nombre">Mensaje</td>
+        <td class="valor">{{_datosResumen.mensaje}}</td>
+      </tr>
+      <tr>
+        <td class="nombre">Información de contacto</td>
+        <td class="valor">{{_datosResumen.informacionContacto}}</td>
+      </tr>
+    </table>
+
+    <div class="botones_final">
+      <a onclick="window.print()" class="button-secondary">Imprimir</a>
+      <a href="/" class="button-primary">Volver al sitio</a>
+    </div>
+
+  </div>
+  <div *ngIf="_activo == 1">
+    <h3 class="nombre">'¡Lo sentimos ha ocurrido un error!'</h3>
+    <a href="/" class="button-primary">Volver al sitio</a>
+  </div>
+  <div *ngIf="_activo == 2">
+    <h3 class="nombre">¡Lo sentimos!'</h3>
+    <p class="nombre">{{_aprobacionEstadoRecaudo.Error}}</p>
+    <a href="/" class="button-primary">Volver al sitio</a>
+  </div>
+</div>

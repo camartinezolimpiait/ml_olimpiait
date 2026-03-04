@@ -1,0 +1,118 @@
+<div *ngIf="!mostrarCambioTipoDevolucion">
+  <div class="header">
+    <div class="title_secction">
+      <div class="wrapper"><b> Gestión de PIN:</b> Consulta Devolución</div>
+    </div>
+  </div>
+
+  <div class="wrapper form-custom-wrapper">
+    <div class="column-triple">
+      <div class="colC colC-order">
+        <h3>¿Qué puedo hacer aquí?</h3>
+        <p>Puede consultar una devolución de dinero, el único requisito es que el PIN aún no haya sido usado.</p>
+      </div>
+      <div class="colAB">
+        <form novalidate [formGroup]="consultaDevolucionForm">
+          <div>
+            <h3>Datos del trámite</h3>
+            <div class="field tipo">
+              <label for="tipoDocumento">Tipo de documento</label>
+              <app-field-error [controlForm]="consultaDevolucionForm.get('tipoDocumento')!"> Selecciona tipo de
+                documento
+              </app-field-error>
+              <select formControlName="tipoDocumento" id="tipoDocumento">
+                <option [value]="" hidden selected>--Selecciona un tipo de documento--</option>
+                <option *ngFor="let tipo of tiposDeDocumento; let i = index" selected="{{ i == 0 }}"
+                  value="{{ tipo.idTipoSisec }}">
+                  {{ tipo.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="numDocumento">Documento de identidad</label>
+              <app-field-error [controlForm]="consultaDevolucionForm.get('numDocumento')!">
+                El número de documento no cumple con las condiciones
+              </app-field-error>
+              <input formControlName="numDocumento" type="text" id="numDocumento" maxlength="24"
+                style="text-transform: uppercase" />
+            </div>
+          </div>
+          <p class="recaptchaMobile">
+            Este sitio está protegido por reCAPTCHA y se aplican la <a
+              href="https://policies.google.com/privacy">política
+              de privacidad</a> y
+            <a href="https://policies.google.com/terms">términos del servicio</a> de Google.
+          </p>
+          <button class="button-primary" (click)="validarCaptcha()">Consultar</button>
+        </form>
+      </div>
+    </div>
+    <div *ngIf="consultaDevolucion != null">
+      <br />
+      <hr />
+      <span class="subtitulo"><b>Pines en devolución</b></span>
+      <br />
+      <figure class="fig-table">
+        <table class="tabla">
+          <tr>
+            <th>Numero Pin</th>
+            <th>Tipo de negocio</th>
+            <th>Centro</th>
+            <th>Origen Recaudo</th>
+            <th>Fecha de solicitud</th>
+            <th>Estado</th>
+            <th>Fecha de devolución</th>
+            <th>Tipo de devolución</th>
+            <th>Observación</th>
+            <th> Actualizar devolución</th>
+            <th></th>
+          </tr>
+          <tr *ngFor="let devolucion of consultaDevolucion">
+            <td class="titulo" data-title="Pin">{{ devolucion.pin }}</td>
+            <td data-title="tipo de servicio">{{ devolucion.tipoNegocio }}</td>
+            <td data-title="Centro">{{ devolucion.centro }}</td>
+            <td data-title="Origen de recaudo ">{{ devolucion.origenRecaudo }}</td>
+            <td data-title="Fecha de solicitud">{{ devolucion.fechaDeSolicitud }}</td>
+            <td data-title="Estado">{{ devolucion.estado }}</td>
+            <td data-title="Fecha de devolución">{{ devolucion.fechaDevolucion }}</td>
+            <td data-title="Tipo de devolución">{{ devolucion.tipoDevolucion }}</td>
+            <td data-title="Observación">{{ devolucion.observacion }}</td>
+            <td data-title="Actualizar devolución" class="ActualizarDevolucion">
+              <button class="logo-button" *ngIf="devolucion.observacion != '' &&
+                       devolucion.observacion != null &&
+                       devolucion.tipoDevolucion === 'Transferencia Bancaria' &&
+                       devolucion.estado != 'Procesado' &&
+                       devolucion.permitirIntento" (click)="validarCaptchaFormulario(devolucion)"><i
+                  class="fas fa-edit"></i></button>
+
+              
+              <div class="text-center">
+                <button class="logo-button" *ngIf="devolucion.tipoDevolucion != 'Transferencia Bancaria' && 
+                devolucion.tipoNegocio != 'CEA' &&
+                devolucion.origenRecaudo === 'PDP' &&  devolucion.fechaDevolucion === null" (click)="mostrarCambioTipoDevolucion = true; obtenerDatosPin(devolucion.pin)">
+                  <i class="fas fa-edit"></i>
+                </button>
+              </div>
+
+              <a *ngIf="devolucion.permitirIntento && devolucion.tipoDevolucion === 'Transferencia Bancaria' ; else conMensaje"></a>
+              <ng-template #conMensaje>
+                <div class="text-center">
+                  <button *ngIf="devolucion.tipoDevolucion === 'Transferencia Bancaria' "  class="logo-button" data-title="" 
+                    (click)="abrirFormularioDevolucion(devolucion, '', null)">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                </div>
+              </ng-template>
+            </td>
+            <td data-title=""></td>
+          </tr>
+        </table>
+      </figure>
+    </div>
+  </div>
+</div>
+<div *ngIf="mostrarCambioTipoDevolucion">
+  <app-cambio-tipo-devolucion [TipoDocumento]="tipoDocumento"
+    [documentoIdentidad]="documento" [pin]="pinSelect" ></app-cambio-tipo-devolucion>
+</div>
+

@@ -1,0 +1,133 @@
+<header class="header">
+  <div class="wrapper">
+    <span class="subtitulo">Gestión de PIN </span>
+    <h1>
+      Corrección de documento
+    </h1>
+    <span
+      ><strong>{{
+        clienteAnulacion == tipoCliente.CEA
+          ? "Curso de conducción"
+          : "Examen médico"
+      }}</strong></span
+    >
+  </div>
+</header>
+<div class="wrapper form-custom-wrapper">
+  <div class="column-triple">
+    <div class="colC colC-order">
+      <h3>¿Qué puedo hacer aquí?</h3>
+      <p>
+        Puede corregir el tipo de documento y hasta 3 dígitos de un número de documento que fue ingresado erróneamente en el formulario de compra. Este procedimiento no tiene costo alguno y puede realizarse solamente 2 veces.
+      </p>
+    </div>
+    <div class="colAB">
+      <form
+        novalidate
+        [formGroup]="actionsBancolombiaForm">
+        <div *ngIf="formularioActivo == pasosFormulario.DatosCompra">
+          <div>
+            <h3>Datos del trámite</h3>
+            <div class="field tipo" *ngIf="tiposDeDocumento">
+              <label for="tipoDocumento">Tipo de documento</label>
+              <app-field-error
+                [controlForm]="actionsBancolombiaForm.get('typeDocument')!"
+              >
+                Selecciona tipo de documento
+              </app-field-error>
+              <select formControlName="typeDocument" id="tipoDocumento">
+                <option [value]="" hidden selected>
+                  --Selecciona un tipo de documento--
+                </option>
+                <option
+                  *ngFor="let tipo of tiposDeDocumento; let i = index"
+                  selected="{{ i == 0 }}"
+                  value="{{ tipo.idTipoSisec }}"
+                >
+                  {{ tipo.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="documentoActual">Documento de identidad</label>
+              <app-field-error
+                [controlForm]="
+                  actionsBancolombiaForm.get('idDocumentCurrent')!
+                "
+              >
+                El número de documento no cumple con las condiciones
+              </app-field-error>
+              <input
+                formControlName="idDocumentCurrent"
+                type="text"
+                id="documentoActual"
+                maxlength="24"
+                style="text-transform: uppercase;"
+              />
+            </div>
+            <div
+              class="field tipo"
+              *ngIf="allowNewDocument && tiposDeDocumento"
+            >
+              <label for="tipoDocumento">Tipo de documento</label>
+              <app-field-error
+                [controlForm]="
+                  actionsBancolombiaForm.get('nuevoTipoDocumento')!
+                "
+              >
+                Selecciona nuevo tipo de documento
+              </app-field-error>
+              <select formControlName="nuevoTipoDocumento" id="tipoDocumento">
+                <option [value]="" hidden selected>
+                  --Selecciona un tipo de documento--
+                </option>
+                <option
+                  *ngFor="let tipo of tiposDeDocumento"
+                  value="{{ tipo.idTipoSisec }}"
+                >
+                  {{ tipo.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="field" *ngIf="allowNewDocument">
+              <label for="documentoNuevo">Nuevo número de documento</label>
+              <app-field-error
+                [controlForm]="
+                  actionsBancolombiaForm.get('newNumberDocument')!
+                "
+              >
+                El número de documento no cumple con las condiciones
+              </app-field-error>
+              <input
+                formControlName="newNumberDocument"
+                type="text"
+                id="documentoNuevo"
+                maxlength="24"
+                style="text-transform: uppercase;"
+              />
+            </div>
+            <div class="field">
+              <label for="pin">PIN</label>
+              <app-field-error
+                [controlForm]="actionsBancolombiaForm.get('pin')!"
+              >
+                El PIN debe tener más de 15 dígitos
+              </app-field-error>
+              <input
+                formControlName="pin"
+                type="text"
+                id="pin"
+                maxlength="20"
+              />
+            </div>
+          </div>
+          <ng-container *ngIf="actionsBancolombiaForm.valid">
+            <button (click)="prevalidacionUsuario()" class="button-primary" *ngIf="actionsBancolombiaForm.valid">
+                Iniciar proceso
+              </button>
+          </ng-container>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

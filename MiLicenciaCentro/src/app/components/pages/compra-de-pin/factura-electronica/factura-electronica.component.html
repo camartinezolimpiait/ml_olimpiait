@@ -1,0 +1,179 @@
+<h3>Factura Electronica</h3>
+<p>
+  Registre los datos de la persona que realizará el proceso de certificación.
+</p>
+<div>
+  <form [formGroup]="compraPinForm">
+
+    <div class="field tipo">
+      <label for="tipoPersonaFE">Tipo de Persona</label>
+      <app-field-error
+        *ngIf="camposValidacion.tipoPersonaFE"
+        [noControl]="true"
+      >
+        {{ camposValidacion.tipoDocumento }}
+      </app-field-error>
+      <select formControlName="tipoPersonaFE" id="tipoPersonaFE">
+        
+        <option [value]='' hidden selected></option>
+          <option
+            *ngFor="let persona of pagoPin.tipoPersonaFE"
+            [ngValue]="persona.codigo"
+          >
+            {{ persona.nombre }}
+          </option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="correoFE">Correo electrónico</label>
+      <app-field-error *ngIf="camposValidacion.correoFE" [noControl]="true">
+        {{ camposValidacion.correoFE }}
+      </app-field-error>
+      <input
+        formControlName="correoFE"
+        type="text"
+        id="correoFE"
+        [readonly]="readonly"
+      />
+    </div>
+   
+    <div class="field" *ngIf="compraPinForm.get('tipoPersonaFE')?.value == tipoPersonaFE.Natural">
+      <label for="nombresFE">Nombre(s)</label>
+      <app-field-error
+        *ngIf="camposValidacion.nombresFE"
+        [noControl]="true"
+      >
+        {{ camposValidacion.nombresFE }}
+      </app-field-error>
+      <input
+        formControlName="nombresFE"
+        type="text"
+        id="nombresFE"
+        maxlength="50"
+        [readonly]="readonly"
+      />
+    </div>
+    <div class="field" *ngIf="compraPinForm.get('tipoPersonaFE')?.value ==  tipoPersonaFE.Natural">
+      <label for="apellidosFE">Apellidos</label>
+      <app-field-error
+        *ngIf="camposValidacion.apellidosFE"
+        [noControl]="true"
+      >
+        {{ camposValidacion.apellidosFE }}
+      </app-field-error>
+      <input
+        formControlName="apellidosFE"
+        type="text"
+        id="apellidosFE"
+        maxlength="50"
+        [readonly]="readonly"
+      />
+    </div>
+
+    <div class="field tipo" *ngIf="compraPinForm.get('tipoPersonaFE')?.value ==  tipoPersonaFE.Natural">
+      <label for="tipoDocumentoFE">Tipo de documento</label>
+      <app-field-error
+        *ngIf="camposValidacion.tipoDocumentoFE"
+        [noControl]="true"
+      >
+        {{ camposValidacion.tipoDocumentoFE }}
+      </app-field-error>
+      <select formControlName="tipoDocumentoFE" id="tipoDocumentoFE">
+        <option [value]="{seleccion}" hidden selected>
+          {{nombreDocumento}}
+        </option>
+        <option
+          *ngFor="let tipo of tipoDocumentoList; let i = index"
+          [ngValue]="tipo.idTipoSisec"
+        >
+          {{ tipo.nombre }}
+        </option>
+      </select>
+    </div>
+    
+    <div class="field" *ngIf="compraPinForm.get('tipoPersonaFE')?.value ==  tipoPersonaFE.Natural">
+      <label for="documentoFE">Documento</label>
+      <app-field-error *ngIf="camposValidacion.documentoFE" [noControl]="true">
+        {{ camposValidacion.documentoFE }}
+      </app-field-error>
+      <app-field-error [noControl]="true" *ngIf="documentoTipoInvalid == true && !camposValidacion.documentoFE">
+        El documento no cuenta con el formato requerido
+      </app-field-error>
+      <input
+        formControlName="documentoFE"
+        maxlength="24"
+        type="text"
+        id="documentoFE"
+        [readonly]="readonly"
+        style="text-transform: uppercase;"
+      />
+    </div>
+
+<div class="field" *ngIf="compraPinForm.get('tipoPersonaFE')?.value == tipoPersonaFE.Juridica">
+      <label for="razonSocial">Razón social</label>
+      <app-field-error
+        *ngIf="camposValidacion.razonSocial"
+        [noControl]="true"
+      >
+        {{ camposValidacion.razonSocial }}
+      </app-field-error>
+      <input
+        formControlName="razonSocial"
+        type="text"
+        id="razonSocial"
+        maxlength="50"
+        [readonly]="readonly"
+      />
+    </div>
+
+<div class="field" *ngIf="compraPinForm.get('tipoPersonaFE')?.value == tipoPersonaFE.Juridica">
+      <label for="nombreComercial">Nombre comercial</label>
+      <app-field-error
+        *ngIf="camposValidacion.nombreComercial"
+        [noControl]="true"
+      >
+        {{ camposValidacion.nombreComercial }}
+      </app-field-error>
+      <input
+        formControlName="nombreComercial"
+        type="text"
+        id="nombreComercial"
+        maxlength="50"
+        [readonly]="readonly"
+      />
+    </div>
+
+  <div class="field" *ngIf="compraPinForm.get('tipoPersonaFE')?.value == tipoPersonaFE.Juridica">
+      <label for="nit">NIT</label>
+      <app-field-error
+        *ngIf="camposValidacion.nit"
+        [noControl]="true"
+      >
+        {{ camposValidacion.nit }}
+      </app-field-error>
+      <input
+        formControlName="nit"
+        type="text"
+        id="nit"
+        maxlength="9"
+        [readonly]="readonly"
+      />
+    </div>
+
+  </form>
+</div>
+<div class="botones_final">
+  <button type="button" class="button-secondary" (click)="volver()">
+    Atrás
+  </button>
+  <button
+    type="button"
+    class="button-primary"
+    *ngIf="validacionManual"
+    (click)="avanzarPagoCuotas()"
+    tabindex="0"
+  >
+    Siguiente
+  </button>
+</div>

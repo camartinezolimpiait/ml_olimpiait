@@ -1,0 +1,83 @@
+<header class="header" *ngIf="mostrarFooter">
+  <div class="wrapper">
+    <h4>Centros</h4>
+    <h1>Selecciona tu Centro</h1>
+  </div>
+</header>
+<div
+  [ngClass]="mostrarFooter == true ? 'wrapper form-custom-wrapper' : ''"
+  id="principal"
+>
+  <div [ngClass]="mostrarFooter == true ? 'column-triple' : ''">
+    <div *ngIf="mostrarFooter == true" class="colC colC-order">
+      <p>
+        Consulte en la lista los centros de reconocimiento de conductor (CRC) o
+        enseñanza automovilística (CEA).
+      </p>
+    </div>
+    <div [ngClass]="mostrarFooter == true ? 'colAB' : ''">
+      <h3 class="text-center" *ngIf="mostrarFooter">Selecciona tu Centro</h3>
+      <div *ngIf="mostrarFooter == true" class="field tipo">
+        <label for="tipoCentro">Tipo de servicio</label>
+        <select name="tipoCentro" [formControl]="tipoCentro" id="tipoCentro">
+          <option
+            *ngFor="let cliente of tipoCliente | enumToArr"
+            [value]="cliente.index"
+          >
+            {{ descripcionTipoCliente[cliente.index] }}
+          </option>
+        </select>
+      </div>
+      <div class="controles-mapa">
+        <div class="buscador">
+          <label for="direccion">Dirección o lugar</label>
+          <ng-autocomplete
+            #auto
+            [data]="centros"
+            [searchKeyword]="keyword"
+            [placeholder]="placeholder"
+            (selected)="selectEvent($event)"
+            [itemTemplate]="itemTemplateStatic"
+            [notFoundTemplate]="notFoundTemplate"
+          >
+          </ng-autocomplete>
+          <ng-template #itemTemplateStatic let-item>
+            <a [innerHTML]="item.nombre"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+          <div *ngIf="mostrarDatosCentro" class="centro-actual">
+            <div class="mapa-mayus oldstyle">
+              <strong>{{
+                centroSeleccionado.nombre.toString() | titlecase
+              }}</strong>
+            </div>
+            <div class="small-text">
+              {{
+                quitarAbreviaciones(centroSeleccionado.direccion.toLowerCase())
+                  | titlecase
+              }}
+            </div>
+            <p class="small-text">
+              <a href="tel:{{ centroSeleccionado.movil }}">{{
+                centroSeleccionado.movil
+              }}</a>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="botones">
+        <button
+          type="button"
+          *ngIf="mostrarFooter && habilitarBoton"
+          class="button-primary"
+          (click)="selectEvent(null)"
+        >
+          Comprar aquí
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

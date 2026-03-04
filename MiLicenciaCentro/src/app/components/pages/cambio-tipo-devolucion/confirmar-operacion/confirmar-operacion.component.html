@@ -1,0 +1,33 @@
+
+    <ng-container *ngIf="data.formaDevolucion == '2'; else DevolucionTransferencia">
+        <div>
+            <h3 class="text-center">Devolución por efectivo</h3>
+        </div>
+        <h4>Datos del comprador</h4>
+        <p><strong>Tipo de documento:</strong> {{recuperarTipoDocumento(data.operacionBancolombia.typeDocument)}} <br>
+            <strong>Número de documento:</strong> {{setUpperCase(data.operacionBancolombia.idDocumentCurrent.toString().trim())}}</p>
+        <h4>Datos del trámite</h4>
+        <p><strong>Tipo de trámite:</strong> Devolución de dinero <br>
+        <strong>PIN:</strong> {{data.operacionBancolombia.pin}}</p>
+    </ng-container>
+    <div>
+        <h3 class="text-center">Devolución por transferencia</h3>
+        <h4>Cuenta de destino</h4>
+        <p><strong>Banco: </strong>{{data.nombreBanco}} <br>
+            <strong>Tipo de cuenta: </strong>{{data.datosTransferencia.tipoDeCuenta == '1' ? 'Ahorros': 'Corriente'}}
+            <br>
+            <strong>Número de cuenta: </strong> {{data.datosTransferencia.numeroDeCuenta}} <br>
+            <strong>Tipo de documento de titular:
+            </strong>{{recuperarTipoDocumento(data.datosTransferencia.tipoDocTitular)}} <br>
+            <strong>Documento del titular: </strong>{{setUpperCase(data.datosTransferencia.numDocTitular.toString().trim())}}</p>
+        </div>
+    <p class="text-center">Por favor verifica que los datos que ingresaste son correctos.</p>
+    <div class="flex-botones-derecha no-margin">
+        <a class="button-secondary" (click)="openLink($event)">
+            Volver
+        </a>
+        <a class="button-primary" (click)="confirmarUsoDeDatos($event)">
+            Continuar
+        </a>
+    </div>
+

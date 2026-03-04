@@ -1,0 +1,188 @@
+<div class="header">
+  <div class="title_secction">
+    <div class="wrapper">
+      <b> Gestión de PIN:</b> Devolución de dinero - {{ clienteAnulacion == tipoCliente.CEA ? "Curso de conducción" : "Examen médico" }}
+    </div>
+  </div>
+</div>
+
+<div class="wrapper form-custom-wrapper" style="padding: 1.333rem 0">
+  <div class="column-triple">
+    <div class="colC colC-order" style="order: 1">
+      <h3>¿Qué puedo hacer aquí?</h3>
+      <p>
+        Puede solicitar una devolución de su dinero si cambió de parecer, o si ingresó mal un dato no modificable como la edad, género o categoría en el
+        formulario de compra. El único requisito es que el PIN aún no haya sido usado.
+      </p>
+      <p>Puede escoger recibir su dinero por medio de una transferencia electrónica, o por efectivo en un punto de atención de Punto de Pago.</p>
+    </div>
+    <div class="colAB">
+      <form novalidate [formGroup]="actionsBancolombiaForm">
+        <div *ngIf="formularioActivo == pasosFormulario.DatosCompra">
+          <div>
+            <h3>Datos del trámite</h3>
+            <div class="field tipo" *ngIf="tiposDeDocumento">
+              <label for="tipoDocumento">Tipo de documento</label>
+              <app-field-error [controlForm]="actionsBancolombiaForm.get('typeDocument')!"> Selecciona tipo de documento </app-field-error>
+              <select formControlName="typeDocument" id="tipoDocumento">
+                <option [value]="" hidden selected>--Selecciona un tipo de documento--</option>
+                <option *ngFor="let tipo of tiposDeDocumento; let i = index" selected="{{ i == 0 }}" value="{{ tipo.idTipoSisec }}">
+                  {{ tipo.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="documentoActual">Documento de identidad</label>
+              <app-field-error [controlForm]="actionsBancolombiaForm.get('idDocumentCurrent')!">
+                El número de documento no cumple con las condiciones
+              </app-field-error>
+              <input formControlName="idDocumentCurrent" type="text" id="documentoActual" maxlength="24" style="text-transform: uppercase" />
+            </div>
+            <div class="field">
+              <label for="pin">PIN</label>
+              <app-field-error [controlForm]="actionsBancolombiaForm.get('pin')!"> El PIN debe tener más de 15 dígitos </app-field-error>
+              <input formControlName="pin" type="text" id="pin" maxlength="20" />
+            </div>
+          </div>
+          <ng-container *ngIf="actionsBancolombiaForm.valid">
+            <p class="recaptchaMobile">
+              Este sitio está protegido por reCAPTCHA y se aplican la <a href="https://policies.google.com/privacy">política de privacidad</a> y
+              <a href="https://policies.google.com/terms">términos del servicio</a> de Google.
+            </p>
+            <button class="button-primary" (click)="avanzar()">Continuar</button>
+          </ng-container>
+        </div>
+        <div *ngIf="formularioActivo == pasosFormulario.TipoTransferencia">
+          <fieldset class="radio">
+            <legend>
+              <h3>Forma de devolución de dinero</h3>
+            </legend>
+            <div *ngIf="tipoDevolucionActiva == tiposDevolucionActivasPorPin.Todas || tipoDevolucionActiva == tiposDevolucionActivasPorPin.Efectivo">
+              <input [formControl]="formaDevolucion" id="Efectivo" type="radio" name="formaDevolucion" value="1" />
+              <label for="Efectivo">Efectivo</label>
+            </div>
+            <div *ngIf="tipoDevolucionActiva == tiposDevolucionActivasPorPin.Todas || tipoDevolucionActiva == tiposDevolucionActivasPorPin.Transferencia">
+              <input [formControl]="formaDevolucion" id="Transferencia" type="radio" name="formaDevolucion" value="2" />
+              <label for="Transferencia">Transferencia bancaria</label>
+            </div>
+          </fieldset>
+          <div style="display: flex; justify-content: space-between; width: 230px;">
+            <button class="button-secondary" (click)="volver()">Atrás</button>
+            <ng-container *ngIf="formaDevolucion.valid">
+              <ng-container *ngIf="formaDevolucion.value == 2; else seguir">
+                <button class="button-primary" (click)="avanzar()">Continuar</button>
+              </ng-container>
+              <ng-template #seguir>
+                <button class="button-primary" (click)="iniciarProceso()">Iniciar el proceso</button>
+              </ng-template>
+            </ng-container>
+          </div>
+        </div>
+        <div *ngIf="formularioActivo == pasosFormulario.TransferenciaBanco">
+          <div *ngIf="formaDevolucion.value == '2'">
+            <h3>Indica la información de la cuenta</h3>
+            <form [formGroup]="devolucionTransferenciaForm">
+              <div class="field tipo" *ngIf="bancos">
+                <label for="bancos">Banco</label>
+                <app-field-error [controlForm]="devolucionTransferenciaForm.get('banco')!"> Selecciona banco </app-field-error>
+                <select formControlName="banco" id="bancos">
+                  <option [value]="" hidden selected>--Selecciona un banco--</option>
+                  <option *ngFor="let banco of bancos" [value]="banco.id">
+                    {{ banco.nombre }}
+                  </option>
+                </select>
+              </div>
+              <div class="field tipo">
+                <label for="tipoDeCuenta">Tipo de cuenta</label>
+                <app-field-error [controlForm]="devolucionTransferenciaForm.get('tipoDeCuenta')!"> Selecciona tu tipo de cuenta </app-field-error>
+                <select formControlName="tipoDeCuenta" id="tipoDeCuenta">
+                  <option [value]="" hidden selected>--Selecciona un tipo de cuenta--</option>
+                  <option *ngFor="let tipoCuenta of tipoCuentaDevolucion | enumToArr" [value]="tipoCuenta.index">
+                    {{ tipoCuenta.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="numeroDeCuenta">Número de cuenta</label>
+                <app-field-error [controlForm]="devolucionTransferenciaForm.get('numeroDeCuenta')!"> Indique el número de cuenta </app-field-error>
+                <input formControlName="numeroDeCuenta" type="text" id="numeroDeCuenta" maxlength="20" (cut)="$event.preventDefault()" (copy)="$event.preventDefault()" (paste)="$event.preventDefault()" />
+              </div>
+              <div class="field">
+                <label for="ReconfirmarNumeroDeCuenta">Reconfirmar Número de cuenta</label>
+                <app-field-error [controlForm]="devolucionTransferenciaForm.get('ReconfirmarNumeroDeCuenta')!"> Indique el número de cuenta a reconfirmar.</app-field-error>
+                <div class="error-formulario"style="color: red;" *ngIf="devolucionTransferenciaForm.getError('match_error')"> *Campo de cuenta y confirmación no son iguales.</div>
+                <input formControlName="ReconfirmarNumeroDeCuenta" type="text" id="ReconfirmarNumeroDeCuenta" maxlength="20" (cut)="$event.preventDefault()" (copy)="$event.preventDefault()" (paste)="$event.preventDefault()" />
+              </div>
+              <div class="field tipo" *ngIf="tiposDeDocumentoDevoluciones">
+                <label for="tipoDocTitular">Tipo de documento</label>
+                <app-field-error [controlForm]="devolucionTransferenciaForm.get('tipoDocTitular')!"> Selecciona el tipo de documento </app-field-error>
+                <select formControlName="tipoDocTitular" id="tipoDocTitular">
+                  <option [value]="" hidden selected>--Selecciona un tipo de documento--</option>
+                  <option *ngFor="let tipo of tiposDeDocumentoDevoluciones" value="{{ tipo.idTipoSisec }}">
+                    {{ tipo.nombre }}
+                  </option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="documentoTitular">Documento del titular</label>
+                <app-field-error [controlForm]="devolucionTransferenciaForm.get('numDocTitular')!">
+                  El número de documento no cumple con las condiciones
+                </app-field-error>
+                <input
+                  formControlName="numDocTitular"
+                  type="text"
+                  id="documentoTitular"
+                  maxlength="{{ longitudDocumento }}"
+                  style="text-transform: uppercase"
+                />
+              </div>
+              <div class="field">
+                <label for="documentoTitular">Certificación bancaria</label>
+              <input type="file" id="FileuploadS" formControlName="certificacionBancaria" class="file-upload" (change)="uploadFile($event)">
+              </div>
+            </form>
+            <button class="button-secondary back-button" (click)="volver()">Atrás</button>
+            <button (click)="iniciarProceso()" class="button-primary" *ngIf="devolucionTransferenciaForm.valid">Iniciar proceso</button>
+          </div>
+        </div>
+        <div *ngIf="formularioActivo == pasosFormulario.DatosUsuario">
+          <div>
+            <form  [formGroup]="datosContacto">
+            <h3>Datos del trámite</h3>
+            <div class="field">
+              <label for="Nombres">Nombres Usuario</label>
+              <app-field-error [controlForm]=""> El PIN debe tener más de 15 dígitos </app-field-error>
+              <input formControlName="Nombres" readonly type="text" id="nombres" maxlength="100" readonly="true"  />
+            </div>
+            <div class="field">
+              <label for="Email">Email</label>
+              <app-field-error [controlForm]="actionsBancolombiaForm.get('idDocumentCurrent')!">
+                El número de documento no cumple con las condiciones
+              </app-field-error>
+              <input formControlName="Email" type="text" id="Email" style="text-transform: uppercase" />
+            </div>
+            <div class="field">
+              <label for="NumeroTelefono">Numero Telefono</label><!--actionsBancolombiaForm.get('idDocumentCurrent')!-->
+              <app-field-error [controlForm]="">
+                El número de documento no cumple con las condiciones
+              </app-field-error>
+              <input formControlName="NumeroTelefono" type="text" id="NumeroTelefono" maxlength="10" style="text-transform: uppercase" />
+            </div>
+            <div class="field tipo">
+              <label for="MotivoDevolucion">Seleccione el motivo</label>
+              <app-field-error [controlForm]="actionsBancolombiaForm.get('typeDocument')!"> Selecciona tipo de documento </app-field-error>
+              <select formControlName="MotivoDevolucion" id="MotivoDevolucion" required>
+                <option *ngFor="let motivo of motivosDevolucion" [value]=" motivo.idMotivoDevolucion">
+                  {{ motivo.nombreMotivo }}
+                </option>
+              </select>
+            </div>
+
+            </form>
+          </div>
+          <button  class="button-primary" (click)="continuarDatosContacto()" *ngIf="datosContacto.valid">Continuar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

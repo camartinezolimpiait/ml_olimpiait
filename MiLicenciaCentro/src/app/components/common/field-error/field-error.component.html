@@ -1,0 +1,8 @@
+<span class="error-formulario" *ngIf="noControl || (controlForm?.errors && controlForm?.touched)">
+  <svg class="icono-svg feather" alt="Buscar">
+    <use xlink:href="/assets/img/svg/iconos.svg#error"></use>
+  </svg>
+  <span class="field-error-text">
+    <ng-content></ng-content>
+  </span>
+</span>

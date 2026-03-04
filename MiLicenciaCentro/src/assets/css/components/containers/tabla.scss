@@ -1,0 +1,146 @@
+.tabla,
+.tabla-responsive,
+.wp-block-table table {
+  border-collapse: collapse;
+  box-shadow: var(--elevacion-2);
+
+  th,
+  td {
+    padding: 0.7rem 1.5rem 0.7rem 0.7rem;
+  }
+
+  th {
+    text-align: left;
+    color: white;
+    background-color: var(--azul-500);
+    font-weight: 500;
+  }
+
+  tr:nth-child(odd) {
+    background-color: var(--gris-100);
+  }
+
+  .num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (max-width: 600px) {
+  .tabla-responsive {
+    &,
+    caption,
+    tbody,
+    tr,
+    td {
+      display: block;
+      text-align: left;
+    }
+
+    thead,
+    th {
+      display: none;
+      visibility: hidden;
+    }
+
+    td {
+      &[data-title]:before {
+        content: attr(data-title) ": ";
+        display: inline-block;
+        white-space: pre;
+        font-weight: 500;
+      }
+
+      &.titulo {
+        color: white;
+        background-color: var(--azul-500);
+      }
+    }
+
+    tr.even {
+      background-color: white;
+    }
+  }
+
+  .tabla-admin {
+    font-family: proxima-nova-condensed, sans-serif;
+    border-collapse: collapse;
+    text-align: left;
+    width: 100%;
+    margin: 0;
+
+    .numero {
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+      white-space: nowrap;
+      width: 1px;
+    }
+
+    th,
+    td {
+      padding: 5px 10px;
+      vertical-align: top;
+    }
+
+    th {
+      font-weight: 600;
+      border-bottom: 1px solid var(--gris-300);
+    }
+
+    tbody > tr:nth-child(odd) {
+      background-color: var(--gris-100);
+    }
+
+    @media (max-width: 600px) {
+      .numero {
+        text-align: left;
+        white-space: normal;
+      }
+
+      &,
+      caption,
+      tbody,
+      tr,
+      td {
+        display: block;
+        text-align: left;
+      }
+
+      tr {
+        margin-bottom: $Interlineado;
+        background-color: var(--gris-100);
+        border: 1px solid var(--gris-300);
+        border-radius: 0.42em;
+      }
+
+      thead,
+      th {
+        display: none;
+        visibility: hidden;
+      }
+
+      td {
+        &[data-title]:before {
+          content: attr(data-title) ": ";
+          display: inline-block;
+          white-space: pre;
+          font-weight: 600;
+        }
+
+        &[data-title="Nombre"] {
+          font-weight: 600;
+        }
+      }
+
+      tr.even {
+        background-color: white;
+      }
+    }
+  }
+}
+
+.fig-table,
+.wp-block-table {
+  max-width: 100%;
+  overflow-x: auto;
+}

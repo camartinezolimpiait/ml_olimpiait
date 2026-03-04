@@ -1,0 +1,36 @@
+.button-primary:hover::before,
+.button-highlight:hover::before {
+  transform: scaleY(1);
+}
+
+.button-primary,
+.button-highlight {
+  position: relative;
+  transform: translateZ(0);
+  transition: color 500ms;
+}
+
+.button-primary::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--azul-600);
+  transform: scaleY(0);
+  transform-origin: 50% 100%;
+  transition: transform 300ms ease-out;
+}
+
+.button-highlight::before {
+  @extend .button-primary::before;
+  background-color: var(--amarillo-500);
+}
+
+.button-primary:hover,
+.button-highlight:hover,
+.button-secondary:hover {
+  color: white;
+}

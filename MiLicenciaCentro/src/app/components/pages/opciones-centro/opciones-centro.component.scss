@@ -1,0 +1,306 @@
+@import "../../../../assets/css/_variables.scss";
+@import "../../../../assets/css/components/containers/buscador.scss";
+
+:host {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  min-height: 100vh;
+}
+
+main a {
+  color: var(--azul-700);
+
+  &:link {
+    color: var(--azul-700);
+  }
+
+  &a:visited {
+    color: var(--amarillo-700);
+  }
+
+  &:hover {
+    color: var(--azul-500);
+  }
+
+  &:active {
+    color: var(--amarillo-500);
+  }
+}
+
+button {
+  margin-left: 2px;
+}
+
+.centros-nav {
+  height: 4.5rem;
+  background-color: var(--azul-500);
+}
+
+.centros-header {
+  background-color: var(--azul-800);
+  color: white;
+  padding: 1rem 0;
+
+  a {
+    text-decoration: underline;
+    color: var(--azul-100);
+
+    &:link {
+      color: var(--azul-100);
+    }
+
+    &a:visited {
+      color: var(--gris-200);
+    }
+
+    &:hover {
+      color: var(--azul-300);
+    }
+
+    &:active {
+      color: var(--amarillo-500);
+    }
+  }
+
+  .centros-header-nombre_centro {
+    font-size: var(--scale-2);
+    font-weight: 800;
+  }
+  .centros-header-dir_centro {
+    font-size: var(--scale-1);
+  }
+  .centros-header-tipo_centro {
+    font-size: var(--scale-1);
+    color: var(--amarillo-200);
+    font-weight: 600;
+  }
+
+  .wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    @media screen and (max-width: 639px) {
+      flex-direction: column;
+    }
+
+    .flex-vertical {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
+}
+
+.column-triple {
+  grid-column-gap: 3rem;
+}
+
+
+.larga {
+  grid-column: 1 / span 2;
+}
+.lista_comunicados {
+  list-style: none;
+  padding: 0;
+}
+.comunicado {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 1fr;
+  column-gap: 1.333rem;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.333rem;
+  border-bottom: 1px solid var(--gris-200);
+}
+
+.comunicado-imagen {
+  border-radius: 0.5rem;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+  max-width: 200px;
+}
+
+.comunicado-texto {
+  h4 {
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+
+    a {
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    a::after {
+      bottom: 0;
+      content: "";
+      display: block;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+  .resumen_comunicado {
+    margin-bottom: 0.563rem;
+  }
+  .fecha_comunicado {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin: 0;
+  }
+}
+
+.colAB {
+  .lista_links {
+    padding: 0;
+    list-style-type: none;
+  }
+}
+
+.colC {
+  @media screen and (max-width: 640px) {
+    margin-top: $Interlineado;
+  }
+
+  .lista_links {
+    padding: 0;
+    list-style-type: none;
+  }
+}
+
+.marco_opciones {
+  background: var(--gris-50);
+  border: 1px solid var(--gris-300);
+  border-radius: 0.8rem;
+  padding: 1rem;
+  padding-bottom: 0;
+}
+.pagination {
+  button {
+    margin: 0;
+    border-radius: 0;
+    border-right: none;
+    min-width: 40px;
+    border-color: var(--gris-500);
+    &:enabled:hover {
+      border-color: var(--azul-500);
+    }
+    &:first-child {
+      border-radius: 4px 0 0 4px;
+    }
+    &:last-child {
+      border-radius: 0 4px 4px 0;
+      border-right: 1px solid var(--gris-500);
+    }
+  }
+
+  .pag_activa {
+    background-color: var(--azul-600);
+    border-color: var(--azul-600);
+    color: white !important;
+
+    &:disabled {
+      opacity: 1;
+    }
+  }
+}
+
+footer {
+  background-image: url(../../../../assets/img/mapa-negro.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center bottom;
+  background-color: black;
+  color: white;
+  padding: 1rem 0 1.5rem 0;
+  font-size: 1rem;
+
+  a {
+    text-decoration: underline;
+    color: white;
+
+    &:link  {
+      color: white;
+    }
+
+    &:visited {
+      color: var(--gris-100);
+    }
+
+    &:hover,
+    &:focus {
+      color: var(--amarillo-500);
+    }
+
+    &:active {
+      color: var(--amarillo-300);
+    }
+  }
+  strong {
+    color: var(--gris-300);
+  }
+
+  ul {
+    list-style: none;
+    padding-inline-start: 0;
+    margin: 0;
+  }
+
+  .contenedor-telefono {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+  }
+
+  .prefijo {
+    font-weight: 600;
+    font-size: var(--scale-2);
+    padding-right: 1ch;
+  }
+  .telefono {
+    font-weight: 700;
+    font-size: var(--scale-3);
+  }
+
+  .logotipo {
+    margin-top: auto;
+  }
+
+  li {
+    margin-block-start: calc($Interlineado / 4);
+    margin-block-end: calc($Interlineado / 4);
+  }
+  li:first-child {
+    margin-block-start: 0;
+  }
+
+  .links-footer a {
+    text-decoration: none;
+    font-variant-numeric: normal;
+  }
+  .links-footer-icono {
+    display: flex;
+    gap: 0.5rem;
+  }
+  @media screen and (min-width: 640px) {
+    .links-footer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  .logo-super {
+    flex: none;
+    margin-left: auto;
+    margin-top: $Interlineado;
+    align-self: flex-end;
+  }
+}

@@ -1,0 +1,27 @@
+.mat-radio-label {
+    white-space: normal !important;
+}
+
+.mat-drawer-container {
+    color: black;
+    background-color: white;
+}
+
+.example-radio-group {
+    display: flex;
+    margin: 0;
+    &.col-dir {
+        flex-direction: column;
+    }
+    &.row-dir {
+        flex-direction: row;
+    }
+}
+.example-radio-button {
+    margin: 0 $Interlineado $Interlineado 0;
+}
+
+mat-form-field {
+    max-width: 30em;
+    width: 100%;
+}

@@ -1,0 +1,102 @@
+<div [formGroup]="compraPinForm" *ngIf="principal">
+  <h2>Confirmar compra</h2>
+  <div class="column-double">
+    <div class="colA">
+      <app-resumen [esConfirmacion]="false" [tipoRecaudo]="tipoRecaudoCtrlTmp" [pagoPin]="pagoPin"
+        (vistaFormulario)="cambiarAVista($event)"></app-resumen>
+    </div>
+    <div class="colB">
+      <h4>Consejos de seguridad</h4>
+      <p class="justificado">
+        Haz tus transacciones en lugares de confianza y evita los sitios
+        públicos. Instala y mantén actualizado el antivirus en tus
+        dispositivos para estar protegido contra virus, troyanos,
+        pharming, phising y keylogger. Al finalizar la transacción,
+        asegúrate de haber cerrado sesión de manera segura en la
+        plataforma.
+      </p>
+      <p  class="justificado">
+        Para proceder con el pago, verifica que tu información es correcta
+        y lee con atención los
+        <a href="" (click)="abrirTyC($event)">términos y condiciones</a>.
+      </p>
+      <p>
+        <input id="terminos" formControlName="tyc" type="checkbox" name="tyc" />
+        <label for="terminos">Acepto los términos y condiciones</label>
+      </p>
+      <div class="box-check"
+        *ngIf="tipoReferenciaActual == tipoReferencia.BancolombiaWompi ||
+        tipoReferenciaActual == tipoReferencia.NequiWompi ||
+        tipoReferenciaActual == tipoReferencia.TDCWompi">
+        <input id="terminosWompi" formControlName="tycWompi" type="checkbox" name="tycWompi" />
+        <label for="terminosWompi" style="display: inline"> Acepto haber leído los
+          <a href="{{pdfWompi}}" target="_blank">términos y condiciones y la política de privacidad</a> de Wompi.
+        </label>
+      </div>
+
+      <div class="btn_confirm">
+        <div class="title_total">Total a pagar</div>
+        <div class="total lining">{{ totalPayment | currency : "COP" : "symbol-narrow" : "1.0-0" }}</div>
+      </div>
+      <div *ngIf="pagoPin.cuotas > 1" class="btn_confirm">
+        <div class="title_total">Primera cuota</div>
+        <div class="total-cuota lining">{{ firstPayment | currency : "COP" : "symbol-narrow" : "1.0-0" }}</div>
+      </div>
+      <div *ngIf="pagoPin.cuotas > 1" class="btn_confirm">
+        <div class="title_total">Valor cuota(s) restantes</div>
+        <div class="total-cuota lining">{{ otherPayment | currency : "COP" : "symbol-narrow" : "1.0-0" }}</div>
+      </div>
+
+
+      <div class="botones_final">
+        <div>
+          <button type="button" class="button-secondary" (click)="volver()">Atrás</button>
+        </div>
+        <button type="button" class="button-primary" [disabled]="!validacionManual"
+          *ngIf="tipoReferenciaActual == tipoReferencia.Electronica" (click)="pagarConPinesOlimpia(true)">
+          Pagar con PSE
+        </button>
+        <button type="button" class="button-primary" [disabled]="!validacionManual"
+          *ngIf="tipoReferenciaActual == tipoReferencia.Efectivo"
+          (click)="pagarConPinesOlimpia(false, pagoPin.tipoPagoEfectivo)" id="{{ idGenerarReferencia }}"
+          gtmButton="Boton">
+          Generar referencia
+        </button>
+        <button type="button" *ngIf="tipoReferenciaActual == tipoReferencia.SinGenerar" class="button-primary"
+          (click)="pagoBalotoIndependiente()" [disabled]="!validacionManual" tabindex="0">
+          Siguiente
+        </button>
+        <button type="button" class="button-primary" [disabled]="!validacionManual"
+          *ngIf="tipoReferenciaActual == tipoReferencia.BancolombiaWompi" (click)="pagarReferenciaBancolombiaWompi()">
+          Pagar con Bancolombia
+        </button>
+        <button type="button" class="button-primary" [disabled]="!validacionManual"
+          *ngIf="tipoReferenciaActual == tipoReferencia.NequiWompi" (click)="pagarConPinesOlimpia(true)">
+          Pagar con Nequi
+        </button>
+        <button type="button" class="button-primary" [disabled]="!validacionManual"
+          *ngIf="tipoReferenciaActual == tipoReferencia.DaviplataWompi" (click)="pagarReferenciaBancolombiaWompi()">
+          Pagar con Daviplata
+        </button>
+        <button type="button" class="button-primary" [disabled]="!validacionManual"
+          *ngIf="tipoReferenciaActual == tipoReferencia.TDCWompi" (click)="pagarConPinesOlimpia(true)">
+          Pagar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 9. (Opcional) Opciones efectivo -->
+<div *ngIf="!principal">
+
+  <app-convenio-resumen [idOrigenPin]="idOrigenPin" [convenioResumenObj]="convenioResumenObj"
+    [parametrosMensaje]="parametrosMensaje" [clienteCompra]="pagoPin.clienteCompra"></app-convenio-resumen>
+     <div style="display: flex; justify-content: space-between; width: 230px;">
+      <button type="button" class="button-secondary" (click)="imprimir()">
+          Imprimir
+        </button>
+        <button type="button" class="button-primary" (click)="volverAlInicio()">
+          Volver al inicio
+        </button>
+  </div>
+</div>

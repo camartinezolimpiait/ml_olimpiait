@@ -1,0 +1,111 @@
+.factura-box {
+  background-color: #f2f2f2; // Fondo gris claro
+  border: 1px solid #ccc;    // Borde suave
+  padding: 20px;
+  border-radius: 10px;
+  font-family: proxima-nova, sans-serif;
+  color: #333;
+  position: relative;
+  margin-top: 30px;
+}
+.factura-header {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc; 
+  padding-bottom: 5px;
+}
+
+
+.factura-label {
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  padding: 0 8px;
+  font-size: 14px;
+  color: #000; 
+  font-weight: bold;
+  background-color: transparent; 
+}
+.info-text {
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 20px;
+}
+
+.empresa-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+.switch input:checked + .slider {
+  background-color: #2196f3; // ✅ Azul
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.switch-label {
+  color: white;
+  font-size: 12px;
+  z-index: 1;
+  user-select: none;
+  font-weight: bold;
+}
+
+/* .no-seleccionable {
+  color: gray;
+  display: none;
+}
+ */
+
+ .aux-option[hidden] {
+  display: none;
+}

@@ -1,0 +1,135 @@
+<div [formGroup]="compraPinForm">
+  <fieldset class="radio">
+    <legend>
+      <h3>Medio de pago</h3>
+    </legend>
+    <p *ngIf="this.pagoPin.mediosPago.length > 0" style="margin-right: 2em;">
+      Escoge la forma en la que pagarás. En la siguiente pantalla podrás
+      ver el valor total a pagar y confirmar tu compra.
+    </p>
+    <div *ngFor="let recaudo of pagoPin.mediosPago">
+      <div *ngIf="recaudo.id !== tipoRecaudo.PSE || (recaudo.id === tipoRecaudo.PSE && (pagoPin.cuotas || 0) <= 1)">
+        <input
+        id="{{ recaudo.id }}"
+        formControlName="tipoRecaudoCtrl"
+        type="radio"
+        name="tipoRecaudoCtrl"
+        [value]="recaudo.id"
+        />
+        <label for="{{ recaudo.id }}">{{ recaudo.nombre }}</label>
+      </div>
+    </div>
+
+    <div *ngIf="compraPinForm.get('tipoRecaudoCtrl')!.value == tipoRecaudo.PSE">
+      <div class="field tipo">
+        <label for="tipoPersona">Tipo de persona</label>
+        <select formControlName="tipoPersonaPSE" id="tipoPersona">
+          <option [value]="" hidden selected>
+            --Selecciona un tipo de persona--
+          </option>
+          <option
+            *ngFor="let persona of tipoPersona | enumToArr"
+            [value]="persona.name[0]"
+          >
+            {{ persona.name }}
+          </option>
+        </select>
+      </div>
+      <div class="field tipo">
+        <label for="banco">Banco</label>
+        <select formControlName="tipoBancoPSE" id="banco" *ngIf="!pagoPin.pasarelaTuPago">
+          <option [value]="" hidden selected>--Selecciona un tipo de banco--</option>
+          <option *ngFor="let banco of pagoPin.bancosPSESecure" value="{{banco.bankCode}}">{{banco.bankName}}</option>
+        </select>
+        <select formControlName="tipoBancoPSE" id="banco" *ngIf="pagoPin.pasarelaTuPago">
+          <option [value]="" hidden selected>--Selecciona un tipo de banco--</option>
+          <option *ngFor="let banco of pagoPin.bancosPSE" value="{{banco.code}}">{{banco.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div *ngIf="compraPinForm.get('tipoRecaudoCtrl')!.value == tipoRecaudo.Efectivo">
+      <fieldset class="radio">
+        <legend>
+          <p>Selecciona punto de recaudo en efectivo</p>
+        </legend>
+        <div *ngFor="let convenioEfectivo of pagoPin.conveniosPagoEfectivo">
+          <input
+            id="efectivo_{{ convenioEfectivo.idOrigenPin }}"
+            formControlName="tipoPagoEfectivo"
+            type="radio"
+            name="tipoPagoEfectivo"
+            [value]="convenioEfectivo.idOrigenPin"
+          />
+          <label for="efectivo_{{ convenioEfectivo.idOrigenPin }}">{{
+            convenioEfectivo.nombreInterno
+          }}</label>
+        </div>
+      </fieldset>
+    </div>
+    <div *ngIf="compraPinForm.get('tipoRecaudoCtrl')!.value == tipoRecaudo.BancolombiaWompi" style="margin-right: 2em;">
+        <legend>
+          <p>Bancolombia</p>
+        </legend>
+        <p>
+          <span >Inicia sesión en tu cuenta Bancolombia y usa tus cuentas de ahorro o corrientes para completar el pago. Válido solo para personas naturales.</span>
+        </p>
+    </div>
+    <div *ngIf="compraPinForm.get('tipoRecaudoCtrl')!.value == tipoRecaudo.Daviplata" style="margin-right: 2em;">
+        <legend>
+          <p>Daviplata</p>
+        </legend>
+          <p>
+            Si el número de documento del comprador está registrado en Daviplata, continúa con el proceso dando click en <b>Continuar</b>. Si vas a realizar el pago con la cuenta de otra persona, deberás marcar la siguiente opción y diligenciar los datos para realizar el pago.
+          </p>
+          <label class="daviplata-checkbox">
+            <input type="checkbox" formControlName="checkDaviplata" [(ngModel)]="daviplataCheckbox"> La persona que pagará es distinta al titular del trámite
+            </label>
+            <div class="inputs_row" *ngIf="daviplataCheckbox">
+          <div class="field tipo">
+            <label for="banco"> Tipo documento </label>
+            <select formControlName="tipoDocumento" id="tipodoc" (change)="UpdateDocumentType()" *ngIf="pagoPin.tiposDeDocumento.length>0" (disabled)="!daviplataCheckbox">
+              <option [value]="" hidden selected>--Selecciona un tipo de documento--</option>
+              <option *ngFor="let tipo of tiposDeDocumentoDaviplata; let i = index" value="{{ tipo.idTipoSisec }}">
+                    {{ tipo.nombre }}
+                  </option>
+            </select>
+            <app-field-error [style.white-space]="'pre-wrap'" *ngIf="camposValidacion.tipoDocumento != '' " [noControl]="true">
+              {{ camposValidacion.tipoDocumento }}
+            </app-field-error>
+          </div>
+          <div class="field tipo">
+            <label for="documento">Documento</label>
+            <input formControlName="documento" (input)="UpdateDocument()" maxlength="15" type="text" id="Ndocumento"
+            [disabled]="!daviplataCheckbox" placeholder="Digita número de documento"
+            ngModel="{{ pagoPin.comprador.numDocumento != null && pagoPin.checkDaviplata ? pagoPin.comprador.numDocumento : '' }}" (keydown)="onKeyDown($event)" (input)="onInput($event)" />
+            <app-field-error  [style.white-space]="'pre-wrap'" *ngIf="camposValidacion.documento != '' " [noControl]="true">
+              {{ camposValidacion.documento }}
+            </app-field-error>
+          </div>
+          </div>
+
+    </div>
+    <div *ngIf="this.pagoPin.mediosPago.length == 0"><p style="margin-right: 2em;">
+      El centro no tiene convenios de pago asociados. Por favor selecciona otro centro.
+    </p></div>
+  </fieldset>
+ 
+  <div class="botones_final">
+    <button
+      type="button"
+      class="button-secondary"
+      (click)="volverPagoCuotas()"
+    >
+      Atrás
+    </button>
+    <button
+      type="button"
+      class="button-primary"
+      [disabled]="!estadoFlujo"
+      (click)="continuarConResumen()"
+      tabindex="0"
+    >
+      Continuar
+    </button>
+  </div>
+</div>

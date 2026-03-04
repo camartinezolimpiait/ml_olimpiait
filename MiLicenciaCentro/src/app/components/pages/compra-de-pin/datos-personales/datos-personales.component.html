@@ -1,0 +1,145 @@
+<h3>Datos personales</h3>
+<p>
+  Recibirás notificaciones a la dirección de correo electrónico registrada.
+</p>
+<div>
+  <form [formGroup]="compraPinForm">
+    <div class="field">
+      <label for="email">Correo electrónico</label>
+      <app-field-error *ngIf="camposValidacion.email" [noControl]="true">
+        {{ camposValidacion.email }}
+      </app-field-error>
+      <input
+        formControlName="email"
+        type="text"
+        id="email"
+        [readonly]="readonly"
+      />
+    </div>
+    <div class="field">
+      <label for="celular">Celular</label>
+      <app-field-error
+        *ngIf="camposValidacion.celular"
+        [noControl]="true"
+      >
+        {{ camposValidacion.celular }}
+      </app-field-error>
+      <input
+        formControlName="celular"
+        maxlength="10"
+        type="tel"
+        id="celular"
+        [readonly]="readonly"
+      />
+    </div>
+    <div class="field">
+      <label for="nombres">Nombre(s)</label>
+      <app-field-error
+        *ngIf="camposValidacion.nombres"
+        [noControl]="true"
+      >
+        {{ camposValidacion.nombres }}
+      </app-field-error>
+      <input
+        formControlName="nombres"
+        type="text"
+        id="nombres"
+        maxlength="50"
+        [readonly]="readonly"
+      />
+    </div>
+    <div class="field">
+      <label for="apellidos">Apellidos</label>
+      <app-field-error
+        *ngIf="camposValidacion.apellidos"
+        [noControl]="true"
+      >
+        {{ camposValidacion.apellidos }}
+      </app-field-error>
+      <input
+        formControlName="apellidos"
+        type="text"
+        id="apellidos"
+        maxlength="50"
+        [readonly]="readonly"
+      />
+    </div>
+    <div class="field tipo">
+      <label for="tipoDocumento">Tipo de documento</label>
+      <app-field-error
+        *ngIf="camposValidacion.tipoDocumento"
+        [noControl]="true"
+      >
+        {{ camposValidacion.tipoDocumento }}
+      </app-field-error>
+      <select formControlName="tipoDocumento" id="tipoDocumento">
+        <option [value]="{seleccion}" hidden selected class="aux-option">
+          {{nombreDocumento}}
+        </option>
+        <option [ngValue]="null" disabled>Seleccione tipo de documento</option>
+        <option
+          *ngFor="let tipo of pagoPin.tiposDeDocumento; let i = index"
+          [ngValue]="tipo.idTipoSisec"
+        >
+          {{ tipo.nombre }}
+        </option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="documento">Documento</label>
+      <app-field-error
+        *ngIf="camposValidacion.documento"
+        [noControl]="true"
+      >
+        {{ camposValidacion.documento }}
+      </app-field-error>
+      <input
+        formControlName="documento"
+        maxlength="24"
+        type="text"
+        id="documento"
+        [readonly]="readonly"
+        style="text-transform: uppercase;"
+      />
+    </div>
+<div class="field" *ngIf="habilitaFacturaElectronica">
+  <div class="factura-box">
+     <div class="factura-header">Facturación electrónica</div>
+    <div class="info-text">    
+       Se emitirá la factura a nombre del aspirante cuando se {{ idTriggerFE == "1" ? 'recaude' : (idTriggerFE == "2" ? 'enrole' : '') }}
+    </div>
+
+    <div class="empresa-checkbox">
+      <label>
+        <span class="switch">
+          <input type="checkbox" id="empresaSwitch"
+            formControlName="tieneFacturaElectronica"
+            (change)="onFacturaElectronicaChanges()"
+          />
+          <span class="slider">
+            <span class="switch-label"></span>
+          </span>
+        </span>      
+      </label>
+      <strong>Emitir factura a nombre de una empresa o tercero diferente al aspirante</strong>
+      
+    </div>
+  </div>
+</div>
+
+  </form>
+</div>
+<div class="botones_final">
+  <button type="button" class="button-secondary" (click)="volver()">
+    Atrás
+  </button>
+  <button
+    type="button"
+    class="button-primary"
+    *ngIf="validacionManual"
+    (click)="avanzarPagoCuotas()"
+    tabindex="0"
+  >
+    Siguiente
+  </button>
+</div>

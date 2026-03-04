@@ -1,0 +1,8 @@
+.field-error-text {
+  max-width: 320px;         /* Ajusta el ancho según tu diseño */
+  display: inline-block;    /* Permite que respete el ancho */
+  vertical-align: middle;
+  white-space: normal;      /* Permite salto de línea */
+  word-break: break-word;   /* Rompe palabras largas si es necesario */
+  margin-left: 8px;         /* Espacio entre el ícono y el texto */
+}

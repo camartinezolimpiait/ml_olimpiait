@@ -1,0 +1,207 @@
+@import "../../../../assets/css/variables";
+@import "../../../../assets/css/components/containers/tabla.scss";
+ 
+@import "../../../../assets/css/components/button/button.scss";
+ 
+.form-custom-wrapper {
+  padding: 1.333rem 0;
+}
+ 
+.form-custom-wrapper .colC-order {
+  order: 1;
+}
+ 
+.form-custom-wrapper .colAB h3 {
+  margin: 0;
+}
+#documento {
+  text-transform: uppercase;
+}
+ 
+.fig-table {
+  max-width: 100%;
+  overflow-x: auto;
+}
+ 
+.tabla-admin {
+  font-family: proxima-nova-condensed, sans-serif;
+ 
+  th:nth-child(3) {
+    white-space: nowrap;
+  }
+  th:nth-child(5) {
+    white-space: nowrap;
+  }
+}
+ 
+.ActualizarDevolucion {
+  width: 100%;
+  height: 40px;
+  padding: 0 1rem;
+  text-align: left;
+  border-radius: 20px;
+  border: none;
+  transition: all 70ms ease-out;
+  font-weight: 500;
+  line-height: 100%;
+  cursor: pointer;
+  color: var(--azul-700);
+  text-decoration: underline;
+}
+ 
+.form-custom-wrapper {
+  padding: 1.333rem 0;
+}
+ 
+.form-custom-wrapper .colC-order {
+  order: 1;
+}
+ 
+.form-custom-wrapper .colAB h3 {
+  margin: 0;
+}
+ 
+.tabla-admin,
+.tabla-responsive,
+.wp-block-table table {
+  border-collapse: collapse;
+  box-shadow: var(--elevacion-2);
+ 
+  th,
+  td {
+    padding: 0.7rem 1.5rem 0.7rem 0.7rem;
+  }
+ 
+  th {
+    text-align: left;
+    color: white;
+    background-color: var(--azul-500);
+    font-weight: 500;
+  }
+ 
+  tr:nth-child(odd) {
+    background-color: var(--gris-100);
+  }
+ 
+  .num {
+    text-align: right;
+  }
+}
+ 
+@media (max-width: 600px) {
+  .tabla-responsive {
+    &,
+    caption,
+    tbody,
+    tr,
+    td {
+      display: block;
+      text-align: left;
+    }
+ 
+    thead,
+    th {
+      display: none;
+      visibility: hidden;
+    }
+ 
+    td {
+      &[data-title]:before {
+        content: attr(data-title) ": ";
+        display: inline-block;
+        white-space: pre;
+        font-weight: 500;
+      }
+ 
+      &.titulo {
+        color: white;
+        background-color: var(--azul-500);
+      }
+    }
+ 
+    tr.even {
+      background-color: white;
+    }
+  }
+ 
+  .tabla-admin {
+    font-family: proxima-nova-condensed, sans-serif;
+    border-collapse: collapse;
+    text-align: left;
+    width: 100%;
+    margin: 0;
+ 
+    .numero {
+      text-align: right;
+      white-space: nowrap;
+      width: 1px;
+    }
+ 
+    th,
+    td {
+      padding: 5px 10px;
+      vertical-align: top;
+    }
+ 
+    th {
+      font-weight: 600;
+      border-bottom: 1px solid var(--gris-300);
+    }
+ 
+    tbody > tr:nth-child(odd) {
+      background-color: var(--gris-100);
+    }
+ 
+    @media (max-width: 600px) {
+      .numero {
+        text-align: left;
+        white-space: normal;
+      }
+ 
+      &,
+      caption,
+      tbody,
+      tr,
+      td {
+        display: block;
+        text-align: left;
+      }
+ 
+      tr {
+        margin-bottom: $Interlineado;
+        background-color: var(--gris-100);
+        border: 1px solid var(--gris-300);
+        border-radius: 0.42em;
+      }
+ 
+      thead,
+      th {
+        display: none;
+        visibility: hidden;
+      }
+ 
+      td {
+        &[data-title]:before {
+          content: attr(data-title) ": ";
+          display: inline-block;
+          white-space: pre;
+          font-weight: 600;
+        }
+ 
+        &[data-title="Nombre"] {
+          font-weight: 600;
+        }
+      }
+ 
+      tr.even {
+        background-color: white;
+      }
+    }
+  }
+}
+ 
+.fig-table,
+.wp-block-table {
+  max-width: 100%;
+  overflow-x: auto;
+}

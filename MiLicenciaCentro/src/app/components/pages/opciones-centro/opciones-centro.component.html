@@ -1,0 +1,149 @@
+<nav class="centros-nav"></nav>
+<header class="centros-header" *ngIf="centroSeleccionado != undefined">
+  <div class="wrapper">
+    <div class="flex-vertical">
+      <span class="centros-header-nombre_centro">{{ centroSeleccionado.nombre | titlecase }}</span>
+      <span class="centros-header-dir_centro">{{ direccionConAbreviatura.toLowerCase() | titlecase }}</span>
+    </div>
+    <div class="flex-vertical" style="align-items: flex-end; text-align: right">
+      <span class="centros-header-tipo_centro">{{
+        tipoServicio == tipoCliente.CEA ? "Centro de enseñanza automovilística" : "Centro de reconocimiento de conductores"
+      }}</span>
+      <a (click)="cambioCentro()">Cambiar centro</a>
+    </div>
+  </div>
+</header>
+<main class="wrapper column-triple" *ngIf="centroSeleccionado != undefined">
+  <div class="colAB">
+    <h4><strong>Comunicados</strong></h4>
+    <ul class="lista_comunicados" *ngIf="posts | async; else elseBlockul">
+      <li class="comunicado" *ngFor="let node of (posts | async)?.nodes">
+        <img src="{{ node.featuredImage.node.sourceUrl }}" class="comunicado-imagen" alt="{{ node.featuredImage.node.altText }}" *ngIf="node.featuredImage" />
+        <div class="comunicado-texto" [ngClass]="node.featuredImage ? '' : 'larga'">
+          <h4 class="">
+            <a (click)="abrirNoticia(node.databaseId)">{{ node.title }}</a>
+          </h4>
+          <div class="resumen_comunicado" [innerHTML]="node.excerpt">
+            {{ node.excerpt }}
+          </div>
+          <p class="fecha_comunicado">{{ node.date | date : "fullDate" }}</p>
+        </div>
+      </li>
+    </ul>
+    <ng-template #elseBlockul>
+      <div *ngIf="loading">
+        <h5>Cargando Publicaciones...</h5>
+      </div>
+      <div *ngIf="errorGQL">
+        <h5>No se pudieron cargar las publicaciones, intente más tarde!!!</h5>
+      </div>
+    </ng-template>
+
+    <ng-template [ngIf]="pages">
+      <div class="pagination">
+        <button class="button-secondary" (click)="firstP()" [disabled]="buttonsLeftDisabled"><span>«</span></button>
+        <button class="button-secondary" (click)="previousP()" [disabled]="buttonsLeftDisabled"><span>‹</span></button>
+        <button
+          class="button-secondary"
+          *ngFor="let pagina of [].constructor(pages); index as i"
+          (click)="goToP(i + 1)"
+          [disabled]="pageDisabled(i + 1)"
+          [ngClass]="pageDisabled(i + 1) ? 'pag_activa' : ''"
+        >
+          {{ i + 1 }}
+        </button>
+        <button class="button-secondary" (click)="nextP()" [disabled]="buttonsRightDisabled"><span>›</span></button>
+        <button class="button-secondary" (click)="lastP()" [disabled]="buttonsRightDisabled"><span>»</span></button>
+      </div>
+    </ng-template>
+  </div>
+
+  <div class="colC">
+    <div class="marco_opciones">
+      <h4><strong>Pagos</strong></h4>
+      <ul class="lista_links">
+        <li>
+          <a class="button-primary" (click)="seleccionCompraPin()"> Comprar PIN</a>
+        </li>
+        <li>
+          <a class="button-secondary" *ngIf="tipoServicio == tipoCliente.CEA" [routerLink]="['/consulta/cea']"> Pagar cuotas</a>
+        </li>
+      </ul>
+      <h4>Otros servicios</h4>
+      <ul class="lista_links">
+        <li>
+          <a [routerLink]="tipoServicio == tipoCliente.CEA ? ['/anulacion/CEA/1'] : ['/anulacion/CRC/1']"> Devolución de dinero</a>
+        </li>
+        <li>
+          <a [routerLink]="tipoServicio == tipoCliente.CEA ? ['/cambio-beneficiario/CEA/2'] : ['/cambio-beneficiario/CRC/2']"> Corrección de documento</a>
+        </li>
+        <li>
+          <a [routerLink]="['/consulta']"> Consulta de estado del PIN</a>
+        </li>
+        <li>
+          <a [routerLink]="tipoServicio == tipoCliente.CEA ? ['/consulta-devolucion/CEA'] : ['/consulta-devolucion/CRC']"> Consulta estado devolución</a>
+        </li>
+      </ul>
+      <h4>Portales SISEC</h4>
+      <ul class="lista_links">
+        <li>
+          <a href="{{ urlPortalAdminCentro }}" target="_blank" rel="noopener noreferrer"> Portal Administrativo SISEC</a>
+        </li>
+        <li>
+          <a href="{{ urlPortalPines }}" target="_blank" rel="noopener noreferrer"> Portal Pines Olimpia </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</main>
+<footer>
+  <div class="wrapper">
+    <div class="links-footer">
+      <ul>
+        <li><strong>Canales de atención</strong></li>
+        <li>
+          <a href="https://wa.me/573112074439" target="_blank" rel="noopener noreferrer" class="links-footer-icono">
+            <svg class="feather">
+              <use xlink:href="/assets/img/svg/iconos.svg#message-circle"></use></svg
+            >WhatsApp <span style="opacity: 0.7; font-weight: 500">(311) 207-4439</span>
+          </a>
+        </li>
+        <li *ngIf="tipoServicio == tipoCliente.CRC">
+          <a href="mailto:soporte@olimpiait.com" class="links-footer-icono">
+            <svg class="feather">
+              <use xlink:href="/assets/img/svg/iconos.svg#correo"></use>
+            </svg>
+            Soporte SISEC CRC y Armas
+          </a>
+        </li>
+        <li *ngIf="tipoServicio == tipoCliente.CEA">
+          <a href="mailto:sisec.cea@olimpiait.com" class="links-footer-icono">
+            <svg class="feather">
+              <use xlink:href="/assets/img/svg/iconos.svg#correo"></use>
+            </svg>
+            Soporte SISEC CEA
+          </a>
+        </li>
+        <li>
+          <a href="mailto:servicioalclientesisec@olimpiait.com" class="links-footer-icono">
+            <svg class="feather">
+              <use xlink:href="/assets/img/svg/iconos.svg#correo"></use></svg
+            >Servicio al cliente SISEC
+          </a>
+        </li>
+        <li>
+          <a href="tel:+576017441000" class="links-footer-icono">
+            <svg class="feather">
+              <use xlink:href="/assets/img/svg/iconos.svg#phone"></use></svg
+            >Línea de atención única <span style="opacity: 0.7; font-weight: 500">(601) 744-1000</span>
+          </a>
+        </li>
+      </ul>
+      <div class="contenedor-telefono">
+        <a class="logotipo" href="https://www.olimpiait.com/" target="_blank" rel="noopener noreferrer"
+          ><img src="/assets/img/svg/olimpia-footer.svg" alt="Olimpia IT"
+        /></a>
+      </div>
+    </div>
+  </div>
+</footer>

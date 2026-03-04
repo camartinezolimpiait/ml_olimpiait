@@ -1,0 +1,103 @@
+<!-- 2. Tipo de trámite -->
+<form [formGroup]="compraPinForm">
+  <fieldset class="radio">
+    <ng-container [ngSwitch]="pagoPin.opcionTramite == opcionTramites.simple ? 1 : (pagoPin.opcionTramite == opcionTramites.simple)">
+
+    </ng-container>
+    <legend>
+      <h3 *ngIf="pagoPin.opcionTramite == opcionTramites.simple">Tipo de trámite</h3>
+      <h3 *ngIf="pagoPin.opcionTramite == opcionTramites.Combo">Trámite para  {{ pagoPin.pasoCotizacion === pasosCompraPin.TipoTramiteComboCarro ? "Carro" : "Moto" }}</h3>
+    </legend>
+    <div *ngIf="(!tiposTramitesHabilitados.tramiteNormal && !tiposTramitesHabilitados.tramiteInstructor && pagoPin.clienteCompra == tipoCliente.CEA)">
+      El Centro no posee categorías asociadas al trámite de cursos. Por favor comuníquese con Soporte.
+    </div> 
+    <ng-container *ngIf="pagoPin.edadAspirante >= 18 ; else menorEdad">
+      <div *ngIf="(!tiposTramitesHabilitados.tramiteNormal && pagoPin.clienteCompra == tipoCliente.CRC) || (tiposTramitesHabilitados.tramiteNormal && pagoPin.clienteCompra == tipoCliente.CEA) ">
+      <div *ngFor="let tramite of listaTramites">
+        <ng-container *ngIf="tramite.id != 2 && !tramite.instructor; else filtroCEAtramite">
+          <input
+            id="{{ tramite.id }}"
+            formControlName="tipoTramite"
+            type="radio"
+            name="tipoTramite"
+            [value]="tramite.id"
+          />
+          <label for="{{ tramite.id }}">{{ tramite.nombre }}</label>
+        </ng-container>
+        <ng-template #filtroCEAtramite>
+          <ng-container *ngIf="pagoPin.clienteCompra == tipoCliente.CRC && !tramite.instructor">
+            <input
+              id="{{ tramite.id }}"
+              formControlName="tipoTramite"
+              type="radio"
+              name="tipoTramite"
+              [value]="tramite.id"
+            />
+            <label for="{{ tramite.id }}">{{ tramite.nombre }}</label>
+          </ng-container>
+        </ng-template>
+      </div>
+    </div>
+
+      <div *ngIf="pagoPin.clienteCompra == tipoCliente.CEA && tiposTramitesHabilitados.tramiteInstructor">
+        <h4>Curso para formación de instructores</h4>
+        <p>Para tramitar la certificación de instructor en conducción</p>
+          <details class="detalles curso_instructor">
+            <summary> Trámites de instructor</summary>
+            <div *ngIf="tiposTramitesHabilitados.tramiteInstructor" class="contenido">
+              <div *ngFor="let tramite of listaTramites ">
+                <div *ngIf="tramite.id != 2 && tramite.instructor">
+                  <input
+                    id="{{ tramite.id }}"
+                    formControlName="tipoTramite"
+                    type="radio"
+                    name="tipoTramite"
+                    [value]="tramite.id"
+                  />
+                  <label for="{{ tramite.id }}">{{ tramite.nombre }}</label>
+                </div>
+              </div>
+            </div>
+
+          </details>
+      </div>
+
+    </ng-container>
+    <ng-template #menorEdad>
+      <div *ngIf="(!tiposTramitesHabilitados.tramiteNormal && pagoPin.clienteCompra == tipoCliente.CRC) || (tiposTramitesHabilitados.tramiteNormal && pagoPin.clienteCompra == tipoCliente.CEA)">
+        <div *ngFor="let tramite of tramites | enumToArr">
+          <ng-container *ngIf="tramite.index == 1">
+            <input
+              id="{{ tramite.index }}"
+              formControlName="tipoTramite"
+              type="radio"
+              name="tipoTramite"
+              [value]="tramite.index"
+            />
+            <label for="{{ tramite }}">
+              {{ setTramite(tramite) }}</label>
+          </ng-container>
+        </div>
+      </div>
+      <div *ngIf="(!tiposTramitesHabilitados.tramiteNormal && pagoPin.clienteCompra == tipoCliente.CEA)">
+        El Centro no posee categorías asociadas al trámite de cursos. Por favor comuníquese con Soporte.
+      </div>
+
+
+    </ng-template>
+  </fieldset>
+  <div class="botones_final">
+    <button type="button" class="button-secondary" (click)="volver()">
+      Atrás
+    </button>
+    <button
+      type="button"
+      class="button-primary"
+      *ngIf="compraPinForm.valid"
+      (click)="avanzar()"
+      tabindex="0"
+    >
+      Siguiente
+    </button>
+  </div>
+</form>

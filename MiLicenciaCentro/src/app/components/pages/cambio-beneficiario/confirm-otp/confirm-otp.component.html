@@ -1,0 +1,14 @@
+<h4>Código de verificación</h4>
+<p>
+  Ingresa el código que recibiste en el correo y/o celular que registraste en el
+  formulario de compra.
+</p>
+<div class="field">
+  <label for="otp">Código</label>
+  <input type="text" id="otp" autocomplete="off" [(ngModel)]="data.otp" placeholder="Código de confirmación" />
+</div>
+<div class="accept">
+  <button class="button-primary" (click)="openLink($event)">
+    Continuar
+  </button>
+</div>

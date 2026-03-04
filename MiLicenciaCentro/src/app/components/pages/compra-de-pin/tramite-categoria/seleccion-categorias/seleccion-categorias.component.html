@@ -1,0 +1,432 @@
+  <!-- 3. Categorias -->
+  <form [formGroup]="compraPinForm">
+    <!-- 3.1 Primera vez -->
+    <div *ngIf="tempTipoTramite == tramites.PrimeraVez">
+      <ng-container *ngIf="pagoPin.clienteCompra == tipoCliente.CRC && pagoPin.opcionTramite == opcionTramites.Combo; else primeraVezCea">
+        <fieldset class="check" *ngIf="pagoPin.opcionTramite == opcionTramites.simple">
+          <legend>
+            <h3>Licencia primera vez</h3>
+            <p>Escoge qué tipo de vehículo manejarás (pueden ser ambos)</p>
+          </legend>
+          <div>
+            <input id="Carro" type="checkbox" name="vehi"
+              [checked]="vistaCategoriasCarro"
+              (change)="mostrarCategoriasCarro()" />
+            <label for="Carro">Carro</label>
+          </div>
+          <div>
+            <input id="Moto" type="checkbox" name="vehi"
+              [checked]="vistaCategoriasMoto"
+              (change)="mostrarCategoriasMoto()"/>
+            <label for="Moto">Moto</label>
+          </div>
+        </fieldset>
+        <fieldset class="radio-tarjeta">
+          <div *ngIf="vistaCategoriasCarro">
+            <h4>Escoge la categoría de licencia para automóvil</h4>
+            <div class="grid">
+              <ng-container *ngFor="let ctg of categoriasCarro">
+                <input
+                  id="{{ ctg.codigo }}"
+                  formControlName="categoriaPrincipal"
+                  type="radio"
+                  name="categoriaPrincipal"
+                  [value]="ctg.codigo"
+                />
+                <label class="card" for="{{ ctg.codigo }}">
+                  <span class="titulo">{{ ctg.codigo }}</span>
+                  <span class="descripcion">{{ ctg.nombre }}</span>
+                </label>
+              </ng-container>
+            </div>
+          </div>
+          <div *ngIf="vistaCategoriasMoto">
+            <h4>Escoge la categoría de licencia para moto</h4>
+            <div class="grid">
+              <ng-container *ngFor="let ctg of categoriasMoto">
+                <input
+                  id="{{ ctg.codigo }}"
+                  formControlName="categoriaSecundaria"
+                  type="radio"
+                  name="categoriaSecundaria"
+                  [value]="ctg.codigo"
+                />
+                <label class="card" for="{{ ctg.codigo }}">
+                  <span class="titulo">{{ ctg.codigo }}</span>
+                  <span class="descripcion">{{ ctg.nombre }}</span>
+                </label>
+              </ng-container>
+            </div>
+          </div>
+        </fieldset>
+      </ng-container>
+      <ng-template #primeraVezCea>
+        <fieldset class="radio-tarjeta">
+          <legend>
+            <h3>Licencia primera vez</h3>
+            <p>Escoge qué tipo de vehículo manejarás</p>
+          </legend>
+          <h4 *ngIf="categoriasMoto.length > 0">Moto</h4>
+          <div class="grid">
+            <ng-container *ngFor="let ctg of categoriasMoto">
+              <input
+                id="{{ ctg.codigo }}"
+                formControlName="categoriaPrincipal"
+                type="radio"
+                name="categoriaPrincipal"
+                [value]="ctg.codigo"
+              />
+              <label class="card" for="{{ ctg.codigo }}">
+                <span class="titulo">{{ ctg.codigo }}</span>
+                <span class="descripcion">{{ ctg.nombre }}</span>
+              </label>
+            </ng-container>
+          </div>
+          <h4 *ngIf="categoriasCarro.length > 0">Automóvil</h4>
+          <div class="grid">
+            <ng-container *ngFor="let ctg of categoriasCarro">
+              <input
+                id="{{ ctg.codigo }}"
+                formControlName="categoriaPrincipal"
+                type="radio"
+                name="categoriaPrincipal"
+                [value]="ctg.codigo"
+              />
+              <label class="card" for="{{ ctg.codigo }}">
+                <span class="titulo">{{ ctg.codigo }}</span>
+                <span class="descripcion">{{ ctg.nombre }}</span>
+              </label>
+            </ng-container>
+          </div>
+        </fieldset>
+      </ng-template>
+      <div class="botones_final">
+        <button
+          type="button"
+          class="button-secondary"
+          (click)="volverADatosBasicos()"
+        >
+          Atrás
+        </button>
+        <ng-container
+          *ngIf=" pagoPin.clienteCompra == tipoCliente.CRC && pagoPin.opcionTramite == opcionTramites.Combo;else primeraVezSubmitCea">
+          <button
+            type="button"
+            class="button-primary"
+            *ngIf="
+              (!vistaCategoriasCarro ||
+                compraPinForm.get('categoriaPrincipal')!.value != null) &&
+              (vistaCategoriasCarro || vistaCategoriasMoto) &&
+              (!vistaCategoriasMoto ||
+                compraPinForm.get('categoriaSecundaria')!.value != null)
+            "
+            (click)="calcularPin()"
+            tabindex="0"
+          >
+            Siguiente
+          </button>
+        </ng-container>
+        <ng-template #primeraVezSubmitCea>
+          <button
+            type="button"
+            *ngIf=" compraPinForm.get('categoriaPrincipal')!.value != null"
+            class="button-primary"
+            (click)="calcularPin()"
+            tabindex="0"
+          >
+            Siguiente
+          </button>
+        </ng-template>
+      </div>
+
+    </div>
+    <!-- 3.2 Recategorizacion y renovación -->
+    <ng-container
+      *ngIf="tempTipoTramite != tramites.PrimeraVez "
+    >
+      <div *ngIf="tempTipoTramite == tramites.Renovar">
+        <fieldset class="radio-tarjeta">
+          <legend>
+            <h3>
+              {{
+                pagoPin.clienteCompra == tipoCliente.CRC
+                  ? "Renovación de licencia"
+                  : "Categoría de licencia"
+              }}
+            </h3>
+            <p>Escoge qué tipo de vehículo manejarás</p>
+          </legend>
+          <h4 *ngIf="mostrarRecategorizacionCombo && mostrarRecategorizacionMoto">Motos</h4>
+          <div class="grid" *ngIf="mostrarRecategorizacionCombo && mostrarRecategorizacionMoto">
+            <ng-container *ngFor="let ctg of categoriasMoto">
+              <input
+                id="{{ ctg.codigo }}"
+                formControlName="categoriaPrincipal"
+                type="radio"
+                name="categoriaPrincipal"
+                [value]="ctg.codigo"
+              />
+              <label class="card" for="{{ ctg.codigo }}">
+                <span class="titulo">{{ ctg.codigo }}</span>
+                <span class="descripcion">{{ ctg.nombre }}</span>
+              </label>
+            </ng-container>
+          </div>
+          <h4 *ngIf="mostrarRecategorizacionCombo && mostrarRecategorizacionCarro">Servicio particular</h4>
+          <div class="grid" *ngIf="mostrarRecategorizacionCombo && mostrarRecategorizacionCarro">
+            <ng-container *ngFor="let ctg of categoriasParticular">
+              <input
+                id="{{ ctg.codigo }}"
+                formControlName="categoriaPrincipal"
+                type="radio"
+                name="categoriaPrincipal"
+                [value]="ctg.codigo"
+              />
+              <label class="card" for="{{ ctg.codigo }}">
+                <span class="titulo">{{ ctg.codigo }}</span>
+                <span class="descripcion">{{ ctg.nombre }}</span>
+              </label>
+            </ng-container>
+          </div>
+          <h4 *ngIf="mostrarRecategorizacionCombo && mostrarRecategorizacionCarro">Servicio público</h4>
+          <div class="grid" *ngIf="mostrarRecategorizacionCombo && mostrarRecategorizacionCarro">
+            <ng-container *ngFor="let ctg of categoriasPublico">
+              <input
+                id="{{ ctg.codigo }}"
+                formControlName="categoriaPrincipal"
+                type="radio"
+                name="categoriaPrincipal"
+                [value]="ctg.codigo"
+              />
+              <label class="card" for="{{ ctg.codigo }}">
+                <span class="titulo">{{ ctg.codigo }}</span>
+                <span class="descripcion">{{ ctg.nombre }}</span>
+              </label>
+            </ng-container>
+          </div>
+        </fieldset>
+        <div class="botones_final">
+          <button type="button" class="button-secondary" (click)="volverADatosBasicos()">
+            Atrás
+          </button>
+          <button
+            type="button"
+            class="button-primary"
+            *ngIf="compraPinForm.get('categoriaPrincipal')!.value != null"
+            (click)="calcularPin()"
+            tabindex="0"
+          >
+            Siguiente
+          </button>
+        </div>
+      </div>
+      <div *ngIf="tempTipoTramite == tramites.Recategorizar">
+        <fieldset class="radio-tarjeta">
+          <legend>
+            <h3>
+              {{
+                pagoPin.clienteCompra == tipoCliente.CRC
+                  ? "Recategorización de licencia"
+                  : "Categoría de licencia"
+              }}
+            </h3>
+          </legend>
+          <p>Selecciona la categoría de licencia que tienes</p>
+          <h4 *ngIf="mostrarRecategorizacionCombo && mostrarRecategorizacionMoto && categoriasMoto.length > 0">Motos</h4>
+          <div  *ngIf="mostrarRecategorizacionCombo && !mostrarRecategorizacionMoto && !mostrarRecategorizacionCarro&& categoriasMoto.length > 0">Para categorías de moto no existe recategorización</div>
+          <div class="grid" *ngIf="mostrarRecategorizacionCombo && mostrarRecategorizacionMoto">
+
+            <ng-container *ngFor="let ctg of categoriasMoto">
+              <input
+                id="{{ ctg.codigo }}"
+                [formControl]="categoriasActual"
+                type="radio"
+                name="categoriasActual"
+                [value]="ctg.codigo"
+              />
+              <label class="card" for="{{ ctg.codigo }}">
+                <span class="titulo">{{ ctg.codigo }}</span>
+                <span class="descripcion">{{ ctg.nombre }}</span>
+              </label>
+            </ng-container>
+          </div>
+          <h4 *ngIf="mostrarRecategorizacionCombo && mostrarRecategorizacionCarro && categoriasParticular.length>0">Servicio particular</h4>
+          <div class="grid" *ngIf="mostrarRecategorizacionCombo && mostrarRecategorizacionCarro">
+            <ng-container *ngFor="let ctg of categoriasParticular">
+              <ng-container>
+                <input
+                  id="{{ ctg.codigo }}"
+                  [formControl]="categoriasActual"
+                  type="radio"
+                  name="categoriasActual"
+                  [value]="ctg.codigo"
+                />
+                <label class="card" for="{{ ctg.codigo }}">
+                  <span class="titulo">{{ ctg.codigo }}</span>
+                  <span class="descripcion">{{ ctg.nombre }}</span>
+                </label>
+              </ng-container>
+            </ng-container>
+          </div>
+          <h4 *ngIf="mostrarRecategorizacionCombo && mostrarRecategorizacionCarro && categoriasPublico.length > 0">Servicio público</h4>
+          <div class="grid" *ngIf="mostrarRecategorizacionCombo && mostrarRecategorizacionCarro">
+            <ng-container *ngFor="let ctg of categoriasPublico">
+              <ng-container *ngIf="pagoPin.clienteCompra == tipoCliente.CRC;else filtroCEARecategorizacion">
+                <ng-container *ngIf="!['RC1'].includes(ctg.codigo)">
+                  <input
+                    id="{{ ctg.codigo }}"
+                    [formControl]="categoriasActual"
+                    type="radio"
+                    name="categoriasActual"
+                    [value]="ctg.codigo"
+                  />
+                  <label class="card" for="{{ ctg.codigo }}">
+                    <span class="titulo">{{ ctg.codigo }}</span>
+                    <span class="descripcion">{{ ctg.nombre }}</span>
+                  </label>
+                </ng-container>
+              </ng-container>
+              <ng-template #filtroCEARecategorizacion>
+                <ng-container *ngIf="!['RC1'].includes(ctg.codigo)">
+                  <input
+                    id="{{ ctg.codigo }}"
+                    [formControl]="categoriasActual"
+                    type="radio"
+                    name="categoriasActual"
+                    [value]="ctg.codigo"
+                  />
+                  <label class="card" for="{{ ctg.codigo }}">
+                    <span class="titulo">{{ ctg.codigo }}</span>
+                    <span class="descripcion">{{ ctg.nombre }}</span>
+                  </label>
+                </ng-container>
+              </ng-template>
+            </ng-container>
+          </div>
+        </fieldset>
+        <fieldset class="radio-tarjeta" *ngIf="categoriasActual.value">
+          <legend>
+            <p>Selecciona la categoría a la que deseas cambiar</p>
+          </legend>
+          <div class="grid">
+            <ng-container *ngFor="let ctg of categoriasRecategorizacion">
+              <input
+                id="{{ ctg.codigo }}categoriaPrincipal"
+                formControlName="categoriaPrincipal"
+                type="radio"
+                name="categoriaPrincipal"
+                [value]="ctg.codigo"
+                (click)="validarCategoriaCombo(ctg)"
+              />
+              <label class="card" for="{{ ctg.codigo }}categoriaPrincipal">
+                <span class="titulo">{{ ctg.codigo }}</span>
+                <span class="descripcion">{{ ctg.nombre }}</span>
+              </label>
+            </ng-container>
+          </div>
+        </fieldset>
+        <div class="botones_final" *ngIf="categoriasActual.value || pagoPin.categoria1 != ''" >
+          <button type="button" class="button-secondary" (click)="volverADatosBasicos()">
+            Atrás
+          </button>
+          <button
+            type="button"
+            class="button-primary"
+            *ngIf="mostrarBotonSiguienteCombo()"
+            (click)="calcularPin()"
+            tabindex="0"
+          >
+            Siguiente
+          </button>
+        </div>
+      </div>
+      <div *ngIf="pagoPin.clienteCompra == tipoCliente.CEA">
+        <div *ngIf="(tempTipoTramite == tramites.PrimeraVezInstructor && pagoPin.tramiteInstructor) || (tempTipoTramite == tramites.RecategorizarInstructor && pagoPin.tramiteInstructor)">
+          <ng-container *ngIf="categoriasInstructor.length > 0; else sinCategoria">
+              <fieldset class="radio-tarjeta">
+                <legend>
+                  <h3>Categoría de la certificación</h3>
+                  <p>Seleccione la categoría de certificación a la que va a optar.</p>
+                </legend>
+
+                <h4 *ngIf="categoriasMotoInstructor().length > 0">Moto</h4>
+                <div class="grid">
+                  <ng-container *ngFor="let ctg of categoriasMotoInstructor()">
+                    <input
+                      id="{{ ctg.codigo }}"
+                      formControlName="categoriaPrincipal"
+                      type="radio"
+                      name="categoriaPrincipal"
+                      [value]="ctg.codigo"
+                    />
+                    <label class="card" for="{{ ctg.codigo }}">
+                      <span class="titulo">{{ ctg.codigo }}</span>
+                      <span class="descripcion">{{ ctg.nombre }}</span>
+                    </label>
+                  </ng-container>
+                </div>
+                <h4 *ngIf="categoriasParticularInstructor().length > 0">Servicio particular</h4>
+                <div class="grid">
+                  <ng-container *ngFor="let ctg of categoriasParticularInstructor()">
+                    <input
+                      id="{{ ctg.codigo }}"
+                      formControlName="categoriaPrincipal"
+                      type="radio"
+                      name="categoriaPrincipal"
+                      [value]="ctg.codigo"
+                    />
+                    <label class="card" for="{{ ctg.codigo }}">
+                      <span class="titulo">{{ ctg.codigo }}</span>
+                      <span class="descripcion">{{ ctg.nombre }}</span>
+                    </label>
+                  </ng-container>
+                </div>
+                <h4 *ngIf="categoriasPublicoInstructor().length > 0">Servicio público</h4>
+                <div class="grid">
+                  <ng-container *ngFor="let ctg of categoriasPublicoInstructor()">
+                    <input
+                      id="{{ ctg.codigo }}"
+                      formControlName="categoriaPrincipal"
+                      type="radio"
+                      name="categoriaPrincipal"
+                      [value]="ctg.codigo"
+                    />
+                    <label class="card" for="{{ ctg.codigo }}">
+                      <span class="titulo">{{ ctg.codigo }}</span>
+                      <span class="descripcion">{{ ctg.nombre }}</span>
+                    </label>
+                  </ng-container>
+                </div>
+              </fieldset>
+              <div class="botones_final">
+                <button type="button" class="button-secondary" (click)="volverADatosBasicos()">
+                  Atrás
+                </button>
+                <button
+                  type="button"
+                  class="button-primary"
+                  *ngIf="compraPinForm.get('categoriaPrincipal')!.value != null"
+                  (click)="calcularPin()"
+                  tabindex="0"
+                >
+                  Siguiente
+                </button>
+              </div>
+          </ng-container>
+          <ng-template #sinCategoria>
+            <fieldset class="radio-tarjeta">
+              <legend>
+                <h3>{{pagoPin.centroSeleccionado?.nombre?.toUpperCase()}}</h3>
+                <p>El centro seleccionado no cuenta con categorias habilitadas para instructor.</p>
+              </legend>
+            </fieldset>
+            <div class="botones_final">
+              <button type="button" class="button-secondary" (click)="volverADatosBasicos()">
+                Atrás
+              </button>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </ng-container>
+  </form>

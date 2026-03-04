@@ -1,0 +1,35 @@
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA }from "@angular/material/dialog";
+import { FormularioCambioBeneficiario } from 'src/app/interfaces/pago/PinesOlimpia/CambioBeneficiario/FormularioCambioBeneficiario';
+
+
+@Component({
+  selector: 'app-confirmar-operacion',
+  templateUrl: './confirmar-operacion.component.html',
+  styleUrls: ['./confirmar-operacion.component.scss']
+})
+export class ConfirmarOperacionComponent {
+  constructor(
+    private readonly _bottomSheetRef: MatDialogRef<ConfirmarOperacionComponent>,
+    @Inject(MAT_DIALOG_DATA)
+    public data: FormularioCambioBeneficiario
+  ) { }
+
+  recuperarTipoDocumento(id: number): any {
+    return this.data.tiposDocumento.find(x => x.idTipoSisec == id.toString())?.nombre
+  }
+
+  confirmarUsoDeDatos(event: MouseEvent) {
+    this.data.confirmaOperacion = true
+    this.openLink(event)
+  }
+
+  openLink(event: MouseEvent): void {
+    this._bottomSheetRef.close();
+    event.preventDefault();
+  }
+
+  setUpperCase(palabra:string):string{
+    return palabra.toUpperCase();
+  }
+}

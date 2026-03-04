@@ -1,0 +1,36 @@
+<header class="header">
+  <div class="wrapper">
+    <span class="subtitulo">Compra de PIN</span>
+
+    <h1>
+      {{
+        pagoPin.clienteCompra != tipoCliente.CEA
+          ? "Examen médico"
+          : "Curso de conducción"
+      }}
+    </h1>
+  </div>
+</header>
+<div [ngClass]="componentesCompra.confirmarCompra ? '' : 'column-triple'" class=" wrapper form-custom-wrapper">
+  <div [ngClass]="(!componentesCompra.seleccionCentro && !componentesCompra.confirmarCompra) ? 'colC' : ''">
+    <app-resumen
+      [esConfirmacion]="true"
+      [tipoRecaudo]="null"
+      [pagoPin]="pagoPin"
+      [esModificacion]="esModificacion"
+      (vistaFormulario)="cambiarAVista($event)"
+      [aplicaFE]="successRequestFE"
+      *ngIf="(!componentesCompra.seleccionCentro && !componentesCompra.confirmarCompra) && (pagoPin.edadAspirante >= 16 && pagoPin.edadAspirante < 100)"
+    ></app-resumen>
+  </div>
+  <div #compra [ngClass]="componentesCompra.confirmarCompra ? '' : !componentesCompra.seleccionCentro ? 'colAB' : 'colMapa'">
+    <app-datos-basicos [pagoPin]="pagoPin"  (pagoPinEvent)="onDatosBasicos($event)" *ngIf="componentesCompra.datosBasicos"></app-datos-basicos>
+    <app-tramite-categoria [pagoPin]="pagoPin"  (pagoPinEvent)="onTipoTramite($event)" (pagoPinVolverEvent)="onVolver($event)" *ngIf="componentesCompra.tipoTramite"></app-tramite-categoria>
+    <app-seleccion-centro [pagoPin]="pagoPin"  (pagoPinEvent)="onSeleccionCentro($event)" (pagoPinVolverEvent)="onVolverTramite($event)" (pagoErrorValoresCentroEvent)="onErrorValoresCentro($event)" *ngIf="componentesCompra.seleccionCentro"></app-seleccion-centro>
+    <app-datos-personales [pagoPin]="pagoPin"  (pagoPinEvent)="onDatosPersonales($event)" (pagoPinVolverEvent)="onVolverSeleccionCentro($event)" (aplicaFacturaElectronicaEvent)="onFacturaElectronicaParam($event)" *ngIf="componentesCompra.datosPersonales"></app-datos-personales>
+    <app-factura-electronica [pagoPin]="pagoPin"  (pagoPinEvent)="onFacturaElectronica($event)" (pagoPinVolverEvent)="onVolverDatosPersonales($event)" *ngIf="componentesCompra.facturaElectronica"></app-factura-electronica>
+    <app-cuotas-ceas [pagoPin]="pagoPin"  (pagoPinEvent)="onCuotaCeas($event)" (pagoPinVolverEvent)="onVolverCuotasCeas($event)" *ngIf="componentesCompra.cuotaCeas"></app-cuotas-ceas>
+    <app-medios-pago [pagoPin]="pagoPin"  (pagoPinEvent)="onMediosPago($event)" (pagoPinVolverEvent)="onVolverCuotaDatos($event)" (volverCentroEvent)="onVolverCentro($event)" (personalDataRedirectEvent)="cambiarAVista($event)" *ngIf="componentesCompra.mediosPago"></app-medios-pago>
+    <app-confirmar-compra [pagoPin]="pagoPin" (pagoPinVolverEvent)="onVolverMediosPago($event)" (cambiarVistaEvent)="cambiarAVista($event)" *ngIf="componentesCompra.confirmarCompra"></app-confirmar-compra>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<body>
+  <div class="update-alert" *ngIf="updateAvailable">
+    <div class="wrapper">
+      <p>
+        Una nueva versión de la página está disponible.
+        <span id="check" (click)="updateNow()">Clic para actualizar</span>
+      </p>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+  <app-loader></app-loader>
+</body>

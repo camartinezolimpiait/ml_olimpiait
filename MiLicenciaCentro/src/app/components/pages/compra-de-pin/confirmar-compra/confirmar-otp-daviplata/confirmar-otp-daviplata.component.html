@@ -1,0 +1,23 @@
+<div  class="dialog_daviplata">
+    <form  method="dialog">
+        <h1>Código de confirmación</h1>
+        <p>
+            Ingresa a tu DaviPlata y confirma este pago desde la campana de notificaciones. 
+            Después, copia el código que se genera y pégalo aquí para completar el proceso.
+        </p>
+        <img src="/assets/img/svg/daviplata_largo.svg" alt="Logotipo DaviPlata" height="56" class="logo" />
+        <input #codigoConfirmacion type="text" inputmode="numeric" maxlength="6" class="otp" (keypress)="validarSoloNumeros($event)" [disabled]="!inputEnable" [style.opacity]="!inputEnable ? '0.6' : '1'" [style.color]="!inputEnable ? '#9E9E9E' : '#000000'"/>
+        <p class="small">Tiempo restante para confirmar.
+            <a class="link" (click)="reenviarCodigo()"><a [hidden]="!mostrarReenvio">Reenviar código</a></a>
+        </p>
+        <p class="timer" [style.color]="cargandoReenvio ? '#9E9E9E' : '#000000'">{{ mostrarTiempoRestante() }}</p>
+        <div class="mensaje-respuesta" [hidden]="!mostrarMensaje">
+            {{ respuestaError }}
+          </div>
+
+        <div class="dialog_daviplata-botones">
+            <button class="button-secondary" (click)="closeDialog()">Cancelar</button>
+            <button class="button-primary"(click)="infoAutorizacionDaviplata()" [disabled]="codigoConfirmacion.value.length !== 6 || mostrarMensaje || mostrarReenvio">Pagar</button>
+        </div>
+    </form>
+</div>

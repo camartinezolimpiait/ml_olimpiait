@@ -1,0 +1,20 @@
+<mat-dialog-content>
+    <h3>Cambio de beneficiario</h3>
+    <h4>Datos actuales del comprador</h4>
+    <p><strong>Tipo de documento:</strong> {{recuperarTipoDocumento(data.operacionBancolombia.typeDocument)}} <br>
+        <strong>Número de documento: </strong>{{setUpperCase(data.operacionBancolombia.idDocumentCurrent.toString().trim())}} <br>
+        <strong>PIN: </strong>{{data.operacionBancolombia.pin}}</p>
+    <h4>Datos nuevos</h4>
+    <p><strong>Tipo de documento: </strong> {{recuperarTipoDocumento(data.operacionBancolombia.nuevoTipoDocumento)}}
+    <br>
+    <strong>Número de documento: </strong>{{setUpperCase(data.operacionBancolombia.newNumberDocument.toString().trim())}}</p>
+    <p class="text-center">Por favor verifica que los datos que ingresaste son correctos.</p>
+    <div class="flex-botones-derecha no-margin">
+        <a class="button-secondary" (click)="openLink($event)">
+            Volver
+        </a>
+        <a class="button-primary" (click)="confirmarUsoDeDatos($event)">
+            Continuar
+        </a>
+    </div>
+</mat-dialog-content>

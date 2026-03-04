@@ -1,0 +1,100 @@
+@import "../../../../assets/css/_variables.scss";
+
+@mixin padding-bordes {
+    border: 1px solid var(--gris-300);
+    border-radius: 0.42em;
+    padding: 16px;
+    margin-block-end: $Interlineado;
+}
+
+@mixin size-break {
+    box-sizing: border-box;
+
+    @media screen and (min-width: 640px) {
+        max-width: 90%;
+    }
+}
+
+.perfil-usuario {
+    @include padding-bordes;
+    padding: 12px;
+    background-color: var(--gris-100);
+    display: flex;
+    flex-direction: column;
+    hr {
+        border: 0;
+        height: 1px;
+        background: var(--gris-300);
+        margin-block-start: calc($Interlineado / 2);
+        margin-block-end: calc($Interlineado / 2);
+    }
+}
+
+.proxima-clase {
+    @include padding-bordes;
+    @include size-break;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+
+    @media screen and (min-width: 640px) {
+        flex-direction: row;
+    }
+
+    .vertical {
+        display: flex;
+        flex-direction: column;
+    }
+    .fecha-clase {
+        color: var(--azul-700);
+        font-size: var(--scale-1);
+        font-weight: 700;
+    }
+    .hora {
+        font-variant-numeric: tabular-nums;
+        font-variant-caps: all-small-caps;
+        margin-bottom: 1rem;
+    }
+    .instructor {
+        font-size: var(--scale-1);
+    }
+    .tipo-clase {
+        font-size: 1rem;
+        text-align: right;
+        margin-left: auto;
+        margin-top: $Interlineado;
+
+        @media screen and (min-width: 640px) {
+            margin-top: 0px;
+        }
+    }
+}
+
+.clases-agendadas {
+    @include padding-bordes;
+    @include size-break;
+
+    padding: 0;
+    overflow: hidden;
+
+    .fecha-clase {
+        color: white;
+        background-color: var(--azul-600);
+        padding: 8px 16px;
+        font-size: 1rem;
+    }
+
+    .descripcion {
+        background-color: white;
+
+        padding: 10px 16px;
+
+        .hora {
+            font-variant-numeric: tabular-nums;
+            font-variant-caps: all-small-caps;
+
+            margin-right: 0.3rem;
+            font-size: 1rem;
+        }
+    }
+}

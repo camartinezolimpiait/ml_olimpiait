@@ -1,0 +1,51 @@
+name: $(Build.DefinitionName)_$(Date:yyyyMMdd).$(Rev:r)
+
+resources:
+  repositories:
+    - repository: testing-artifacts
+      type: git
+      name: MiLicencia/Testing
+
+trigger:
+- dev
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - checkout: self
+    displayName: checkout self repo
+    path: angularApp
+    
+  # - checkout: testing-artifacts
+  #   displayName: checkout artifacts for testing
+  #   path: seleniumUiTests
+  - task: CmdLine@2
+    inputs:
+      script: |
+        sed -i "s/apiMilicencia: .*/apiMilicencia: '#URLAPIFRONT',/" /home/vsts/work/1/angularApp/MiLicenciaCentro/src/environments/environment.prod.ts
+    displayName: 'environment.prod.ts'
+  
+  - task: CmdLine@2
+    inputs:
+      script: |
+        cat /home/vsts/work/1/angularApp/MiLicenciaCentro/src/environments/environment.prod.ts
+    displayName: 'Imprime Archivo'
+
+  # Compilacion angular project
+  - template: src\templates-azure-pipelines\angular\build-angularapp-v1.yml@testing-artifacts
+    parameters:
+      nodejsVersion: '14.15.0'
+      appDirectory: 'MiLicenciaCentro'
+      nameArchiveFile: ci-milicencia-frontend-centro
+      configuration: 'build --optimization=prod'
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+  # - task: CmdLine@2
+  #   inputs:
+  #     script: tree $(Pipeline.Workspace) 
+
+  # - task: CmdLine@2
+  #   inputs:
+  #     script: tree $(Build.ArtifactStagingDirectory) 
+      

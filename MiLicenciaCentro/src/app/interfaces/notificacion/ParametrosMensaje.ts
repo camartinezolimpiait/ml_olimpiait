@@ -1,0 +1,20 @@
+export interface ParametrosMensaje{
+    Plantilla: number,
+    Nombre: String,
+    NumeroPIN: String,
+    Edad: String,
+    Sexo: String,
+    Categoria: String,
+    ValorCrc: String,
+    ValorSicov: String,
+    ValorBanco: String,
+    ValorANSV: String,
+    TotalaPagar: String,
+    Centro: String,
+    Direccion: String,
+    Telefono: String,
+    ConvenioCorresponsal: String,
+    Destinatario: String,
+    Leyenda: String,
+    Corresponsal:String
+}

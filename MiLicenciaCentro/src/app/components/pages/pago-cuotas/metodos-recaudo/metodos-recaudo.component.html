@@ -1,0 +1,42 @@
+<form [formGroup]="formulario" novalidate>
+    <fieldset class='radio'>
+        <legend>
+            <h4>Selecciona medio de pago</h4>
+        </legend>
+        <div *ngFor="let recaudo of mediosPago">
+            <input id="{{recaudo.id}}" formControlName="tipoRecaudoCtrl" type="radio" name="tipoRecaudoCtrl"
+                [value]="recaudo.id">
+            <label for="{{recaudo.id}}">{{recaudo.nombre}}</label>
+        </div>
+    </fieldset>
+    <div *ngIf="formulario.value.tipoRecaudoCtrl == tipoRecaudo.PSE">
+        <mat-form-field appearance="outline">
+            <mat-label>Tipo de persona</mat-label>
+            <mat-select formControlName="tipoPersonaPSE">
+                <mat-option *ngFor="let persona of tipoPersona | enumToArr" [value]="persona.name[0]">
+                    {{ persona.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Banco</mat-label>
+            <mat-select formControlName="tipoBancoPSE" *ngIf="!pasarelaTuPago">
+                <mat-option *ngFor="let banco of bancosPSESecure" value="{{banco.bankCode}}">{{banco.bankName}}
+                </mat-option>
+            </mat-select>
+            <mat-select formControlName="tipoBancoPSE" *ngIf="pasarelaTuPago">
+              <mat-option *ngFor="let banco of bancosPSE" value="{{banco.code}}">{{banco.name}}
+              </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button class="button-primary" (click)="obtenerReferencia()">Pagar cuota</button>
+    </div>
+    <div *ngIf="formulario.value.tipoRecaudoCtrl == tipoRecaudo.Efectivo">
+        <p>Presenta en un Punto de Pago el número de pin <strong>{{cuota.numeroPin}}</strong>
+            para pagar la cuota N° <strong>{{cuota.numeroCuota}}</strong>, por valor de
+            <strong>{{cuota.valorPin | currency: 'COP':'symbol-narrow':'1.0-0'}}</strong>.
+        </p>
+        <p *ngIf="!validacionEnvioCorreo">Se ha enviado la orden de pago al correo electrónico registrado.</p>
+        <button *ngIf="validacionEnvioCorreo" class="button-primary" (click)="enviarOrdenPago()">Enviar orden de pago</button>
+    </div>
+</form>

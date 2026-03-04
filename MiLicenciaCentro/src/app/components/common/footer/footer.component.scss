@@ -1,0 +1,108 @@
+@import "src/assets/css/variables";
+
+.footer {
+  background-image: url(../../../../assets/img/mapa-negro.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center bottom;
+  background-color: black;
+  color: white;
+  padding: $Interlineado 0;
+
+  ul {
+    list-style: none;
+    padding-inline-start: 0;
+  }
+
+  a {
+
+    &:link,
+    &:visited {
+      color: white;
+      text-decoration: none;
+      padding: 2px;
+      margin: -2px;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      white-space: nowrap;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      display: block;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--amarillo-400);
+      transition: transform 200ms ease-in-out;
+      transform: scaleY(0);
+      transform-origin: bottom;
+      z-index: -1;
+    }
+
+    &:hover,
+    &:active,
+    &:focus {
+      color: var(--amarillo-900);
+    }
+
+    &:hover::after,
+    &:focus::after {
+      transform: scaleY(1);
+    }
+  }
+
+  hr {
+    border: 0;
+    height: 1px;
+    background: white;
+    margin-block-start: $Interlineado;
+    margin-block-end: $Interlineado;
+  }
+
+  li {
+    margin-block-start: calc($Interlineado / 2);
+    margin-block-end: calc($Interlineado / 2);
+  }
+
+  ul {
+    margin-block-start: $Interlineado;
+    margin-block-end: $Interlineado;
+
+    @media screen and (min-width: 640px) {
+      margin-right: $Interlineado * 2;
+      margin-block-start: 0;
+      margin-block-end: $Interlineado;
+    }
+  }
+
+  @media screen and (min-width: 640px) {
+    .links-footer {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+    }
+  }
+
+  .logo-super {
+    flex: none;
+    margin-left: auto;
+    margin-top: $Interlineado;
+    align-self: flex-end;
+  }
+
+  .derechos {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+
+    .logotipo {
+      flex: none;
+      margin-left: 0.3rem;
+    }
+  }
+}

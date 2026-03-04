@@ -1,0 +1,104 @@
+@media screen and (min-width: 640px) {
+    .column-double {
+      display: grid;
+      grid-column-gap: 1.5rem;
+      grid-template-columns: 1fr 1fr;
+    }
+  
+    .column-triple {
+      display: grid;
+      grid-column-gap: 1.5rem;
+      grid-template-columns: 1fr 1fr 1fr;
+  
+      img {
+        object-fit: cover;
+      }
+    }
+  
+    .column-double img {
+      object-fit: cover;
+    }
+  
+    .colA {
+      grid-column: 1;
+    }
+  
+    .colB {
+      grid-column: 2;
+    }
+  
+    .colC {
+      grid-column: 3;
+    }
+  
+    .colAB {
+      grid-column: 1 / 3;
+    }
+  
+    .colBC {
+      grid-column: 2 / 4;
+    }
+  
+    .grafico {
+      width: 100%;
+      max-width: 240px;
+    }
+  }
+  
+  // Aqui van todas las reglas de CSS para el contenido de WordPress
+  .content-graph {
+    h1 {
+      text-align: center;
+    }
+    .banner_articulo {
+      margin-bottom: 1.5rem;
+      width: 100%;
+      height: auto;
+    }
+  
+    .cuerpo_articulo {
+      max-width: 70ch;
+      margin: 0 auto;
+  
+      .articulo-html {
+        img {
+          box-shadow: var(--elevacion-2);
+          display: block;
+          margin: 0 auto;
+          max-width: 100%;
+          height: auto;
+          margin-bottom: 0.563rem;
+        }
+        img + figcaption {
+          font-size: 14px;
+          opacity: 0.7;
+          text-align: center;
+        }
+      }
+    }
+  
+    .wp-block-embed__wrapper {
+      position: relative;
+      & > iframe {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+      }
+    }
+    .wp-block-embed__wrapper::before {
+      content: "";
+      display: block;
+      padding-top: 56.25%;
+    }
+  }
+  
+  .comunicado-texto {
+    .resumen_comunicado > p {
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+  }

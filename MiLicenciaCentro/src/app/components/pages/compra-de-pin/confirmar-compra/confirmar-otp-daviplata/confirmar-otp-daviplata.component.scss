@@ -1,0 +1,88 @@
+
+.dialog_daviplata {
+    width: 100%;
+    height: 100%;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    padding: var(--scale-4);
+    box-sizing: border-box;
+}
+@media screen and (max-width: 37rem) {
+    .dialog_daviplata {
+        margin-inline: 0.5rem;
+        padding: var(--scale-2);
+    }
+}
+
+.dialog_daviplata h1 {
+    font-size: var(--scale-1);
+    font-weight: bold;
+}
+
+.dialog_daviplata .logo {
+    display: block;
+    margin-inline: auto;
+    margin-block-end: 1rem;
+}
+
+.dialog_daviplata .otp {
+    display: block;
+    font-size: var(--scale-2);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    max-width: 14ch;
+    margin-inline: auto;
+    margin-block-end: 1rem;
+    padding: 1rem;
+}
+
+.dialog_daviplata .small {
+    font-size: 0.8rem;
+    text-align: center;
+    margin-block-end: 0;
+    margin-inline: auto;
+}
+
+.dialog_daviplata .timer {
+    font-size: var(--scale-2);
+    font-variant-numeric: tabular-nums;
+    font-weight: bold;
+    text-align: center;
+    margin-inline: auto;
+}
+
+.dialog_daviplata-botones {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.tiempo-agotado {
+    color: red; 
+  }
+
+  .mensaje-respuesta {
+    color: red;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    text-align: center; 
+  }
+
+  .underline {
+    border-bottom: 1px solid black;
+}
+
+.link {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+
+    &:hover {
+        color: #0056b3;
+    }
+}
+
+  
+  
