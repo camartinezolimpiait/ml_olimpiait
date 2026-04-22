@@ -1,3 +1,6 @@
+<script lang="ts">
+</script>
+
 <svelte:head>
   <title>Acceso Denegado | MiLicencia</title>
 </svelte:head>

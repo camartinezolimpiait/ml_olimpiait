@@ -17,14 +17,14 @@ export const tiposDeDocumentoNumericos: number[] = [
 /**
  * Abre un diálogo modal con un mensaje.
  */
-export function abrirDialogo(mensaje: string, _logo?: string): void {
+export function abrirDialogo(mensaje: string): void {
   dialogStore.set({ mensaje });
 }
 
 /**
  * Abre un diálogo modal de confirmación.
  */
-export function abrirDialogoConfirmacion(mensaje: string, _logo?: string, onConfirm?: () => void): void {
+export function abrirDialogoConfirmacion(mensaje: string, onConfirm?: () => void): void {
   dialogStore.set({ mensaje, textoConfirmar: 'Sí', textoCancelar: 'No', onConfirm });
 }
 
