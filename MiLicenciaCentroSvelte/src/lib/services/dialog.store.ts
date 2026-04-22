@@ -5,20 +5,16 @@
 import { writable } from 'svelte/store';
 
 export interface DialogState {
+  titulo?: string;
   mensaje: string;
-  logo: string;
-  visible: boolean;
-  confirmable: boolean;
-  idBoton?: string;
+  textoConfirmar?: string;
+  textoCancelar?: string;
+  onConfirm?: () => void;
+  onCancel?: () => void;
 }
 
-export const dialogStore = writable<DialogState>({
-  mensaje: '',
-  logo: '',
-  visible: false,
-  confirmable: false
-});
+export const dialogStore = writable<DialogState | null>(null);
 
 export function closeDialog(): void {
-  dialogStore.update((state) => ({ ...state, visible: false }));
+  dialogStore.set(null);
 }

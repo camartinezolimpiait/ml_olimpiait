@@ -15,25 +15,25 @@ export const tiposDeDocumentoNumericos: number[] = [
 ];
 
 /**
- * Abre un diálogo modal con un mensaje e ícono.
+ * Abre un diálogo modal con un mensaje.
  */
-export function abrirDialogo(mensaje: string, logo: string): void {
-  dialogStore.set({ mensaje, logo, visible: true, confirmable: false });
+export function abrirDialogo(mensaje: string): void {
+  dialogStore.set({ mensaje });
 }
 
 /**
  * Abre un diálogo modal de confirmación.
  */
-export function abrirDialogoConfirmacion(mensaje: string, logo: string): void {
-  dialogStore.set({ mensaje, logo, visible: true, confirmable: true });
+export function abrirDialogoConfirmacion(mensaje: string, onConfirm?: () => void): void {
+  dialogStore.set({ mensaje, textoConfirmar: 'Sí', textoCancelar: 'No', onConfirm });
 }
 
 /**
  * Muestra una alerta tipo snackbar.
  */
-export function abrirAlerta(message: string): void {
-  alertStore.set({ message, visible: true });
-  setTimeout(() => alertStore.set({ message: '', visible: false }), 10000);
+export function abrirAlerta(mensaje: string, tipo: 'info' | 'success' | 'warning' | 'error' = 'info'): void {
+  alertStore.set({ tipo, mensaje });
+  setTimeout(() => alertStore.set(null), 10000);
 }
 
 /**

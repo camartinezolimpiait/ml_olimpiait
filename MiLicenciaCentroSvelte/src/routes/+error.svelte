@@ -1,50 +1,29 @@
-<!--
-  Página de error global de SvelteKit (equivalente al ErrorModule de Angular).
--->
 <script lang="ts">
   import { page } from '$app/stores';
 </script>
 
 <svelte:head>
-  <title>MiLicencia | {$page.status}</title>
+  <title>Error {$page.status} | MiLicencia</title>
 </svelte:head>
 
-<div class="wrapper">
-  <div class="flex-column">
-    <span style="font-variant: all-small-caps; margin-block-end: 0em;">
-      Error {$page.status}
-    </span>
-    <h1>
+<div class="min-h-[60vh] flex items-center justify-center px-4">
+  <div class="text-center max-w-md">
+    <div class="text-8xl font-black text-primary/20 mb-4">{$page.status}</div>
+    <h1 class="text-2xl font-bold mb-2">
       {#if $page.status === 404}
-        Esta página no existe
+        Página no encontrada
+      {:else if $page.status === 403}
+        Acceso denegado
       {:else}
         Ha ocurrido un error
       {/if}
     </h1>
-    <p class="explicacion">
-      {$page.error?.message || 'Se ha producido un error inesperado.'}
+    <p class="text-base-content/70 mb-6">
+      {$page.error?.message ?? 'Lo sentimos, algo salió mal. Por favor intenta de nuevo.'}
     </p>
-    <a href="/" class="button-primary">Volver al inicio</a>
+    <div class="flex gap-3 justify-center">
+      <a href="/" class="btn btn-primary">Ir al inicio</a>
+      <button class="btn btn-ghost" on:click={() => history.back()}>Volver</button>
+    </div>
   </div>
 </div>
-
-<style>
-  .wrapper {
-    max-width: 600px;
-    margin: 4rem auto;
-    padding: 0 1rem;
-  }
-
-  .flex-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 1rem;
-  }
-
-  h1 {
-    font-size: 2rem;
-    color: #1565c0;
-  }
-</style>

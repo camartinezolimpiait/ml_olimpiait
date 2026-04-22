@@ -1,55 +1,12 @@
-<!--
-  Componente indicador de carga (spinner/barra de progreso).
-  Migrado desde Angular: src/app/components/common/loader/loader.component
-  
-  En Angular se usaba MatProgressBar. Aquí se usa CSS puro con animación.
--->
 <script lang="ts">
   import { isLoading } from '$lib/services/loader.store';
 </script>
 
 {#if $isLoading}
-  <div class="overlay d-flex justify-content-center">
-    <div class="progress-bar-container">
-      <div class="progress-bar"></div>
+  <div class="fixed inset-0 bg-black/40 z-[9999] flex items-center justify-center" role="status" aria-live="polite">
+    <div class="bg-base-100 rounded-2xl p-8 flex flex-col items-center gap-4 shadow-2xl">
+      <span class="loading loading-spinner loading-lg text-primary"></span>
+      <p class="text-base-content font-medium">Procesando, por favor espere...</p>
     </div>
   </div>
 {/if}
-
-<style>
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    z-index: 9999;
-    background-color: transparent;
-  }
-
-  .progress-bar-container {
-    width: 100%;
-    height: 4px;
-    background-color: #e3f2fd;
-    overflow: hidden;
-  }
-
-  .progress-bar {
-    height: 100%;
-    background-color: #1565c0;
-    animation: indeterminate 1.5s infinite linear;
-    transform-origin: 0% 50%;
-  }
-
-  @keyframes indeterminate {
-    0% {
-      transform: translateX(0) scaleX(0);
-    }
-    40% {
-      transform: translateX(0) scaleX(0.4);
-    }
-    100% {
-      transform: translateX(100%) scaleX(0.5);
-    }
-  }
-</style>

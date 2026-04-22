@@ -1,12 +1,8 @@
-<!--
-  Página principal (home) - equivalente al InicioCentroComponent de Angular.
-  Migrado desde Angular: src/app/components/pages/inicio-centro/
--->
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { rutas } from '$lib/const/rutas';
   import { TipoCliente, DescripcionTipoClienteCentro } from '$lib/enums/PinesOlimpia/TipoCliente';
   import type { Centro } from '$lib/interfaces/cotizacion/Centro';
+  import { rutas } from '$lib/const/rutas';
 
   const paginasCliente = rutas.mlCliente.tramites;
   const procesosBanco = rutas.mlCliente.procesosBanco;
@@ -17,243 +13,192 @@
   let tipoCentro: number = TipoCliente.CRC;
   let nombreCentro: string = '';
   let habilitarBoton: boolean = false;
+  let cargandoCentros = false;
   let filteredCentros: Centro[] = [];
 
   $: filteredCentros = nombreCentro
     ? centros.filter((c) => c.nombre.toLowerCase().includes(nombreCentro.toLowerCase()))
     : [];
 
-  onMount(async () => {
-    try {
-      // Los centros se cargan desde el API una vez que se selecciona un tipo de cliente
-      // La carga inicial muestra los centros CRC por defecto
-      await cargarCentros();
-    } catch (e) {
-      console.error('Error al cargar centros:', e);
-    }
-  });
-
   async function cargarCentros(): Promise<void> {
-    // Placeholder: en producción se usa httpGet desde data.service
-    // import { httpGet } from '$lib/services/http.service';
-    // import { getApiMilicencia } from '$lib/services/api-milicencia.util';
-    // centros = await httpGet<Centro[]>(`${getApiMilicencia()}/servicios/CompraPin/ObtenerTodosCentros?tipo=${tipoCentro}`);
-    centros = [];
+    cargandoCentros = true;
+    try {
+      const response = await fetch(`/api/centros?tipo=${tipoCentro}`);
+      if (response.ok) {
+        centros = await response.json();
+      }
+    } catch {
+      centros = [];
+    } finally {
+      cargandoCentros = false;
+    }
   }
 
   function selectCentro(centro: Centro): void {
     centroSeleccionado = centro;
     nombreCentro = centro.nombre;
     habilitarBoton = true;
+    filteredCentros = [];
   }
 
   async function navegarACentro(): Promise<void> {
     if (centroSeleccionado) {
-      await goto(`/centro/${centroSeleccionado.id}`);
+      await goto(`/centros/${centroSeleccionado.id}`);
     }
   }
+
+  $: if (tipoCentro) {
+    nombreCentro = '';
+    centroSeleccionado = undefined;
+    habilitarBoton = false;
+    cargarCentros();
+  }
+
+  const tramites = [
+    {
+      href: `${paginasCliente.nombre}/${paginasCliente.acciones.primeraVez}`,
+      titulo: 'Primera vez',
+      descripcion: 'Obtén tu licencia de conducción por primera vez',
+      icono: '🆕',
+    },
+    {
+      href: `${paginasCliente.nombre}/${paginasCliente.acciones.renovar}`,
+      titulo: 'Renovar',
+      descripcion: 'Renueva tu licencia de conducción vigente',
+      icono: '🔄',
+    },
+    {
+      href: `${paginasCliente.nombre}/${paginasCliente.acciones.recategorizar}`,
+      titulo: 'Recategorizar',
+      descripcion: 'Amplía las categorías de tu licencia',
+      icono: '⬆️',
+    },
+    {
+      href: `${procesosBanco.nombre}${procesosBanco.acciones.consulta}`,
+      titulo: 'Consultar estado',
+      descripcion: 'Conoce el estado de tu trámite',
+      icono: '🔍',
+    },
+    {
+      href: `${procesosSdc.nombre}/${procesosSdc.acciones.compraPin}`,
+      titulo: 'Comprar PIN (CRC)',
+      descripcion: 'Adquiere tu PIN para examen médico',
+      icono: '🏥',
+    },
+    {
+      href: `${procesosSdc.nombre}/${procesosSdc.acciones.compraConduccion}`,
+      titulo: 'Comprar PIN (CEA)',
+      descripcion: 'Adquiere tu PIN para curso de conducción',
+      icono: '🚗',
+    },
+  ];
 </script>
 
 <svelte:head>
   <title>MiLicencia | Inicio</title>
+  <meta name="description" content="Portal de trámites de licencias de conducción en Colombia" />
 </svelte:head>
 
-<main class="centros_main">
-  <div class="busca-contenedor field">
-    <label for="tipoCentro">Selecciona tu Centro</label>
-    <div class="busca-flex">
-      <select
-        class="busca-flex-tipo"
-        id="tipoCentro"
-        bind:value={tipoCentro}
-      >
-        {#each Object.entries(DescripcionTipoClienteCentro) as [key, label]}
-          <option value={Number(key)}>{label}</option>
-        {/each}
-      </select>
-      <input
-        type="text"
-        id="nombreCentro"
-        name="nombreCentro"
-        bind:value={nombreCentro}
-        placeholder="Nombre del centro"
-        class="busca-flex-nombre"
-        autocomplete="off"
-      />
-      {#if filteredCentros.length > 0 && nombreCentro}
-        <ul class="autocomplete-list">
-          {#each filteredCentros as centro}
-            <li>
-              <button type="button" on:click={() => selectCentro(centro)}>
-                {centro.nombre}
-              </button>
-            </li>
-          {/each}
-        </ul>
-      {/if}
-      <button
-        type="button"
-        disabled={!habilitarBoton}
-        class="button-primary"
-        on:click={navegarACentro}
-      >
-        Seleccionar
-      </button>
+<!-- Hero Section -->
+<section class="hero min-h-[40vh] bg-primary text-primary-content">
+  <div class="hero-content text-center">
+    <div class="max-w-2xl">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">MiLicencia Centro</h1>
+      <p class="text-lg md:text-xl opacity-90 mb-6">
+        Gestiona tu licencia de conducción de forma fácil y segura.
+      </p>
     </div>
   </div>
+</section>
 
-  <div class="logos">
-    <div class="wrapper">
-      <img
-        src="/assets/img/svg/servicio-olimpia.svg"
-        alt="Un servicio de Olimpia IT"
-        class="olimpia"
-      />
+<!-- Buscador de centros -->
+<section class="py-8 px-4 bg-base-100">
+  <div class="max-w-2xl mx-auto">
+    <h2 class="text-2xl font-bold text-center mb-6">Encuentra tu centro</h2>
+    <div class="card bg-base-100 shadow-xl border border-base-300">
+      <div class="card-body gap-4">
+        <div class="form-control">
+          <label class="label" for="tipoCentro">
+            <span class="label-text font-semibold">Tipo de centro</span>
+          </label>
+          <select
+            id="tipoCentro"
+            class="select select-bordered select-primary w-full"
+            bind:value={tipoCentro}
+          >
+            {#each Object.entries(DescripcionTipoClienteCentro) as [key, label]}
+              <option value={Number(key)}>{label}</option>
+            {/each}
+          </select>
+        </div>
+
+        <div class="form-control relative">
+          <label class="label" for="nombreCentro">
+            <span class="label-text font-semibold">Nombre del centro</span>
+          </label>
+          <input
+            type="text"
+            id="nombreCentro"
+            name="nombreCentro"
+            bind:value={nombreCentro}
+            placeholder="Escribe para buscar..."
+            class="input input-bordered input-primary w-full"
+            autocomplete="off"
+          />
+          {#if cargandoCentros}
+            <div class="absolute right-3 top-11">
+              <span class="loading loading-spinner loading-sm text-primary"></span>
+            </div>
+          {/if}
+
+          {#if filteredCentros.length > 0 && nombreCentro}
+            <ul class="absolute z-10 top-full mt-1 left-0 right-0 bg-base-100 border border-base-300 rounded-box shadow-xl max-h-48 overflow-y-auto">
+              {#each filteredCentros as centro}
+                <li>
+                  <button
+                    type="button"
+                    class="w-full text-left px-4 py-2 hover:bg-base-200 transition-colors"
+                    on:click={() => selectCentro(centro)}
+                  >
+                    {centro.nombre}
+                  </button>
+                </li>
+              {/each}
+            </ul>
+          {/if}
+        </div>
+
+        <button
+          type="button"
+          disabled={!habilitarBoton}
+          class="btn btn-primary w-full"
+          on:click={navegarACentro}
+        >
+          Ir al centro
+        </button>
+      </div>
     </div>
   </div>
+</section>
 
-  <!-- Accesos rápidos a trámites -->
-  <section class="accesos-rapidos wrapper">
-    <h2>Trámites disponibles</h2>
-    <div class="cards-grid">
-      <a href="{paginasCliente.nombre}/{paginasCliente.acciones.primeraVez}" class="card">
-        <h3>Primera vez</h3>
-        <p>Obtén tu licencia de conducción por primera vez</p>
-      </a>
-      <a href="{paginasCliente.nombre}/{paginasCliente.acciones.renovar}" class="card">
-        <h3>Renovar</h3>
-        <p>Renueva tu licencia de conducción vigente</p>
-      </a>
-      <a href="{paginasCliente.nombre}/{paginasCliente.acciones.recategorizar}" class="card">
-        <h3>Recategorizar</h3>
-        <p>Amplía las categorías de tu licencia</p>
-      </a>
-      <a href="{procesosBanco.nombre}{procesosBanco.acciones.consulta}" class="card">
-        <h3>Consultar estado</h3>
-        <p>Conoce el estado de tu trámite</p>
-      </a>
-      <a href="{procesosSdc.nombre}/{procesosSdc.acciones.compraPin}" class="card">
-        <h3>Comprar PIN (CRC)</h3>
-        <p>Adquiere tu PIN para examen médico</p>
-      </a>
-      <a href="{procesosSdc.nombre}/{procesosSdc.acciones.compraConduccion}" class="card">
-        <h3>Comprar PIN (CEA)</h3>
-        <p>Adquiere tu PIN para curso de conducción</p>
-      </a>
+<!-- Tramites disponibles -->
+<section class="py-8 px-4 bg-base-200">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-2xl font-bold text-center mb-2">Trámites disponibles</h2>
+    <p class="text-center text-base-content/70 mb-8">Selecciona el trámite que necesitas realizar</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {#each tramites as tramite}
+        <a
+          href={tramite.href}
+          class="card bg-base-100 shadow-md hover:shadow-xl transition-shadow border border-base-300 hover:border-primary"
+        >
+          <div class="card-body">
+            <div class="text-4xl mb-2" aria-hidden="true">{tramite.icono}</div>
+            <h3 class="card-title text-base">{tramite.titulo}</h3>
+            <p class="text-sm text-base-content/70">{tramite.descripcion}</p>
+          </div>
+        </a>
+      {/each}
     </div>
-  </section>
-</main>
-
-<style>
-  .centros_main {
-    padding: 2rem 1rem;
-  }
-
-  .busca-contenedor {
-    max-width: 800px;
-    margin: 0 auto 2rem;
-  }
-
-  .busca-flex {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    align-items: flex-start;
-    position: relative;
-  }
-
-  .busca-flex-tipo {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    min-width: 160px;
-  }
-
-  .busca-flex-nombre {
-    flex: 1;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    min-width: 200px;
-  }
-
-  .autocomplete-list {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    z-index: 10;
-    max-height: 200px;
-    overflow-y: auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .autocomplete-list button {
-    width: 100%;
-    text-align: left;
-    padding: 0.5rem 1rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-
-  .autocomplete-list button:hover {
-    background-color: #e3f2fd;
-  }
-
-  .logos {
-    text-align: center;
-    margin: 2rem 0;
-  }
-
-  .olimpia {
-    max-height: 60px;
-  }
-
-  .accesos-rapidos {
-    margin-top: 3rem;
-  }
-
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.5rem;
-  }
-
-  .card {
-    background: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 1.5rem;
-    text-decoration: none;
-    color: inherit;
-    transition: box-shadow 0.2s;
-  }
-
-  .card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  .card h3 {
-    color: #1565c0;
-    margin-top: 0;
-  }
-
-  .wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-  }
-</style>
+  </div>
+</section>
