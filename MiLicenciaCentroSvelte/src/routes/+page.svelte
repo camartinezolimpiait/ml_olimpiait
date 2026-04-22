@@ -3,9 +3,6 @@
   import { TipoCliente, DescripcionTipoClienteCentro } from '$lib/enums/PinesOlimpia/TipoCliente';
   import type { Centro } from '$lib/interfaces/cotizacion/Centro';
   import { rutas } from '$lib/const/rutas';
-  import type { PageData } from './$types';
-
-  export let data: PageData;
 
   const paginasCliente = rutas.mlCliente.tramites;
   const procesosBanco = rutas.mlCliente.procesosBanco;

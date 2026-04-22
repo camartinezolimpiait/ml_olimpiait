@@ -41,7 +41,7 @@
         </svg>
       </button>
       <a href="/" class="btn btn-ghost text-xl font-bold normal-case">
-        MiLicencia
+        MiLicencia Centro
       </a>
     </div>
 

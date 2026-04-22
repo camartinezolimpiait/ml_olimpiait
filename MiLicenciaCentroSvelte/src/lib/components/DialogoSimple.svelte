@@ -30,6 +30,12 @@
         </button>
       </div>
     </div>
-    <div class="modal-backdrop" on:click={cancelar} role="presentation"></div>
+    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+    <div
+      class="modal-backdrop"
+      role="presentation"
+      on:click={cancelar}
+      on:keydown={(e) => e.key === 'Escape' && cancelar()}
+    ></div>
   </dialog>
 {/if}

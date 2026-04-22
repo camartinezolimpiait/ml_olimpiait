@@ -13,7 +13,7 @@ export const actions: Actions = {
     const tipoDocumento = formData.get('tipoDocumento')?.toString();
 
     if (!numeroDocumento) {
-      return fail(400, { errors: { numeroDocumento: 'Requerido' } });
+      return fail(400, { errors: { numeroDocumento: 'El número de documento es requerido' } });
     }
 
     try {
