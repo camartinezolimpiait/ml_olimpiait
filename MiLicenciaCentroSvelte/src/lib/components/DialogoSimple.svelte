@@ -1,88 +1,35 @@
-<!--
-  Diálogo modal simple para mensajes de información/error/confirmación.
-  Migrado desde Angular: src/app/components/common/dialogo-simple/
-  
-  En Angular se usaba MatDialog. Aquí se implementa con el store dialogStore.
--->
 <script lang="ts">
-  import { dialogStore, closeDialog } from '$lib/services/dialog.store';
-  import { createEventDispatcher } from 'svelte';
+  import { dialogStore } from '$lib/services/dialog.store';
 
-  const dispatch = createEventDispatcher<{ confirm: void }>();
-
-  function handleClose(): void {
-    closeDialog();
+  function confirmar() {
+    $dialogStore?.onConfirm?.();
+    dialogStore.set(null);
   }
 
-  function handleConfirm(): void {
-    closeDialog();
-    dispatch('confirm');
+  function cancelar() {
+    $dialogStore?.onCancel?.();
+    dialogStore.set(null);
   }
 </script>
 
-{#if $dialogStore.visible}
-  <div
-    class="dialog-backdrop"
-    role="button"
-    tabindex="0"
-    aria-label="Cerrar diálogo"
-    on:click={handleClose}
-    on:keydown={(e) => e.key === 'Escape' && handleClose()}
-  >
-    <div
-      class="simple-dialog"
-      on:click|stopPropagation
-      on:keydown|stopPropagation
-      role="dialog"
-      aria-modal="true"
-    >
-      <img src={$dialogStore.logo} alt="Alerta" style="margin-block-end: 1.5rem;" />
-      <p class="pregunta">{$dialogStore.mensaje}</p>
-      <div class="flex-botones">
-        {#if !$dialogStore.confirmable}
-          <button type="button" class="button-secondary" on:click={handleClose}>Cerrar</button>
-        {:else}
-          <button type="button" class="button-secondary" on:click={handleClose}>No</button>
-          <button
-            type="button"
-            class="button-primary"
-            id={$dialogStore.idBoton || 'confirmar'}
-            on:click={handleConfirm}
-          >
-            Sí
+{#if $dialogStore}
+  <dialog class="modal modal-open" aria-modal="true">
+    <div class="modal-box">
+      {#if $dialogStore.titulo}
+        <h3 class="font-bold text-lg">{$dialogStore.titulo}</h3>
+      {/if}
+      <p class="py-4">{$dialogStore.mensaje}</p>
+      <div class="modal-action">
+        {#if $dialogStore.onCancel !== undefined || $dialogStore.textoCancelar !== undefined}
+          <button class="btn btn-ghost" on:click={cancelar}>
+            {$dialogStore.textoCancelar ?? 'Cancelar'}
           </button>
         {/if}
+        <button class="btn btn-primary" on:click={confirmar}>
+          {$dialogStore.textoConfirmar ?? 'Aceptar'}
+        </button>
       </div>
     </div>
-  </div>
+    <div class="modal-backdrop" on:click={cancelar} role="presentation"></div>
+  </dialog>
 {/if}
-
-<style>
-  .dialog-backdrop {
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
-
-  .simple-dialog {
-    background: white;
-    border-radius: 8px;
-    padding: 2rem;
-    width: 22rem;
-    max-width: 90vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .flex-botones {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-</style>

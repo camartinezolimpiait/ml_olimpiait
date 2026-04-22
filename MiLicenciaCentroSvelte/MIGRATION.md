@@ -303,25 +303,97 @@ Para mayor seguridad en producción, considerar `httpOnly cookies` gestionadas d
 | UtilService | ✅ Completo | → `util.service.ts` |
 | HTTP Interceptors (3) | ✅ Completo | → `http.service.ts` |
 | TipoDocumentoPtesaClass | ✅ Completo | Sin cambios funcionales |
-| LoaderComponent | ✅ Completo | → `Loader.svelte` |
-| DialogoSimpleComponent | ✅ Completo | → `DialogoSimple.svelte` |
-| NavigationComponent | ✅ Completo | → `Navigation.svelte` |
-| FooterComponent | ✅ Completo | → `Footer.svelte` |
-| FieldErrorComponent | ✅ Completo | → `FieldError.svelte` |
-| InicioCentroComponent | ✅ Completo | → `routes/+page.svelte` |
-| ErrorComponent | ✅ Completo | → `routes/+error.svelte` |
-| AppComponent | ✅ Completo | → `routes/+layout.svelte` |
+| LoaderComponent | ✅ Completo | → `Loader.svelte` (DaisyUI spinner) |
+| DialogoSimpleComponent | ✅ Completo | → `DialogoSimple.svelte` (DaisyUI modal) |
+| NavigationComponent | ✅ Completo | Integrado en `+layout.svelte` (DaisyUI navbar) |
+| FooterComponent | ✅ Completo | Integrado en `+layout.svelte` |
+| FieldErrorComponent | ✅ Completo | → `FieldError.svelte` (DaisyUI/Tailwind) |
+| InicioCentroComponent | ✅ Completo | → `routes/+page.svelte` (DaisyUI) |
+| ErrorComponent | ✅ Completo | → `routes/+error.svelte` (DaisyUI) |
+| AppComponent | ✅ Completo | → `routes/+layout.svelte` (DaisyUI navbar+footer) |
+| Módulo Anulación | ✅ Completo | → `routes/anulacion/` (BFF) |
+| Módulo CambioBeneficiario | ✅ Completo | → `routes/cambio-beneficiario/` (BFF) |
+| Módulo Consulta | ✅ Completo | → `routes/consulta/` (BFF) |
+| Módulo Consulta Devolución | ✅ Completo | → `routes/consulta-devolucion/` (BFF) |
+| Módulo Resumen | ✅ Completo | → `routes/resumen/` |
+| Búsqueda Centros | ✅ Completo | → `routes/sdc/busqueda-centros/` |
+| Listado Centros | ✅ Completo | → `routes/centros/` |
+| Página 403 | ✅ Completo | → `routes/403/` |
+| API BFF Centros | ✅ Completo | → `routes/api/centros/` |
+| RBAC hooks.server.ts | ✅ Completo | Guardas de ruta por roles |
+| Tailwind CSS + DaisyUI | ✅ Completo | Tema personalizado `milicencia` |
 | Módulo Cotizador | 🔄 Estructura | Requiere implementación de páginas |
 | Módulo CompraPin | 🔄 Estructura | Requiere implementación de páginas |
-| Módulo Anulación | 🔄 Estructura | Requiere implementación de páginas |
-| Módulo CambioBeneficiario | 🔄 Estructura | Requiere implementación de páginas |
-| Módulo Consulta | 🔄 Estructura | Requiere implementación de páginas |
-| Módulo Resumen | 🔄 Estructura | Requiere implementación de páginas |
 | Google Analytics | 🔄 Parcial | Requiere `afterNavigate` en layout |
 | Service Worker/PWA | ⏳ Pendiente | Requiere `@vite-pwa/sveltekit` |
 | reCAPTCHA v3 | ⏳ Pendiente | Requiere integración con API nativa |
 | GraphQL | ⏳ Pendiente | Requiere `@apollo/client` sin wrapper |
-| DataService (API calls) | ⏳ Pendiente | Requiere implementación completa |
+
+---
+
+## Integración Tailwind CSS + DaisyUI
+
+### Configuración
+
+El proyecto usa Tailwind CSS v3 con DaisyUI v4. La configuración se encuentra en:
+
+- `tailwind.config.js` — tema personalizado `milicencia` con colores de marca
+- `postcss.config.js` — integración PostCSS
+- `src/app.css` — directivas `@tailwind base/components/utilities`
+
+### Tema personalizado `milicencia`
+
+```js
+// tailwind.config.js
+milicencia: {
+  "primary": "#1565c0",    // Azul principal
+  "secondary": "#0d47a1",  // Azul oscuro
+  "accent": "#f57c00",     // Naranja
+  "neutral": "#374151",    // Gris oscuro (footer)
+  ...
+}
+```
+
+### Uso del tema
+
+El tema se activa con `data-theme="milicencia"` en el div raíz de `+layout.svelte`.
+
+---
+
+## Patrón BFF (Backend For Frontend)
+
+Las páginas que necesitan datos del servidor usan el patrón BFF con `+page.server.ts`:
+
+```
+routes/
+├── +layout.server.ts     # Pasa user a todas las páginas
+├── +page.server.ts       # Datos de la home
+├── consulta/
+│   └── +page.server.ts   # Form actions para consulta de PIN
+├── anulacion/
+│   └── +page.server.ts   # Form actions para anulación
+└── api/
+    └── centros/
+        └── +server.ts    # Proxy BFF → API externa
+```
+
+Los form actions de SvelteKit reemplazan los servicios Angular que hacían POST directamente desde el cliente.
+
+---
+
+## RBAC con hooks.server.ts
+
+El archivo `src/hooks.server.ts` implementa guardas de ruta por rol:
+
+```typescript
+const PROTECTED_ROUTES: Record<string, string[]> = {
+  '/admin': ['Administrador', 'Director'],
+  '/admin/reportes': ['Administrador', 'Director', 'Auditor'],
+  '/admin/operaciones': ['Administrador', 'Instructor'],
+};
+```
+
+La sesión se lee de una cookie `session` (Base64 JSON) y se adjunta a `event.locals.user`.
 
 ---
 

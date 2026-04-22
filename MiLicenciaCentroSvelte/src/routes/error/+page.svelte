@@ -1,56 +1,19 @@
-<!--
-  Página de error 404.
-  Migrado desde Angular: src/app/components/pages/error/error.component
--->
-<script lang="ts">
-</script>
-
 <svelte:head>
-  <title>MiLicencia | Error 404</title>
+  <title>Error | MiLicencia</title>
 </svelte:head>
 
-<div class="wrapper">
-  <div class="flex-column">
-    <span style="font-variant: all-small-caps; margin-block-end: 0em;">Error 404</span>
-    <h1>Esta página no existe</h1>
-    <p class="explicacion">
-      La página que buscas fue removida, renombrada o no se encuentra disponible ahora mismo.
+<div class="min-h-[60vh] flex items-center justify-center px-4">
+  <div class="text-center max-w-md">
+    <div class="alert alert-error mb-6">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>Se presentó un error en el sistema</span>
+    </div>
+    <h1 class="text-2xl font-bold mb-2">Error</h1>
+    <p class="text-base-content/70 mb-6">
+      Por favor, intenta de nuevo o contacta al soporte si el problema persiste.
     </p>
-    <p class="explicacion mensaje">
-      Revisa que la dirección esté escrita correctamente, o encuentra lo que necesitas desde nuestra
-      <a href="/">página de inicio.</a>
-    </p>
-    <img class="cono" alt="imagen de cono de tráfico" src="/assets/img/cono.svg" />
-    <hr />
+    <a href="/" class="btn btn-primary">Ir al inicio</a>
   </div>
 </div>
-
-<style>
-  .wrapper {
-    max-width: 600px;
-    margin: 4rem auto;
-    padding: 0 1rem;
-  }
-
-  .flex-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  h1 {
-    font-size: 2rem;
-    color: #1565c0;
-  }
-
-  .explicacion {
-    color: #666;
-    max-width: 480px;
-  }
-
-  .cono {
-    max-width: 200px;
-    margin: 2rem 0;
-  }
-</style>
